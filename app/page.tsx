@@ -1,6 +1,14 @@
+"use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 p-8">
       <header className="text-center mb-12">
@@ -12,16 +20,18 @@ export default function Home() {
         </p>
       </header>
       <main className="flex flex-col items-center gap-8">
-        <div className="flex justify-center items-center w-72 h-72 rounded-full overflow-hidden shadow-lg">
-          <Image
-            className="object-cover"
-            src="/main.avif"
-            alt="Manicure"
-            width={300}
-            height={300}
-            priority
-          />
-        </div>
+        {isClient && (
+          <div className="flex justify-center items-center w-72 h-72 rounded-full overflow-hidden shadow-lg">
+            <Image
+              className="object-cover"
+              src="/main.avif"
+              alt="Manicure"
+              width={300}
+              height={300}
+              priority
+            />
+          </div>
+        )}
         <div className="text-center">
           <h2 className="text-3xl font-semibold text-white mb-4">
             ¡Reserva tu cita hoy!

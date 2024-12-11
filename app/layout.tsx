@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -34,12 +34,20 @@ export default function RootLayout({
             <Link href="/" className="text-xl font-bold text-pink-500">
               Oh&apos;Diosa Nails
             </Link>
-            <Link
-              href="/book"
-              className="text-lg text-gray-700 hover:text-pink-500 transition-colors"
-            >
-              Reserva
-            </Link>
+            <div className="flex space-x-4">
+              <Link
+                href="/book"
+                className="text-lg text-gray-700 hover:text-pink-500 transition-colors"
+              >
+                Reserva
+              </Link>
+              <Link
+                href="/auth/signin"
+                className="text-lg text-gray-700 hover:text-pink-500 transition-colors"
+              >
+                Admin
+              </Link>
+            </div>
           </div>
         </nav>
         {children}

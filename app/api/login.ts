@@ -6,15 +6,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    if (req.method === "GET") {
-      const appointments = await prisma.appointment.findMany({
-        include: { user: true },
+    // add login endpoint
+    if (req.method === "POST") {
+      const { phone, password } = req.body;
+      const user = await prisma.user.findUnique({
+        where: { phone },
       });
-      res.status(200).json(appointments);
-    } else if (req.method === "DELETE") {
-      const { id } = req.body;
-      await prisma.appointment.delete({ where: { id } });
-      res.status(204).end(); // No Content
+      if (!user) {
+        return res.status(401).json({ error: "Unauthorized" }); // Unauthorized
+      }
+      if (user.password !== password) {
+        return res.status(401).json({ error: "Unauthorized" }); // Unauthorized
+      }
+      res.status(200).json(user);
     } else {
       res.status(405).json({ error: "Method Not Allowed" }); // Method Not Allowed
     }

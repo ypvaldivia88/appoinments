@@ -12,13 +12,14 @@ model Appointment {
   date   DateTime
   time   String
   userId Int
-  user   User   @relation(fields: [userId], references: [user_id])
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model User {
-  user_id Int     @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   name    String?
   phone   String  @unique
+  password String
   isAdmin Boolean @default(false)
   appointments Appointment[]
 }

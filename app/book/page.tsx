@@ -1,25 +1,41 @@
 "use client";
-import { useState } from "react";
-import prisma from "../lib/db";
+import { useState, useEffect } from "react";
+import prisma from "../lib/db"; // Fixed import path
+
+interface User {
+  id: string;
+  name: string;
+  phone: string;
+}
 
 export default function Book() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [user, setUser] = useState<User | null>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await fetch("/api/auth/session");
+      const data = await response.json();
+      setUser(data.user);
+    };
+
+    fetchUser();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = await prisma.user.upsert({
-      where: { phone },
-      update: { name },
-      create: { name, phone },
-    });
+    if (!user) return;
+
     await prisma.appointment.create({
-      data: { date: new Date(date), time, userId: user.user_id },
+      data: { date: new Date(date), time, userId: user.id },
     });
-    console.log("Booking details:", { name, phone, date, time });
+    console.log("Booking details:", { user, date, time });
   };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
@@ -36,10 +52,9 @@ export default function Book() {
           </label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={user.name}
+            readOnly
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-            required
           />
         </div>
         <div className="mb-4">
@@ -48,10 +63,9 @@ export default function Book() {
           </label>
           <input
             type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={user.phone}
+            readOnly
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-            required
           />
         </div>
         <div className="mb-4">

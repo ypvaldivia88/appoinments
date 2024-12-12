@@ -28,7 +28,7 @@ export default function Book() {
     if (!user) return;
 
     await prisma.appointment.create({
-      data: { date: new Date(date), time, userId: user.id },
+      data: { date: new Date(date), time, userId: parseInt(user.id, 10) },
     });
     console.log("Booking details:", { user, date, time });
   };

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../lib/db"; // Fixed import path
+import prisma from "../../lib/db"; // Fixed import path
 
 export default async function handler(
   req: NextApiRequest,

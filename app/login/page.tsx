@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isRegister, setIsRegister] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("/api/login", {
+    const endpoint = isRegister ? "/api/register" : "/api/login";
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +29,7 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
-        Iniciar Sesión
+        {isRegister ? "Registrarse" : "Iniciar Sesión"}
       </h1>
       <form
         onSubmit={handleSubmit}
@@ -61,9 +63,17 @@ export default function Login() {
           type="submit"
           className="bg-pink-500 dark:bg-pink-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 dark:hover:bg-pink-900 transition-colors w-full"
         >
-          Iniciar Sesión
+          {isRegister ? "Registrarse" : "Iniciar Sesión"}
         </button>
       </form>
+      <button
+        onClick={() => setIsRegister(!isRegister)}
+        className="mt-4 text-pink-500 dark:text-pink-300 hover:underline"
+      >
+        {isRegister
+          ? "¿Ya tienes una cuenta? Iniciar Sesión"
+          : "¿No tienes una cuenta? Registrarse"}
+      </button>
     </div>
   );
 }

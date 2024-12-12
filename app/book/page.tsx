@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import prisma from "../lib/db";
 
 export default function Book() {
   const [name, setName] = useState("");
@@ -7,9 +8,16 @@ export default function Book() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
+    const user = await prisma.user.upsert({
+      where: { phone },
+      update: { name },
+      create: { name, phone },
+    });
+    await prisma.appointment.create({
+      data: { date: new Date(date), time, userId: user.user_id },
+    });
     console.log("Booking details:", { name, phone, date, time });
   };
 

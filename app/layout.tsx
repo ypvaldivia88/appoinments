@@ -50,6 +50,12 @@ export default function RootLayout({
               >
                 Admin
               </Link>
+              <Link
+                href="/admin/users"
+                className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
+              >
+                Usuarios
+              </Link>
             </div>
           </div>
         </nav>

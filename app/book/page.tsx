@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import prisma from "../lib/db"; // Fixed import path
 
 interface User {
   id: string;
@@ -27,10 +26,19 @@ export default function Book() {
     e.preventDefault();
     if (!user) return;
 
-    await prisma.appointment.create({
-      data: { date: new Date(date), time, userId: parseInt(user.id, 10) },
+    const response = await fetch("/api/appointments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date, time, userId: user.id }),
     });
-    console.log("Booking details:", { user, date, time });
+
+    if (response.ok) {
+      console.log("Booking details:", { user, date, time });
+    } else {
+      console.error("Failed to book appointment");
+    }
   };
 
   if (!user) {

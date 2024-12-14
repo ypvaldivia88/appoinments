@@ -2,13 +2,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [isRegister, setIsRegister] = useState(false);
-  const router = useRouter();
+interface FormValues {
+  phone: string;
+  password: string;
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
+export default function Login({}) {
+  const [phone, setPhone] = useState<FormValues["phone"]>("");
+  const [password, setPassword] = useState<FormValues["password"]>("");
+  const [isRegister, setIsRegister] = useState<boolean>(false);
+  const router = useRouter();
+  const { push } = router;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const endpoint = isRegister ? "/api/auth/register" : "/api/auth/login";
     const response = await fetch(endpoint, {
@@ -20,7 +26,7 @@ export default function Login() {
     });
 
     if (response.ok) {
-      router.push("/admin");
+      push("/pages/admin");
     } else {
       alert("Credenciales inválidas");
     }

@@ -12,6 +12,11 @@ export default async function handler(
     if (req.method === "GET") {
       const appointments = await Appointment.find().populate("user");
       res.status(200).json(appointments);
+    } else if (req.method === "POST") {
+      const { date, time, userId } = req.body;
+      const newAppointment = new Appointment({ date, time, user: userId });
+      await newAppointment.save();
+      res.status(201).json(newAppointment);
     } else if (req.method === "DELETE") {
       const { id } = req.body;
       await Appointment.findByIdAndDelete(id);

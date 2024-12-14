@@ -11,8 +11,7 @@ const nextConfig: NextConfig = {
     ],
   },
   env: {
-    ADMIN_USERNAME: process.env.ADMIN_USERNAME,
-    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    MONGODB_URI: process.env.MONGODB_URI,
   },
 };
 

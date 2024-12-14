@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "../lib/db"; // Import Mongoose connection
+import connectToDatabase from "@/lib/db"; // Import Mongoose connection
 import bcrypt from "bcryptjs";
-import User from "../models/User"; // Import Mongoose User model
+import User from "@/models/User"; // Import Mongoose User model
 
 export default async function handler(
   req: NextApiRequest,

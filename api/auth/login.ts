@@ -26,6 +26,8 @@ export default async function handler(
           res.status(401).json({ error: "Invalid credentials" });
           return;
         }
+        // add user to session in localstore
+        localStorage.setItem("session", JSON.stringify({ user: user }));
         res.status(200).json(user);
         break;
 

@@ -8,32 +8,47 @@ export default async function handler(
   res: NextApiResponse
 ) {
   await connectToDatabase(); // Ensure database connection
-
+  const {
+    query: { id, name, phone, password, isAdmin, appointments },
+    method,
+  } = req;
+  const hashedPassword = password
+    ? bcrypt.hashSync(password as string, 10)
+    : "";
   try {
-    if (req.method === "GET") {
-      const users = await User.find();
-      res.status(200).json(users);
-    } else if (req.method === "POST") {
-      const { name, phone, password } = req.body;
-      const hashedPassword = bcrypt.hashSync(password, 10);
-      const user = new User({ name, phone, password: hashedPassword });
-      await user.save();
-      res.status(201).json(user);
-    } else if (req.method === "PUT") {
-      const { phone, name, password } = req.body;
-      const hashedPassword = bcrypt.hashSync(password, 10);
-      const user = await User.findOneAndUpdate(
-        { phone },
-        { name, password: hashedPassword },
-        { new: true }
-      );
-      res.status(200).json(user);
-    } else if (req.method === "DELETE") {
-      const { phone } = req.body;
-      await User.findOneAndDelete({ phone });
-      res.status(204).end();
-    } else {
-      res.status(405).json({ error: "Method Not Allowed" });
+    switch (method) {
+      case "GET":
+        const users = await User.find();
+        res.status(200).json(users);
+        break;
+      case "PUT":
+        const data = await User.findByIdAndUpdate(id, {
+          name,
+          phone,
+          password: hashedPassword,
+          isAdmin,
+          appointments,
+        });
+        res.status(200).json(data);
+        break;
+      case "POST":
+        const user = new User({
+          name,
+          phone,
+          password: hashedPassword,
+          isAdmin,
+          appointments,
+        });
+        await user.save();
+        res.status(201).json(user);
+        break;
+      case "DELETE":
+        await User.findByIdAndDelete(id);
+        res.status(204).end();
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PUT", "POST", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
     }
   } catch (error) {
     console.error("Error in handler function:", error);

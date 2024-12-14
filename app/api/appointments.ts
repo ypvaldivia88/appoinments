@@ -1,28 +1,47 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import connectToDatabase from "../lib/db"; // Import Mongoose connection
-import Appointment from "../models/Appointment"; // Import Mongoose Appointment model
+import Appointment from "../models/Appointment"; // Import Mongoose User model
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await connectToDatabase(); // Ensure database connection
-
+  const {
+    query: { id, date, description, userId },
+    method,
+  } = req;
+  let dbres;
   try {
-    if (req.method === "GET") {
-      const appointments = await Appointment.find().populate("user");
-      res.status(200).json(appointments);
-    } else if (req.method === "POST") {
-      const { date, time, userId } = req.body;
-      const newAppointment = new Appointment({ date, time, user: userId });
-      await newAppointment.save();
-      res.status(201).json(newAppointment);
-    } else if (req.method === "DELETE") {
-      const { id } = req.body;
-      await Appointment.findByIdAndDelete(id);
-      res.status(204).end();
-    } else {
-      res.status(405).json({ error: "Method Not Allowed" });
+    switch (method) {
+      case "GET":
+        dbres = await Appointment.find();
+        res.status(200).json(dbres);
+        break;
+      case "PUT":
+        dbres = await Appointment.findByIdAndUpdate(id, {
+          date,
+          description,
+          userId,
+        });
+        res.status(200).json(dbres);
+        break;
+      case "POST":
+        const appointment = new Appointment({
+          date,
+          description,
+          userId,
+        });
+        dbres = await appointment.save();
+        res.status(201).json(dbres);
+        break;
+      case "DELETE":
+        await Appointment.findByIdAndDelete(id);
+        res.status(204).end();
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "PUT", "POST", "DELETE"]);
+        res.status(405).end(`Method ${method} Not Allowed`);
     }
   } catch (error) {
     console.error("Error in handler function:", error);

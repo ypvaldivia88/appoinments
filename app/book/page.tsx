@@ -1,44 +1,52 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import useSWR from "swr";
 
-interface User {
-  id: string;
-  name: string;
-  phone: string;
+interface Appointment {
+  date: string;
+  time: string;
+  userId: number;
 }
 
+const fetcher = async (url: string) => fetch(url).then((res) => res.json());
+const poster = async (url: string, data: Appointment) => {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return await res.json();
+};
+
 export default function Book() {
-  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await fetch("/api/auth/session");
-      const data = await response.json();
-      setUser(data.user);
-    };
+  const { data: user, error } = useSWR("/api/auth/session", fetcher);
 
-    fetchUser();
-  }, []);
+  if (error) {
+    return <div>Error loading user</div>;
+  }
+
+  if (!user) {
+    router.push("/login");
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
 
-    const response = await fetch("/api/appointments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ date, time, userId: user.id }),
-    });
+    const appointment: Appointment = {
+      date,
+      time,
+      userId: user.id,
+    };
 
-    if (response.ok) {
-      console.log("Booking details:", { user, date, time });
-    } else {
-      console.error("Failed to book appointment");
-    }
+    await poster("/api/appointments", appointment);
   };
 
   if (!user) {

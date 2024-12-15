@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
-import connectToDatabase from "@/lib/db"; // Import Mongoose connection
 import User from "@/models/User"; // Import Mongoose User model
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await connectToDatabase(); // Ensure database connection
   const {
     query: { name, phone, password, isAdmin },
     method,

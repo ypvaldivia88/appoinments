@@ -1,50 +1,71 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "@/lib/db";
+// route.ts
 import User from "@/models/User";
+import dbConnect from "@/lib/dbConnect";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET() {
   try {
-    await connectToDatabase();
-    const data = await User.find();
-    return res.status(201).json(data);
+    await dbConnect();
+    const data = await User.find({});
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in GET function:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(request: NextRequest) {
   try {
-    await connectToDatabase();
-    const user = new User(req.body);
+    await dbConnect();
+    const body = await request.json();
+    const user = new User(body);
     const data = await user.save();
-    return res.status(201).json(data);
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
     console.error("Error in POST function:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(req: NextApiRequest, res: NextApiResponse) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { _id: string } }
+) {
   try {
-    await connectToDatabase();
-    const { id } = req.query;
-    const data = await User.findByIdAndUpdate(id, req.body);
-    return res.status(200).json(data);
+    await dbConnect();
+    const body = await request.json();
+    const { _id } = params;
+    const data = await User.findByIdAndUpdate(_id, body, { new: true });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in PUT function:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { _id: string } }
+) {
   try {
-    await connectToDatabase();
-    const { id } = req.query;
-    await User.findByIdAndDelete(id);
-    return res.status(204).end();
+    await dbConnect();
+    const { _id } = params;
+    await User.findByIdAndDelete(_id);
+    return new Response(null, { status: 204 });
   } catch (error) {
     console.error("Error in DELETE function:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

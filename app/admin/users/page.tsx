@@ -1,26 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-import bcrypt from "bcryptjs"; // Import bcrypt
-
-interface User {
-  user_id: number;
-  name: string | null;
-  phone: string;
-  password: string; // Added password field
-  isAdmin: boolean;
-}
+import UserModal from "@/app/components/UserModal"; // Import UserModal
+import { IUser } from "@/models/User";
 
 export default function Users() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await fetch("/api/users");
       const data = await response.json();
+      console.log(data);
       setUsers(data);
     };
 
@@ -34,18 +28,19 @@ export default function Users() {
     checkAdmin();
   }, []);
 
-  const handleDelete = async (phone: string) => {
-    await fetch("/api/users", {
+  const handleDelete = async (_id: string) => {
+    await fetch(`/api/users/${_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone }),
     });
-    setUsers(users.filter((user) => user.phone !== phone));
+    setUsers((prevUsers) =>
+      prevUsers.filter((user) => user._id.toString() !== _id)
+    );
   };
 
-  const handleEdit = (user: User) => {
+  const handleEdit = (user: IUser) => {
     setCurrentUser(user);
     setShowModal(true);
   };
@@ -65,7 +60,7 @@ export default function Users() {
         Gestión de Usuarios
       </h1>
       <button
-        className="bg-green-500 dark:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 dark:hover:bg-green-900 transition-colors mb-4"
+        className="bg-green-500 dark:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 dark:hover:bg-green-900 transition-colors mb-4 flex items-center gap-2"
         onClick={handleCreate}
       >
         <FaPlus /> Crear Usuario
@@ -88,7 +83,7 @@ export default function Users() {
           </thead>
           <tbody className="text-center">
             {users.map((user) => (
-              <tr key={user.user_id} className="table-row">
+              <tr key={user._id.toString()} className="table-row">
                 <td className="py-2 px-4 border-b dark:border-gray-700">
                   {user.name}
                 </td>
@@ -107,7 +102,7 @@ export default function Users() {
                   </button>
                   <button
                     className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
-                    onClick={() => handleDelete(user.phone)}
+                    onClick={() => handleDelete(user._id.toString())}
                   >
                     <FaTrash />
                   </button>
@@ -122,16 +117,18 @@ export default function Users() {
           user={currentUser}
           onClose={() => setShowModal(false)}
           onSave={(savedUser) => {
-            if (currentUser) {
-              setUsers(
-                users.map((user) =>
-                  user.phone === savedUser.phone ? savedUser : user
-                )
-              );
-            } else {
-              setUsers([...users, savedUser]);
-            }
-            setShowModal(false);
+            setTimeout(() => {
+              setUsers((prevUsers) => {
+                if (currentUser) {
+                  return prevUsers.map((user) =>
+                    user.phone === savedUser.phone ? savedUser : user
+                  );
+                } else {
+                  return [...prevUsers, savedUser];
+                }
+              });
+              setShowModal(false);
+            }, 0);
           }}
         />
       )}
@@ -139,107 +136,4 @@ export default function Users() {
   );
 }
 
-function UserModal({
-  user,
-  onClose,
-  onSave,
-}: {
-  user: User | null;
-  onClose: () => void;
-  onSave: (user: User) => void;
-}) {
-  const [name, setName] = useState(user?.name || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [password, setPassword] = useState(user?.password || ""); // Added password state
-  const [isAdmin, setIsAdmin] = useState(user?.isAdmin || false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const method = user ? "PUT" : "POST";
-    const hashedPassword = bcrypt.hashSync(password, 10); // Hash password
-    const response = await fetch("/api/users", {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, phone, password: hashedPassword, isAdmin }), // Store hashed password
-    });
-    const savedUser = await response.json();
-    onSave(savedUser);
-  };
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4">
-          {user ? "Editar Usuario" : "Crear Usuario"}
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Nombre
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Teléfono
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-              required
-              disabled={!!user}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Admin
-            </label>
-            <input
-              type="checkbox"
-              checked={isAdmin}
-              onChange={(e) => setIsAdmin(e.target.checked)}
-              className="shadow appearance-none border rounded text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="button"
-              className="bg-gray-500 dark:bg-gray-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-gray-700 dark:hover:bg-gray-900 transition-colors mr-2"
-              onClick={onClose}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              className="bg-pink-500 dark:bg-pink-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 dark:hover:bg-pink-900 transition-colors"
-            >
-              Guardar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}

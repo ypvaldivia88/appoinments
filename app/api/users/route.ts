@@ -33,14 +33,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { _id: string } }
-) {
+export async function PUT(request: NextRequest) {
   try {
     await dbConnect();
     const body = await request.json();
-    const { _id } = params;
+    const url = new URL(request.url);
+    const _id = url.searchParams.get("_id");
     const data = await User.findByIdAndUpdate(_id, body, { new: true });
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
@@ -52,13 +50,11 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { _id: string } }
-) {
+export async function DELETE(request: NextRequest) {
   try {
     await dbConnect();
-    const { _id } = params;
+    const url = new URL(request.url);
+    const _id = url.searchParams.get("_id");
     await User.findByIdAndDelete(_id);
     return new Response(null, { status: 204 });
   } catch (error) {

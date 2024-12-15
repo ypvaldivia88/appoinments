@@ -1,30 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/models/User"; // Import Mongoose User model
+import User from "@/models/User";
 
 export async function POST(req: NextRequest) {
-  // Remove res from parameters
   try {
-    const { phone, password } = await req.json(); // Correct way to parse JSON body
-
-    // Find user by phone
+    const { phone, password } = await req.json();
     const user = await User.findOne({ phone }).select("+password");
     if (!user) {
       return NextResponse.json(
-        { message: "Invalid phone or password" },
+        { message: `User with phone: ${phone} not found` },
         { status: 401 }
       );
     }
-
-    // Compare passwords
-    const isMatch = await user.comparePassword(password); // Await the password comparison
+    const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return NextResponse.json(
-        { message: "Invalid phone or password" },
+        { message: "Invalid password" },
         { status: 401 }
       );
     }
-
-    // Authentication successful
     return NextResponse.json(
       { message: "Login successful", user: user.toJSON() },
       { status: 200 }

@@ -3,26 +3,36 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface FormValues {
+  name: string;
   phone: string;
   password: string;
+  repeatedPassword: string;
 }
 
 export default function Login({}) {
+  const [name, setName] = useState<FormValues["name"]>("");
   const [phone, setPhone] = useState<FormValues["phone"]>("");
   const [password, setPassword] = useState<FormValues["password"]>("");
+  const [repeatedPassword, setRepeatedPassword] =
+    useState<FormValues["password"]>("");
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const router = useRouter();
   const { push } = router;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const endpoint = isRegister ? "/api/auth/register" : "/api/auth/login";
+    if (isRegister && password !== repeatedPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    const endpoint = isRegister ? "/api/register" : "/api/login";
+    const body = isRegister ? { name, phone, password } : { phone, password };
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phone, password }),
+      body: JSON.stringify(body),
     });
 
     if (response.ok) {
@@ -41,6 +51,20 @@ export default function Login({}) {
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
       >
+        {isRegister && (
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Nombre
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+        )}
         <div className="mb-4">
           <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Teléfono
@@ -65,6 +89,20 @@ export default function Login({}) {
             required
           />
         </div>
+        {isRegister && (
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Repetir Contraseña
+            </label>
+            <input
+              type="password"
+              value={repeatedPassword}
+              onChange={(e) => setRepeatedPassword(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+        )}
         <button
           type="submit"
           className="bg-pink-500 dark:bg-pink-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 dark:hover:bg-pink-900 transition-colors w-full"

@@ -1,26 +1,39 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User"; // Import Mongoose User model
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest) {
+  // Remove res from parameters
   try {
-    const { phone, password } = req.body;
+    const { phone, password } = await req.json(); // Correct way to parse JSON body
 
     // Find user by phone
     const user = await User.findOne({ phone }).select("+password");
     if (!user) {
-      return res.status(401).json({ message: "Invalid phone or password" });
+      return NextResponse.json(
+        { message: "Invalid phone or password" },
+        { status: 401 }
+      );
     }
 
     // Compare passwords
-    const isMatch = user.comparePassword(password);
+    const isMatch = await user.comparePassword(password); // Await the password comparison
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid phone or password" });
+      return NextResponse.json(
+        { message: "Invalid phone or password" },
+        { status: 401 }
+      );
     }
 
     // Authentication successful
-    res.status(200).json({ message: "Login successful", user: user.toJSON() });
+    return NextResponse.json(
+      { message: "Login successful", user: user.toJSON() },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error in POST function:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

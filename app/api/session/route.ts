@@ -1,45 +1,49 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User"; // Import Mongoose User model
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextRequest) {
   const { method } = req;
 
   try {
     switch (method) {
       case "GET":
-        // get session from localstore
-        const session = JSON.parse(localStorage.getItem("session") || "{}");
+        // get session from cookies
+        const session = req.cookies.get("session");
 
         if (!session) {
-          res.status(401).json({ error: "Unauthorized" });
-          return;
+          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-        const id = session.user.id;
+        const {
+          user: { id },
+        } = JSON.parse(session.value);
         const user = await User.findById(id);
 
         if (!user) {
-          res.status(404).json({ error: "User not found" });
-          return;
+          return NextResponse.json(
+            { error: "User not found" },
+            { status: 404 }
+          );
         }
 
-        res.status(200).json({
-          id: user._id,
+        return NextResponse.json({
+          _id: user._id,
           name: user.name,
           phone: user.phone,
           isAdmin: user.isAdmin,
           appointments: user.appointments,
         });
-        break;
 
       default:
-        res.setHeader("Allow", ["GET"]);
-        res.status(405).end(`Method ${method} Not Allowed`);
+        return NextResponse.json(
+          { error: `Method ${method} Not Allowed` },
+          { status: 405, headers: { Allow: "GET" } }
+        );
     }
   } catch (error) {
     console.error("Error in handler function:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

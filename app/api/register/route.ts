@@ -1,26 +1,23 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import User from "@/models/User"; // Import Mongoose User model
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const {
-    query: { name, phone, password, isAdmin },
-    method,
-  } = req;
-  const hashedPassword = password
-    ? bcrypt.hashSync(password as string, 10)
-    : "";
+export default async function handler(req: NextRequest) {
+  const { method } = req;
+
   try {
     switch (method) {
       case "POST":
+        const { name, phone, password, isAdmin } = await req.json();
+        const hashedPassword = password ? bcrypt.hashSync(password, 10) : "";
+
         // verify if user exists
         const exists = await User.findOne({ phone });
         if (exists) {
-          res.status(400).json({ error: "User already exists" });
-          return;
+          return NextResponse.json(
+            { error: "User already exists" },
+            { status: 400 }
+          );
         }
 
         const user = new User({
@@ -31,15 +28,19 @@ export default async function handler(
         });
 
         await user.save();
-        res.status(200).json(user);
-        break;
+        return NextResponse.json(user, { status: 200 });
 
       default:
-        res.setHeader("Allow", ["POST"]);
-        res.status(405).end(`Method ${method} Not Allowed`);
+        return NextResponse.json(
+          { error: `Method ${method} Not Allowed` },
+          { status: 405, headers: { Allow: "POST" } }
+        );
     }
   } catch (error) {
     console.error("Error in handler function:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

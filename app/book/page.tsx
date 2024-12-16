@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useSWR from "swr";
 
 interface Appointment {
@@ -26,32 +26,39 @@ export default function Book() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  const { data: user, error } = useSWR("/api/auth/session", fetcher);
+  const { data, error } = useSWR("/api/session", fetcher);
+
+  useEffect(() => {
+    console.log(data);
+
+    if (data?.error) {
+      console.log(data.error);
+      router.push("/login");
+    } else if (data) {
+      if (data.isAdmin) router.push("/admin");
+    }
+  }, [data, router]);
 
   if (error) {
     return <div>Error loading user</div>;
   }
 
-  if (!user) {
-    router.push("/login");
+  if (!data) {
+    return <div>Loading...</div>;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!data) return;
 
     const appointment: Appointment = {
       date,
       time,
-      userId: user.id,
+      userId: data._id,
     };
 
     await poster("/api/appointments", appointment);
   };
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
@@ -68,7 +75,7 @@ export default function Book() {
           </label>
           <input
             type="text"
-            value={user.name}
+            value={data.name}
             readOnly
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -79,7 +86,7 @@ export default function Book() {
           </label>
           <input
             type="tel"
-            value={user.phone}
+            value={data.phone}
             readOnly
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
           />

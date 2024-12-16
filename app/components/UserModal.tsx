@@ -1,5 +1,4 @@
 import { useState } from "react";
-import bcrypt from "bcryptjs";
 import { IUser } from "@/app/models/User";
 
 export default function UserModal({
@@ -13,8 +12,8 @@ export default function UserModal({
 }) {
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
-  const [password, setPassword] = useState(user?.password || ""); // Added password state
-  const [confirmPassword, setConfirmPassword] = useState(""); // Added confirm password state
+  const [password, setPassword] = useState(user?.password || "");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(user?.isAdmin || false);
   const [error, setError] = useState("");
 
@@ -24,15 +23,14 @@ export default function UserModal({
       setError("Las contraseñas no coinciden");
       return;
     }
-    const method = user ? "PUT" : "POST";
-    const hashedPassword = bcrypt.hashSync(password, 10); // Hash password
-    const response = await fetch("/api/users", {
-      method,
+    const options = {
+      method: user ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, phone, password: hashedPassword, isAdmin }), // Store hashed password
-    });
+      body: JSON.stringify({ name, phone, password, isAdmin }),
+    };
+    const response = await fetch("/api/users", options);
     const savedUser = await response.json();
     onSave(savedUser);
   };

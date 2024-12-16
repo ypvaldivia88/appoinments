@@ -9,10 +9,8 @@ export async function GET(req: NextRequest) {
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const {
-    user: { id },
-  } = JSON.parse(session.value);
-  const user = await User.findById(id);
+  const { userId } = JSON.parse(session.value);
+  const user = await User.findById(userId);
 
   if (!user) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });

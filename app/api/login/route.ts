@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const { phone, password } = await req.json();
     const user = await User.findOne({ phone }).select("+password");
+
     if (!user) {
       return NextResponse.json(
         { message: `User with phone: ${phone} not found` },
@@ -14,6 +15,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // const isMatch = password === user.password;
     const isMatch = await user.comparePassword(password);
     console.log("isMatch", isMatch);
 
@@ -23,10 +25,19 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    return NextResponse.json(
+    // save session in cookies
+    const session = { userId: user._id };
+    const sessionCookie = JSON.stringify(session);
+    const response = NextResponse.json(
       { message: "Login successful", user: user.toJSON() },
       { status: 200 }
     );
+    response.cookies.set("session", sessionCookie, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    return response;
   } catch (error) {
     console.error("Error in POST function:", error);
     const errorMessage =

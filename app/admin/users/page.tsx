@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-import { IUser } from "@/models/User";
+import { IUser } from "@/app/models/User";
 import UserModal from "@/app/components/UserModal";
 
 export default function Users() {

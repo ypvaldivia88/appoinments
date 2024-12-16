@@ -1,6 +1,6 @@
 import { useState } from "react";
 import bcrypt from "bcryptjs";
-import { IUser } from "@/models/User";
+import { IUser } from "@/app/models/User";
 
 export default function UserModal({
   user,

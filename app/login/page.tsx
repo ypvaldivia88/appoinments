@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import useValidation from "../hooks/useValidation";
 
 interface FormValues {
   name: string;
@@ -18,11 +19,18 @@ export default function Login({}) {
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const router = useRouter();
   const { push } = router;
+  const { validateUser } = useValidation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isRegister && password !== repeatedPassword) {
-      alert("Las contraseñas no coinciden");
+    const errors = validateUser(
+      name,
+      phone,
+      password,
+      isRegister ? repeatedPassword : undefined
+    );
+    if (errors.length > 0) {
+      alert(errors.join("\n"));
       return;
     }
     const endpoint = isRegister ? "/api/register" : "/api/login";

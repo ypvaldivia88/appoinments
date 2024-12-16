@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IUser } from "@/app/models/User";
+import useValidation from "../hooks/useValidation";
 
 export default function UserModal({
   user,
@@ -16,11 +17,13 @@ export default function UserModal({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(user?.isAdmin || false);
   const [error, setError] = useState("");
+  const { validateUser } = useValidation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
+    const errors = validateUser(name, phone, password, confirmPassword);
+    if (errors.length > 0) {
+      setError(errors.join(", "));
       return;
     }
     const options = {

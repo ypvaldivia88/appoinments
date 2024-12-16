@@ -17,12 +17,21 @@ export default function MainNavigation() {
     fetchSession();
   }, []);
 
-  const handleLogout = () => {
-    // Clear session cookie
-    document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-    // Redirect to login page
-    push("/login");
-  };
+    const handleLogout = async () => {
+      const endpoint = "/api/logout";
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setTimeout(() => {
+          push("/login");
+        }, 1000); // wait for 1 second before redirecting
+      }
+    };
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md p-4">

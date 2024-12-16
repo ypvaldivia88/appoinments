@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-import UserModal from "@/app/components/UserModal"; // Import UserModal
 import { IUser } from "@/models/User";
+import UserModal from "@/app/components/UserModal";
 
 export default function Users() {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -14,7 +14,6 @@ export default function Users() {
     const fetchUsers = async () => {
       const response = await fetch("/api/users");
       const data = await response.json();
-      console.log(data);
       setUsers(data);
     };
 

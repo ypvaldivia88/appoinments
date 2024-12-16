@@ -39,7 +39,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const url = new URL(request.url);
     const _id = url.searchParams.get("_id");
-    const data = await User.findByIdAndUpdate(_id, body, { new: true });
+    const data = await User.findByIdAndUpdate(_id, body);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in PUT function:", error);

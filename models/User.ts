@@ -32,8 +32,9 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string
 ) {
-  const user = this as IUser;
-  return bcrypt.compare(candidatePassword, user.password);
+  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+  console.log("comparePassword: ", candidatePassword, this.password, isMatch);
+  return isMatch;
 };
 
 // Ensure password is selected when needed

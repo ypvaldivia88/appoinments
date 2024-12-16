@@ -28,9 +28,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextRequest, params: { _id: number }) {
+export async function PUT(req: NextRequest) {
   try {
-    const { _id } = params;
+    const { searchParams } = new URL(req.url);
+    const _id = searchParams.get("_id");
     const data = await Appointment.findByIdAndUpdate(_id, await req.json(), {
       new: true,
     });
@@ -44,9 +45,10 @@ export async function PUT(req: NextRequest, params: { _id: number }) {
   }
 }
 
-export async function DELETE(req: NextRequest, params: { _id: number }) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { _id } = params;
+    const { searchParams } = new URL(req.url);
+    const _id = searchParams.get("_id");
     await Appointment.findByIdAndDelete(_id);
     return NextResponse.json(null, { status: 204 });
   } catch (error) {

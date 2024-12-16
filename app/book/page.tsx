@@ -5,7 +5,7 @@ import useSWR from "swr";
 
 interface Appointment {
   date: string;
-  time: string;
+  description: string;
   userId: number;
 }
 
@@ -24,20 +24,24 @@ const poster = async (url: string, data: Appointment) => {
 export default function Book() {
   const router = useRouter();
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [description, setDescription] = useState("");
 
   const { data, error } = useSWR("/api/session", fetcher);
+  const [formValues, setFormValues] = useState<Appointment>({
+    date: "",
+    description: "",
+    userId: 0,
+  });
 
   useEffect(() => {
-    console.log(data);
-
     if (data?.error) {
       console.log(data.error);
       router.push("/login");
     } else if (data) {
       if (data.isAdmin) router.push("/admin");
+      else setFormValues({ ...formValues, userId: data._id });
     }
-  }, [data, router]);
+  }, [data]);
 
   if (error) {
     return <div>Error loading user</div>;
@@ -53,7 +57,7 @@ export default function Book() {
 
     const appointment: Appointment = {
       date,
-      time,
+      description,
       userId: data._id,
     };
 
@@ -71,32 +75,10 @@ export default function Book() {
       >
         <div className="mb-4">
           <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Nombre
-          </label>
-          <input
-            type="text"
-            value={data.name}
-            readOnly
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Teléfono
-          </label>
-          <input
-            type="tel"
-            value={data.phone}
-            readOnly
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
             Fecha
           </label>
           <input
-            type="date"
+            type="datetime-local"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
@@ -105,14 +87,13 @@ export default function Book() {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Hora
+            Nota
           </label>
           <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-            required
           />
         </div>
         <button

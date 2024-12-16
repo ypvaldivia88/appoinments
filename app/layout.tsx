@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Link from "next/link";
 import "./globals.css";
+import MainNavigation from "./components/MainNavigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,36 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <nav className="bg-white dark:bg-gray-800 shadow-md p-4">
-          <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <Link
-              href="/"
-              className="text-xl font-bold text-pink-500 dark:text-pink-300 mb-4 md:mb-0"
-            >
-              Oh&apos;Diosa Nails
-            </Link>
-            <div className="flex space-x-4">
-              <Link
-                href="/book"
-                className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
-              >
-                Reserva
-              </Link>
-              <Link
-                href="/admin"
-                className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
-              >
-                Admin
-              </Link>
-              <Link
-                href="/admin/users"
-                className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
-              >
-                Usuarios
-              </Link>
-            </div>
-          </div>
-        </nav>
+        <MainNavigation />
         {children}
       </body>
     </html>

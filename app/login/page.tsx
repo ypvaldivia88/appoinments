@@ -36,7 +36,9 @@ export default function Login({}) {
     });
 
     if (response.ok) {
-      push("/book");
+      setTimeout(() => {
+        push("/book");
+      }, 1000); // wait for 1 second before redirecting
     } else {
       alert("Credenciales inválidas");
     }

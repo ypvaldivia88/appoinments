@@ -36,7 +36,7 @@ export default function Login({}) {
     });
 
     if (response.ok) {
-      push("/pages/admin");
+      push("/book");
     } else {
       alert("Credenciales inválidas");
     }

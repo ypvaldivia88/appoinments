@@ -14,17 +14,16 @@ export interface IUser extends Document {
 const UserSchema: Schema<IUser> = new Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true, unique: true },
-  password: { type: String, required: true, select: false }, // Ensure password is not selected by default
+  password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
-  appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }], // Add appointments field
+  appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }],
 });
 
 // Encrypt password before saving
 UserSchema.pre("save", async function (next) {
   const user = this as IUser;
   if (!user.isModified("password")) return next();
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(user.password, salt);
+  user.password = await bcrypt.hash(user.password, 10);
   next();
 });
 
@@ -33,7 +32,6 @@ UserSchema.methods.comparePassword = async function (
   candidatePassword: string
 ) {
   const isMatch = await bcrypt.compare(candidatePassword, this.password);
-  console.log("comparePassword: ", candidatePassword, this.password, isMatch);
   return isMatch;
 };
 

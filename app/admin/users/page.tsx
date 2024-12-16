@@ -81,7 +81,7 @@ export default function Users() {
             </tr>
           </thead>
           <tbody className="text-center">
-            {users.map((user) => (
+            {users?.map((user) => (
               <tr key={user._id.toString()} className="table-row">
                 <td className="py-2 px-4 border-b dark:border-gray-700">
                   {user.name}

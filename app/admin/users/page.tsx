@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 export default function Users() {
   const router = useRouter();
   const [users, setUsers] = useState<IUser[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
@@ -30,14 +29,7 @@ export default function Users() {
       setUsers(data);
     };
 
-    const checkAdmin = async () => {
-      // Replace with actual admin check logic
-      const admin = true; // Example: fetch from session or context
-      setIsAdmin(admin);
-    };
-
     fetchUsers();
-    checkAdmin();
   }, []);
 
   const handleDelete = async (_id: string) => {
@@ -61,10 +53,6 @@ export default function Users() {
     setCurrentUser(null);
     setShowModal(true);
   };
-
-  if (!isAdmin) {
-    return <div>No tienes acceso a esta página.</div>;
-  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">

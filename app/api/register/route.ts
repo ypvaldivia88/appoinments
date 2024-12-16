@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User";
+import dbConnect from "@/lib/dbConnect";
 
 export async function POST(req: NextRequest) {
+  dbConnect();
   const { name, phone, password, isAdmin } = await req.json();
 
   // verify if user exists

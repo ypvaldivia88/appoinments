@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User"; // Import Mongoose User model
+import dbConnect from "@/lib/dbConnect";
 
 export async function GET(req: NextRequest) {
+  dbConnect();
   const session = req.cookies.get("session");
 
   if (!session) {

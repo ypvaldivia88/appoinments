@@ -24,9 +24,11 @@ export default function Login({}) {
   const [password, setPassword] = useState<FormValues["password"]>("");
   const [repeatedPassword, setRepeatedPassword] =
     useState<FormValues["password"]>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage(null); // Clear previous error message
     const errors = validateUser(
       name,
       phone,
@@ -34,7 +36,7 @@ export default function Login({}) {
       isRegister ? repeatedPassword : undefined
     );
     if (isRegister && errors.length > 0) {
-      alert(errors.join("\n"));
+      setErrorMessage(errors.join("\n"));
       return;
     }
     const endpoint = isRegister ? "/api/register" : "/api/login";
@@ -46,11 +48,12 @@ export default function Login({}) {
       },
       body: JSON.stringify(body),
     });
+    const data = await response.json();
 
     if (response.ok) {
-      const data = await response.json();
-      setSession(data.user);
-      Cookies.set("session", JSON.stringify({ userId: data.user._id }), {
+      console.log(data);
+      setSession(data);
+      Cookies.set("session", JSON.stringify({ userId: data._id }), {
         httpOnly: true,
         secure: true,
       });
@@ -58,7 +61,7 @@ export default function Login({}) {
         push("/book");
       }, 1000);
     } else {
-      alert("Credenciales inválidas");
+      setErrorMessage(data.error);
     }
   };
 
@@ -71,6 +74,9 @@ export default function Login({}) {
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
       >
+        {errorMessage && (
+          <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
+        )}
         {isRegister && (
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">

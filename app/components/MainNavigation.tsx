@@ -2,36 +2,39 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useGlobalStore from "@/app/store/useGlobalStore";
 
 export default function MainNavigation() {
   const router = useRouter();
   const { push } = router;
   const [isAdmin, setIsAdmin] = useState(false);
+  const [session, clearSession] = useGlobalStore((state) => [
+    state.session,
+    state.clearSession,
+  ]);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const response = await fetch("/api/session");
-      const data = await response.json();
-      if (!data.error) setIsAdmin(data.isAdmin);
-    };
-    fetchSession();
-  }, []);
+    if (session) {
+      setIsAdmin(session.isAdmin);
+    }
+  }, [session]);
 
-    const handleLogout = async () => {
-      const endpoint = "/api/logout";
-      const response = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  const handleLogout = async () => {
+    const endpoint = "/api/logout";
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (response.ok) {
-        setTimeout(() => {
-          push("/login");
-        }, 1000); // wait for 1 second before redirecting
-      }
-    };
+    if (response.ok) {
+      clearSession();
+      setTimeout(() => {
+        push("/login");
+      }, 1000); // wait for 1 second before redirecting
+    }
+  };
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md p-4">

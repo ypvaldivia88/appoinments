@@ -1,16 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import useSWR from "swr";
+import useGlobalStore from "@/app/store/useGlobalStore";
 
 interface Appointment {
   date: string;
   description: string;
-  userId: number;
+  userId: string;
 }
 
-const fetcher = async (url: string) => fetch(url).then((res) => res.json());
-const poster = async (url: string, data: Appointment) => {
+const POST = async (url: string, data: Appointment) => {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -23,45 +22,33 @@ const poster = async (url: string, data: Appointment) => {
 
 export default function Book() {
   const router = useRouter();
+  const [session] = useGlobalStore((state) => [state.session]);
+
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
-  const { data, error } = useSWR("/api/session", fetcher);
   const [formValues, setFormValues] = useState<Appointment>({
     date: "",
     description: "",
-    userId: 0,
+    userId: "",
   });
 
   useEffect(() => {
-    if (data?.error) {
-      console.log(data.error);
+    if (!session) {
       router.push("/login");
-    } else if (data) {
-      if (data.isAdmin) router.push("/admin");
-      else setFormValues({ ...formValues, userId: data._id });
+    } else if (session.isAdmin) {
+      router.push("/admin");
+    } else {
+      setFormValues({ ...formValues, userId: session._id.toString() });
     }
-  }, [data]);
-
-  if (error) {
-    return <div>Error loading user</div>;
-  }
-
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+  }, [formValues, router, session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!data) return;
 
-    const appointment: Appointment = {
-      date,
-      description,
-      userId: data._id,
-    };
+    const appointment: Appointment = formValues;
 
-    await poster("/api/appointments", appointment);
+    await POST("/api/appointments", appointment);
   };
 
   return (

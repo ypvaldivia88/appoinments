@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useValidation from "../hooks/useValidation";
+import useValidation from "@/app/hooks/useValidation";
+import useGlobalStore from "@/app/store/useGlobalStore";
 
 interface FormValues {
   name: string;
@@ -11,15 +12,17 @@ interface FormValues {
 }
 
 export default function Login({}) {
+  const router = useRouter();
+  const { push } = router;
+  const { validateUser } = useValidation();
+  const [setSession] = useGlobalStore((state) => [state.setSession]);
+
+  const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
   const [phone, setPhone] = useState<FormValues["phone"]>("");
   const [password, setPassword] = useState<FormValues["password"]>("");
   const [repeatedPassword, setRepeatedPassword] =
     useState<FormValues["password"]>("");
-  const [isRegister, setIsRegister] = useState<boolean>(false);
-  const router = useRouter();
-  const { push } = router;
-  const { validateUser } = useValidation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,9 +47,11 @@ export default function Login({}) {
     });
 
     if (response.ok) {
+      const user = await response.json();
+      setSession(user);
       setTimeout(() => {
         push("/book");
-      }, 1000); // wait for 1 second before redirecting
+      }, 1000);
     } else {
       alert("Credenciales inválidas");
     }

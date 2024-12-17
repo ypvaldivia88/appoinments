@@ -4,23 +4,20 @@ import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
 import { IUser } from "@/app/models/User";
 import UserModal from "@/app/components/UserModal";
 import { useRouter } from "next/navigation";
+import useGlobalStore from "@/app/store/useGlobalStore";
 
 export default function Users() {
   const router = useRouter();
   const [users, setUsers] = useState<IUser[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [session] = useGlobalStore((state) => [state.session]);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const response = await fetch("/api/session");
-      const data = await response.json();
-      if (data.error || !data.isAdmin) {
-        router.push("/login");
-      }
-    };
-    fetchSession();
-  }, []);
+    if (session && !session.isAdmin) {
+      router.push("/login");
+    }
+  }, [router, session]);
 
   useEffect(() => {
     const fetchUsers = async () => {

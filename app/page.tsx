@@ -53,7 +53,7 @@ export default function Home() {
         </div>
       </main>
       <footer className="mt-8 md:mt-12 text-center text-white">
-        <p>&copy; 2023 Oh&rsquo;Diosa Nails. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Oh&rsquo;Diosa Nails. Todos los derechos reservados.</p>
       </footer>
     </div>
   );

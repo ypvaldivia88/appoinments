@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
+import Calendar from "@/app/components/Calendar";
 
 interface Appointment {
   date: string;
@@ -24,7 +25,6 @@ export default function Book() {
   const router = useRouter();
   const session = useGlobalStore((state) => state.session);
 
-  const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
   const [formValues, setFormValues] = useState<Appointment>({
@@ -39,6 +39,8 @@ export default function Book() {
     } else if (session.isAdmin) {
       router.push("/admin");
     } else {
+      console.log(session);
+
       setFormValues({
         ...formValues,
         userId: session._id.toString(),
@@ -60,21 +62,13 @@ export default function Book() {
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Reserva tu cita
       </h1>
+      <Calendar />
       <form
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
       >
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Fecha
-          </label>
-          <input
-            type="datetime-local"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-            required
-          />
+          <Calendar />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">

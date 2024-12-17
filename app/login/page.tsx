@@ -60,7 +60,7 @@ export default function Login({}) {
         push("/book");
       }, 1000);
     } else {
-      setErrorMessage(data.error);
+      setErrorMessage(data.error || data.message);
     }
   };
 

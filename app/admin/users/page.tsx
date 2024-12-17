@@ -5,7 +5,6 @@ import { IUser } from "@/app/models/User";
 import UserModal from "@/app/components/UserModal";
 import { useRouter } from "next/navigation";
 import useGlobalStore from "@/app/store/useGlobalStore";
-import Admin from "@/app/admin/page";
 
 export default function Users() {
   const router = useRouter();
@@ -53,86 +52,82 @@ export default function Users() {
   };
 
   return (
-    <Admin>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
-          Gestión de Usuarios
-        </h1>
-        <button
-          className="bg-green-500 dark:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 dark:hover:bg-green-900 transition-colors mb-4 flex items-center gap-2"
-          onClick={handleCreate}
-        >
-          <FaPlus /> Crear Usuario
-        </button>
-        <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
-          <table className="min-w-full bg-white dark:bg-gray-800">
-            <thead>
-              <tr className="table-row">
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Nombre
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Teléfono
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Admin
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Acciones
-                </th>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
+        Gestión de Usuarios
+      </h1>
+      <button
+        className="bg-green-500 dark:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 dark:hover:bg-green-900 transition-colors mb-4 flex items-center gap-2"
+        onClick={handleCreate}
+      >
+        <FaPlus /> Crear Usuario
+      </button>
+      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
+        <table className="min-w-full bg-white dark:bg-gray-800">
+          <thead>
+            <tr className="table-row">
+              <th className="py-2 px-4 border-b dark:border-gray-700">
+                Nombre
+              </th>
+              <th className="py-2 px-4 border-b dark:border-gray-700">
+                Teléfono
+              </th>
+              <th className="py-2 px-4 border-b dark:border-gray-700">Admin</th>
+              <th className="py-2 px-4 border-b dark:border-gray-700">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {users?.map((user) => (
+              <tr key={user._id.toString()} className="table-row">
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  {user.name}
+                </td>
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  {user.phone}
+                </td>
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  {user.isAdmin ? "Sí" : "No"}
+                </td>
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  <button
+                    className="bg-blue-500 dark:bg-blue-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-900 transition-colors mr-2"
+                    onClick={() => handleEdit(user)}
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
+                    className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
+                    onClick={() => handleDelete(user._id.toString())}
+                  >
+                    <FaTrash />
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody className="text-center">
-              {users?.map((user) => (
-                <tr key={user._id.toString()} className="table-row">
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    {user.name}
-                  </td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    {user.phone}
-                  </td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    {user.isAdmin ? "Sí" : "No"}
-                  </td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    <button
-                      className="bg-blue-500 dark:bg-blue-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-900 transition-colors mr-2"
-                      onClick={() => handleEdit(user)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
-                      onClick={() => handleDelete(user._id.toString())}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {showModal && (
-          <UserModal
-            user={currentUser}
-            onClose={() => setShowModal(false)}
-            onSave={(savedUser) => {
-              setUsers((prevUsers) => {
-                if (currentUser) {
-                  return prevUsers.map((user) =>
-                    user._id === savedUser._id ? savedUser : user
-                  );
-                } else {
-                  return [...prevUsers, savedUser];
-                }
-              });
-              setShowModal(false);
-            }}
-          />
-        )}
+            ))}
+          </tbody>
+        </table>
       </div>
-    </Admin>
+      {showModal && (
+        <UserModal
+          user={currentUser}
+          onClose={() => setShowModal(false)}
+          onSave={(savedUser) => {
+            setUsers((prevUsers) => {
+              if (currentUser) {
+                return prevUsers.map((user) =>
+                  user._id === savedUser._id ? savedUser : user
+                );
+              } else {
+                return [...prevUsers, savedUser];
+              }
+            });
+            setShowModal(false);
+          }}
+        />
+      )}
+    </div>
   );
 }
 

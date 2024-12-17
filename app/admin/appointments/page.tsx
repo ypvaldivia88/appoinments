@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
-import Admin from "@/app/admin/page";
 
 interface User {
   name: string | null;
@@ -42,53 +41,51 @@ export default function Appointments() {
   };
 
   return (
-    <Admin>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
-          Administración de Citas
-        </h1>
-        <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
-          <table className="min-w-full bg-white dark:bg-gray-800">
-            <thead>
-              <tr className="table-row">
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Nombre <br /> Teléfono
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Fecha <br /> Hora
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700">
-                  Acciones
-                </th>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
+        Administración de Citas
+      </h1>
+      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <table className="min-w-full bg-white dark:bg-gray-800">
+          <thead>
+            <tr className="table-row">
+              <th className="py-2 px-4 border-b dark:border-gray-700">
+                Nombre <br /> Teléfono
+              </th>
+              <th className="py-2 px-4 border-b dark:border-gray-700">
+                Fecha <br /> Hora
+              </th>
+              <th className="py-2 px-4 border-b dark:border-gray-700">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {appointments.map((appointment) => (
+              <tr key={appointment.id} className="table-row">
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  {appointment.user.name}
+                  <br />
+                  {appointment.user.phone}
+                </td>
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  {appointment.date}
+                  <br />
+                  {appointment.time}
+                </td>
+                <td className="py-2 px-4 border-b dark:border-gray-700">
+                  <button
+                    className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
+                    onClick={() => handleDelete(appointment.id)}
+                  >
+                    <FaTrash />
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody className="text-center">
-              {appointments.map((appointment) => (
-                <tr key={appointment.id} className="table-row">
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    {appointment.user.name}
-                    <br />
-                    {appointment.user.phone}
-                  </td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    {appointment.date}
-                    <br />
-                    {appointment.time}
-                  </td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">
-                    <button
-                      className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
-                      onClick={() => handleDelete(appointment.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </Admin>
+    </div>
   );
 }

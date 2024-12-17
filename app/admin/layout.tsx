@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState, ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
-export default function Admin({ children }: { children: ReactNode }) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
   const [activeLink, setActiveLink] = useState("users");
 
   return (

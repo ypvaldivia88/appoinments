@@ -66,7 +66,6 @@ export default function Book() {
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Reserva tu cita
       </h1>
-      <Calendar />
       <form
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"

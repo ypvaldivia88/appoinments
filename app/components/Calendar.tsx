@@ -4,16 +4,27 @@ import { generateDate, months } from "@/app/util/calendar";
 import cn from "@/app/util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
+// Simulated available appointments data
+const availableAppointments: { [key: string]: string[] } = {
+  "2024-12-15": ["10:00 AM", "11:00 AM", "2:00 PM"],
+  "2024-12-20": ["9:00 AM", "1:00 PM"],
+  // ...other dates
+};
+
 export default function Calendar() {
-  const days = ["S", "M", "T", "W", "T", "F", "S"];
+  const days = ["D", "L", "M", "M", "J", "V", "S"];
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
 
+  const isDateWithAppointments = (date: dayjs.Dayjs) => {
+    return availableAppointments[date.format("YYYY-MM-DD")];
+  };
+
   return (
-    <div className="flex gap-10 sm:divide-x justify-center sm:w-1/2 mx-auto h-screen items-center sm:flex-row flex-col">
+    <div className="flex gap-10 justify-center mx-auto items-center flex-col pb-10 px-16">
       <div className="w-96 h-96">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-5">
           <h1 className="select-none font-semibold">
             {months[today.month()]}, {today.year()}
           </h1>
@@ -30,7 +41,7 @@ export default function Calendar() {
                 setToday(currentDate);
               }}
             >
-              Today
+              Hoy
             </h1>
             <GrFormNext
               className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
@@ -60,11 +71,12 @@ export default function Calendar() {
                 <h1
                   className={cn(
                     currentMonth ? "" : "text-gray-400",
-                    today ? "bg-red-600 text-white" : "",
+                    today ? "border-white border-2 text-white" : "",
                     selectDate.toDate().toDateString() ===
                       date.toDate().toDateString()
                       ? "bg-black text-white"
                       : "",
+                    isDateWithAppointments(date) ? "bg-green-500 text-white" : "",
                     "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
                   )}
                   onClick={() => {
@@ -78,11 +90,23 @@ export default function Calendar() {
           )}
         </div>
       </div>
-      <div className="h-96 w-96 sm:px-5">
+      <div className="h-auto w-96 px-5">
         <h1 className="font-semibold">
-          Schedule for {selectDate.toDate().toDateString()}
+          Turnos disponibles para {selectDate.toDate().toLocaleDateString()}
         </h1>
-        <p className="text-gray-400">No meetings for today.</p>
+        {isDateWithAppointments(selectDate) ? (
+          <ul>
+            {availableAppointments[selectDate.format("YYYY-MM-DD")].map(
+              (time, index) => (
+                <li key={index} className="text-gray-300">
+                  {time}
+                </li>
+              )
+            )}
+          </ul>
+        ) : (
+          <p className="text-gray-400">No hay turnos para este día.</p>
+        )}
       </div>
     </div>
   );

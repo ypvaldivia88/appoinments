@@ -16,6 +16,7 @@ export default function Calendar() {
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   const isDateWithAppointments = (date: dayjs.Dayjs) => {
     return availableAppointments[date.format("YYYY-MM-DD")];
@@ -76,7 +77,9 @@ export default function Calendar() {
                       date.toDate().toDateString()
                       ? "bg-black text-white"
                       : "",
-                    isDateWithAppointments(date) ? "bg-green-500 text-white" : "",
+                    isDateWithAppointments(date)
+                      ? "bg-green-500 text-white"
+                      : "",
                     "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
                   )}
                   onClick={() => {
@@ -99,7 +102,17 @@ export default function Calendar() {
             {availableAppointments[selectDate.format("YYYY-MM-DD")].map(
               (time, index) => (
                 <li key={index} className="text-gray-300">
-                  {time}
+                  <label>
+                    <input
+                      type="radio"
+                      name="appointment"
+                      value={time}
+                      checked={selectedTime === time}
+                      onChange={() => setSelectedTime(time)}
+                      className="mr-2"
+                    />
+                    {time}
+                  </label>
                 </li>
               )
             )}

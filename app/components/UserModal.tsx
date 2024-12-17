@@ -33,7 +33,10 @@ export default function UserModal({
       },
       body: JSON.stringify({ name, phone, password, isAdmin }),
     };
-    const response = await fetch("/api/users", options);
+    const response = await fetch(
+      "/api/users" + (user ? `/${user._id}` : ""),
+      options
+    );
     const savedUser = await response.json();
     onSave(savedUser);
   };

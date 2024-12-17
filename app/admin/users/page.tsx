@@ -118,18 +118,16 @@ export default function Users() {
             user={currentUser}
             onClose={() => setShowModal(false)}
             onSave={(savedUser) => {
-              setTimeout(() => {
-                setUsers((prevUsers) => {
-                  if (currentUser) {
-                    return prevUsers.map((user) =>
-                      user.phone === savedUser.phone ? savedUser : user
-                    );
-                  } else {
-                    return [...prevUsers, savedUser];
-                  }
-                });
-                setShowModal(false);
-              }, 0);
+              setUsers((prevUsers) => {
+                if (currentUser) {
+                  return prevUsers.map((user) =>
+                    user._id === savedUser._id ? savedUser : user
+                  );
+                } else {
+                  return [...prevUsers, savedUser];
+                }
+              });
+              setShowModal(false);
             }}
           />
         )}

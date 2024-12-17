@@ -45,9 +45,9 @@ export default function MainNavigation() {
         <Image
           src="/logo-small.png"
           alt="Logo"
-          width={10}
-          height={10}
-          className="h-10 w-10 mr-2"
+          width={40}
+          height={40}
+          className="mr-2"
         />
         <Link
           href="/"

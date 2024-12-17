@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });

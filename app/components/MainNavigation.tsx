@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
 
@@ -41,6 +42,13 @@ export default function MainNavigation() {
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md p-4">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+        <Image
+          src="/logo.jpg"
+          alt="Logo"
+          width={40}
+          height={40}
+          className="h-10 w-10 mr-2"
+        />
         <Link
           href="/"
           className="text-xl font-bold text-pink-500 dark:text-pink-300 mb-4 md:mb-0"

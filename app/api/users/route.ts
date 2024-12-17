@@ -33,35 +33,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
-  try {
-    await dbConnect();
-    const body = await request.json();
-    const url = new URL(request.url);
-    const _id = url.searchParams.get("_id");
-    const data = await User.findByIdAndUpdate(_id, body);
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    console.error("Error in PUT function:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    await dbConnect();
-    const url = new URL(request.url);
-    const _id = url.searchParams.get("_id");
-    await User.findByIdAndDelete(_id);
-    return new Response(null, { status: 204 });
-  } catch (error) {
-    console.error("Error in DELETE function:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}

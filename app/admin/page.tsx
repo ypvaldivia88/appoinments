@@ -1,91 +1,46 @@
 "use client";
-import { useState, useEffect } from "react";
-import { FaTrash } from "react-icons/fa";
 
-interface User {
-  name: string | null;
-  phone: string;
-}
+import Link from "next/link";
+import { useState, ReactNode } from "react";
 
-interface Appointment {
-  id: number;
-  date: string;
-  time: string;
-  user: User;
-}
-
-export default function Admin() {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      const response = await fetch("/api/appointments");
-      const data = await response.json();
-      setAppointments(data);
-    };
-
-    fetchAppointments();
-  }, []);
-
-  const handleDelete = async (id: number) => {
-    await fetch("/api/appointments", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    });
-    setAppointments(
-      appointments.filter((appointment) => appointment.id !== id)
-    );
-  };
+const Admin = ({ children }: { children: ReactNode }) => {
+  const [activeLink, setActiveLink] = useState("users");
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
-        Administración de Citas
-      </h1>
-      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <table className="min-w-full bg-white dark:bg-gray-800">
-          <thead>
-            <tr className="table-row">
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Nombre <br /> Teléfono
-              </th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Fecha <br /> Hora
-              </th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {appointments.map((appointment) => (
-              <tr key={appointment.id} className="table-row">
-                <td className="py-2 px-4 border-b dark:border-gray-700">
-                  {appointment.user.name}
-                  <br />
-                  {appointment.user.phone}
-                </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
-                  {appointment.date}
-                  <br />
-                  {appointment.time}
-                </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
-                  <button
-                    className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
-                    onClick={() => handleDelete(appointment.id)}
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div className="flex min-h-screen">
+      <aside className="w-64 bg-gray-800 text-white">
+        <div className="p-4">
+          <h2 className="text-2xl font-bold">Administración</h2>
+        </div>
+        <nav>
+          <ul>
+            <li
+              className={`p-4 ${activeLink === "users" ? "bg-gray-700" : ""}`}
+              onClick={() => setActiveLink("users")}
+            >
+              <Link href="/admin/users">Administración de Usuarios</Link>
+            </li>
+            <li
+              className={`p-4 ${
+                activeLink === "appointments" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveLink("appointments")}
+            >
+              <Link href="/admin/appointments">Administración de Citas</Link>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main className="flex-1 bg-gray-100">
+        <header className="bg-white shadow p-4">
+          <h1 className="text-xl font-bold text-red-950">
+            Panel de Administración
+          </h1>
+        </header>
+        <div className="p-0">{children}</div>
+      </main>
     </div>
   );
-}
+};
+
+export default Admin;

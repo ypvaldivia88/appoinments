@@ -4,14 +4,13 @@ import dbConnect from "@/app/lib/dbConnect";
 
 export async function GET(request: NextRequest) {
   dbConnect();
-  const url = new URL(request.url);
-  const userId = url.searchParams.get("userId");
+  const id = request.nextUrl.searchParams.get("id");
 
-  if (!userId) {
+  if (!id) {
     return NextResponse.json({ error: "Session not found" }, { status: 404 });
   }
 
-  const user = await User.findById(userId);
+  const user = await User.findById(id);
 
   if (!user) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });

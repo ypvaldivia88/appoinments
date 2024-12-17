@@ -26,7 +26,7 @@ const useGlobalStore = create<GlobalState>((set): GlobalState => {
         if (!userId) {
           return;
         }
-        const response = await fetch(`/api/session?userId=${userId}`, {
+        const response = await fetch(`/api/session/${userId}`, {
           method: "GET",
         });
         if (response.ok) {

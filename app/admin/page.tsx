@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, ReactNode } from "react";
 
-const Admin = ({ children }: { children: ReactNode }) => {
+export default function Admin({ children }: { children: ReactNode }) {
   const [activeLink, setActiveLink] = useState("users");
 
   return (
@@ -41,6 +41,4 @@ const Admin = ({ children }: { children: ReactNode }) => {
       </main>
     </div>
   );
-};
-
-export default Admin;
+}

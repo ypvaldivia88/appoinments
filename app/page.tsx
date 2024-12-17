@@ -1,13 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import useGlobalStore from "@/app/store/useGlobalStore";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
+  const loadSessionFromCookies = useGlobalStore(
+    (state) => state.loadSessionFromCookies
+  );
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    loadSessionFromCookies();
+  }, [loadSessionFromCookies]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">

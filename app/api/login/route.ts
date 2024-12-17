@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/app/models/User";
 import dbConnect from "@/app/lib/dbConnect";
+import Cookies from "js-cookie";
 
 export async function POST(req: NextRequest) {
   await dbConnect();
@@ -15,9 +16,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // const isMatch = password === user.password;
     const isMatch = await user.comparePassword(password);
-    console.log("isMatch", isMatch);
 
     if (!isMatch) {
       return NextResponse.json(
@@ -25,19 +24,18 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    // save session in cookies
+
     const session = { userId: user._id };
     const sessionCookie = JSON.stringify(session);
-    const response = NextResponse.json(
-      { message: "Login successful", user: user.toJSON() },
-      { status: 200 }
-    );
-    response.cookies.set("session", sessionCookie, {
+    Cookies.set("session", sessionCookie, {
       httpOnly: true,
       secure: true,
     });
 
-    return response;
+    return NextResponse.json(
+      { message: "Login successful", user: user.toJSON() },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error in POST function:", error);
     const errorMessage =

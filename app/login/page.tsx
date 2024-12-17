@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useValidation from "@/app/hooks/useValidation";
 import useGlobalStore from "@/app/store/useGlobalStore";
+import Cookies from "js-cookie";
 
 interface FormValues {
   name: string;
@@ -49,6 +50,10 @@ export default function Login({}) {
     if (response.ok) {
       const data = await response.json();
       setSession(data.user);
+      Cookies.set("session", JSON.stringify({ userId: data.user._id }), {
+        httpOnly: true,
+        secure: true,
+      });
       setTimeout(() => {
         push("/book");
       }, 1000);

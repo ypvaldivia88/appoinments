@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
+
 interface Appointment {
   date: string;
   description: string;

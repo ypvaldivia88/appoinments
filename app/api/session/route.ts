@@ -1,15 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import User from "@/app/models/User"; // Import Mongoose User model
 import dbConnect from "@/app/lib/dbConnect";
+import Cookies from "js-cookie";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   dbConnect();
-  const session = req.cookies.get("session");
+  const session = Cookies.get("session");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { userId } = JSON.parse(session.value);
+  const { userId } = JSON.parse(session);
   const user = await User.findById(userId);
 
   if (!user) {

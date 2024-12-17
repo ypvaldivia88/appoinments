@@ -26,7 +26,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loadSessionFromCookies = useGlobalStore((state) => state.loadSessionFromCookies);
+  const loadSessionFromCookies = useGlobalStore(
+    (state) => state.loadSessionFromCookies
+  );
 
   useEffect(() => {
     loadSessionFromCookies();
@@ -42,5 +44,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
 }

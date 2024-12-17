@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import MainNavigation from "./components/MainNavigation";
-import useGlobalStore from "@/app/store/useGlobalStore";
-import { useEffect } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,14 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loadSessionFromCookies = useGlobalStore(
-    (state) => state.loadSessionFromCookies
-  );
-
-  useEffect(() => {
-    loadSessionFromCookies();
-  }, [loadSessionFromCookies]);
-
   return (
     <html lang="es" suppressHydrationWarning>
       <body

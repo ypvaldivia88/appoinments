@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import User from "@/app/models/User"; // Import Mongoose User model
 import dbConnect from "@/app/lib/dbConnect";
-import Cookies from "js-cookie";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   dbConnect();
-  const session = Cookies.get("session");
+  const url = new URL(request.url);
+  const userId = url.searchParams.get("userId");
 
-  if (!session) {
+  if (!userId) {
     return NextResponse.json({ error: "Session not found" }, { status: 404 });
   }
-  const { userId } = JSON.parse(session);
+
   const user = await User.findById(userId);
 
   if (!user) {

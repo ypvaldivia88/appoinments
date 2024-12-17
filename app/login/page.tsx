@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import useValidation from "@/app/hooks/useValidation";
 import useGlobalStore from "@/app/store/useGlobalStore";
-import Cookies from "js-cookie";
 
 interface FormValues {
   name: string;
@@ -16,7 +16,6 @@ export default function Login({}) {
   const router = useRouter();
   const { push } = router;
   const { validateUser } = useValidation();
-  const setSession = useGlobalStore((state) => state.setSession);
 
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
@@ -25,6 +24,7 @@ export default function Login({}) {
   const [repeatedPassword, setRepeatedPassword] =
     useState<FormValues["password"]>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const setSession = useGlobalStore((state) => state.setSession);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,13 +51,8 @@ export default function Login({}) {
     const data = await response.json();
 
     if (response.ok) {
-      console.log(data);
-
-      setSession(data); // Store session data as an object
-      Cookies.set("session", JSON.stringify({ userId: data._id }), {
-        httpOnly: true,
-        secure: true,
-      });
+      Cookies.set("userId", data._id.toString());
+      setSession(data);
       setTimeout(() => {
         push("/book");
       }, 1000);

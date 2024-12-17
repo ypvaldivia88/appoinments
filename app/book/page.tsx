@@ -26,6 +26,7 @@ export default function Book() {
   const session = useGlobalStore((state) => state.session);
 
   const [description, setDescription] = useState("");
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   const [formValues, setFormValues] = useState<Appointment>({
     date: "",
@@ -34,10 +35,15 @@ export default function Book() {
   });
 
   useEffect(() => {
+    if (!sessionChecked) {
+      setSessionChecked(true);
+      return;
+    }
+
+    console.log(session);
+
     if (!session) {
       router.push("/login");
-    } else if (session.isAdmin) {
-      router.push("/admin");
     } else {
       setFormValues({
         ...formValues,
@@ -45,7 +51,7 @@ export default function Book() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, session]);
+  }, [router, session, sessionChecked]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

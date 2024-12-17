@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
-import Cookies from "js-cookie";
 
 export default function MainNavigation() {
   const router = useRouter();
@@ -31,7 +30,6 @@ export default function MainNavigation() {
 
     if (response.ok) {
       clearSession();
-      Cookies.remove("session");
       setIsAdmin(false);
       setIsAuthed(false);
       setTimeout(() => {

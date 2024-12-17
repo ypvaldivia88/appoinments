@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 interface GlobalState {
   session: IUser | null;
-  setSession: (session: GlobalState["session"]) => void;
+  setSession: (session: IUser) => void;
   clearSession: () => void;
   loadSessionFromCookies: () => void;
 }
@@ -12,16 +12,22 @@ interface GlobalState {
 const useGlobalStore = create<GlobalState>((set): GlobalState => {
   const initialState: GlobalState = {
     session: null,
-    setSession: (session) => set({ session }),
+    setSession: (session: IUser) => {
+      Cookies.set("userId", session._id.toString());
+      set({ session });
+    },
     clearSession: () => {
-      Cookies.remove("session");
+      Cookies.remove("userId");
       set({ session: null });
     },
     loadSessionFromCookies: async () => {
       try {
-        const response = await fetch("/api/session", {
+        const userId = Cookies.get("userId");
+        if (!userId) {
+          return;
+        }
+        const response = await fetch(`/api/session?userId=${userId}`, {
           method: "GET",
-          credentials: "include",
         });
         if (response.ok) {
           const userData: IUser = await response.json();

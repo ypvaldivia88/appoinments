@@ -10,6 +10,7 @@ export default function MainNavigation() {
   const { push } = router;
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
   const session = useGlobalStore((state) => state.session);
   const clearSession = useGlobalStore((state) => state.clearSession);
 
@@ -19,6 +20,19 @@ export default function MainNavigation() {
       setIsAuthed(true);
     }
   }, [session]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest(".admin-menu")) {
+        setIsAdminMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = async () => {
     const endpoint = "/api/logout";
@@ -37,6 +51,10 @@ export default function MainNavigation() {
         push("/login");
       }, 1000); // wait for 1 second before redirecting
     }
+  };
+
+  const handleMenuOptionClick = () => {
+    setIsAdminMenuOpen(false);
   };
 
   return (
@@ -63,20 +81,32 @@ export default function MainNavigation() {
             Reserva
           </Link>
           {isAdmin && (
-            <>
-              <Link
-                href="/admin"
+            <div className="relative admin-menu">
+              <button
+                onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
                 className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
               >
-                Admin
-              </Link>
-              <Link
-                href="/admin/users"
-                className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
-              >
-                Usuarios
-              </Link>
-            </>
+                Administrar
+              </button>
+              {isAdminMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 shadow-lg rounded-md py-2">
+                  <Link
+                    href="/admin/users"
+                    onClick={handleMenuOptionClick}
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  >
+                    Usuarios
+                  </Link>
+                  <Link
+                    href="/admin/appointments"
+                    onClick={handleMenuOptionClick}
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  >
+                    Turnos
+                  </Link>
+                </div>
+              )}
+            </div>
           )}
           {isAuthed && (
             <button

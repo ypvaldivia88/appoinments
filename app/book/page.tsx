@@ -40,8 +40,6 @@ export default function Book() {
       return;
     }
 
-    console.log(session);
-
     if (!session) {
       router.push("/login");
     } else {

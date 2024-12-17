@@ -44,6 +44,7 @@ export default function Book() {
         userId: session._id.toString(),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, session]);
 
   const handleSubmit = async (e: React.FormEvent) => {

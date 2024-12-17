@@ -8,14 +8,14 @@ export default function MainNavigation() {
   const router = useRouter();
   const { push } = router;
   const [isAdmin, setIsAdmin] = useState(false);
-  const [session, clearSession] = useGlobalStore((state) => [
-    state.session,
-    state.clearSession,
-  ]);
+  const [isAuthed, setIsAuthed] = useState(false);
+  const session = useGlobalStore((state) => state.session);
+  const clearSession = useGlobalStore((state) => state.clearSession);
 
   useEffect(() => {
     if (session) {
       setIsAdmin(session.isAdmin);
+      setIsAuthed(true);
     }
   }, [session]);
 
@@ -30,6 +30,8 @@ export default function MainNavigation() {
 
     if (response.ok) {
       clearSession();
+      setIsAdmin(false);
+      setIsAuthed(false);
       setTimeout(() => {
         push("/login");
       }, 1000); // wait for 1 second before redirecting
@@ -68,12 +70,14 @@ export default function MainNavigation() {
               </Link>
             </>
           )}
-          <button
-            onClick={handleLogout}
-            className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
-          >
-            Logout
-          </button>
+          {isAuthed && (
+            <button
+              onClick={handleLogout}
+              className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
+            >
+              Cerrar Sesión
+            </button>
+          )}
         </div>
       </div>
     </nav>

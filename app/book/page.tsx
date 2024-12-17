@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
-
 interface Appointment {
   date: string;
   description: string;
@@ -22,7 +21,7 @@ const POST = async (url: string, data: Appointment) => {
 
 export default function Book() {
   const router = useRouter();
-  const [session] = useGlobalStore((state) => [state.session]);
+  const session = useGlobalStore((state) => state.session);
 
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
@@ -39,9 +38,12 @@ export default function Book() {
     } else if (session.isAdmin) {
       router.push("/admin");
     } else {
-      setFormValues({ ...formValues, userId: session._id.toString() });
+      setFormValues({
+        ...formValues,
+        userId: session._id.toString(),
+      });
     }
-  }, [formValues, router, session]);
+  }, [router, session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -15,7 +15,7 @@ export default function Login({}) {
   const router = useRouter();
   const { push } = router;
   const { validateUser } = useValidation();
-  const [setSession] = useGlobalStore((state) => [state.setSession]);
+  const setSession = useGlobalStore((state) => state.setSession);
 
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
@@ -32,7 +32,7 @@ export default function Login({}) {
       password,
       isRegister ? repeatedPassword : undefined
     );
-    if (errors.length > 0) {
+    if (isRegister && errors.length > 0) {
       alert(errors.join("\n"));
       return;
     }
@@ -47,8 +47,8 @@ export default function Login({}) {
     });
 
     if (response.ok) {
-      const user = await response.json();
-      setSession(user);
+      const data = await response.json();
+      setSession(data.user);
       setTimeout(() => {
         push("/book");
       }, 1000);

@@ -3,7 +3,7 @@ import User from "@/app/models/User";
 import dbConnect from "@/app/lib/dbConnect";
 
 export async function POST(req: NextRequest) {
-  dbConnect();
+  await dbConnect();
   const { name, phone, password, isAdmin } = await req.json();
 
   // verify if user exists

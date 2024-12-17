@@ -26,15 +26,8 @@ export default function Home() {
       </header>
       <main className="flex flex-col items-center gap-6 md:gap-8">
         {isClient && (
-          <div className="flex justify-center items-center w-48 h-48 md:w-72 md:h-72 rounded-full overflow-hidden shadow-lg">
-            <Image
-              className="object-cover"
-              src="/main.avif"
-              alt="Manicure"
-              width={300}
-              height={300}
-              priority
-            />
+          <div className="flex justify-center items-center  p-5">
+            <Image src="/logo.png" alt="Manicure" width={150} height={150} />
           </div>
         )}
         <div className="text-center">

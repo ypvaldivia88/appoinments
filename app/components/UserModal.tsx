@@ -21,7 +21,7 @@ export default function UserModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const errors = validateUser(name, phone, password, confirmPassword);
+    const errors = validateUser(name, phone, password, !!user, confirmPassword);
     if (errors.length > 0) {
       setError(errors.join(", "));
       return;
@@ -79,7 +79,6 @@ export default function UserModal({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-              required
             />
           </div>
           <div className="mb-4">
@@ -91,7 +90,6 @@ export default function UserModal({
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
-              required
             />
           </div>
           {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}

@@ -33,6 +33,7 @@ export default function Login({}) {
       name,
       phone,
       password,
+      false,
       isRegister ? repeatedPassword : undefined
     );
     if (isRegister && errors.length > 0) {

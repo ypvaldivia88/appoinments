@@ -43,10 +43,10 @@ export default function MainNavigation() {
     <nav className="bg-white dark:bg-gray-800 shadow-md p-4">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <Image
-          src="/logo.jpg"
+          src="/logo-small.png"
           alt="Logo"
-          width={40}
-          height={40}
+          width={10}
+          height={10}
           className="h-10 w-10 mr-2"
         />
         <Link

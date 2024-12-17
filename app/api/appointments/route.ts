@@ -4,7 +4,7 @@ import dbConnect from "@/app/lib/dbConnect";
 
 export async function GET() {
   try {
-    dbConnect();
+    await dbConnect();
     const data = await Appointment.find();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
@@ -18,7 +18,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    dbConnect();
+    await dbConnect();
     const appointment = new Appointment(await req.json());
     const data = await appointment.save();
     return NextResponse.json(data, { status: 201 });
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    dbConnect();
+    await dbConnect();
     const { searchParams } = new URL(req.url);
     const _id = searchParams.get("_id");
     const data = await Appointment.findByIdAndUpdate(_id, await req.json(), {
@@ -51,7 +51,7 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    dbConnect();
+    await dbConnect();
     const { searchParams } = new URL(req.url);
     const _id = searchParams.get("_id");
     await Appointment.findByIdAndDelete(_id);

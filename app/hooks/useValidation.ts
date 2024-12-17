@@ -3,6 +3,7 @@ export default function useValidation() {
     name: string,
     phone: string,
     password: string,
+    isEditMode: boolean,
     repeatedPassword?: string
   ) => {
     const errors: string[] = [];
@@ -17,7 +18,7 @@ export default function useValidation() {
         "El número de teléfono debe tener 8 cifras y solo contener números"
       );
     }
-    if (password.length < 4) {
+    if (!isEditMode && password.length < 4) {
       errors.push("La contraseña debe tener al menos 4 caracteres");
     }
     if (name.length < 3) {

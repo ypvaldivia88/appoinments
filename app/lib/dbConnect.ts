@@ -21,6 +21,8 @@ async function dbConnect() {
   };
   cachedConnection = await mongoose.connect(MONGODB_URI, options);
 
+  console.log("Connected to database");
+  
   return cachedConnection;
 }
 

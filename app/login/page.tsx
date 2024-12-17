@@ -51,7 +51,6 @@ export default function Login({}) {
     const data = await response.json();
 
     if (response.ok) {
-      console.log(data);
       setSession(data);
       Cookies.set("session", JSON.stringify({ userId: data._id }), {
         httpOnly: true,

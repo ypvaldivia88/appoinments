@@ -32,10 +32,7 @@ export async function POST(req: NextRequest) {
       secure: true,
     });
 
-    return NextResponse.json(
-      { message: "Login successful", user: user.toJSON() },
-      { status: 200 }
-    );
+    return NextResponse.json(user, { status: 200 });
   } catch (error) {
     console.error("Error in POST function:", error);
     const errorMessage =

@@ -8,7 +8,7 @@ export async function GET() {
   const session = Cookies.get("session");
 
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Session not found" }, { status: 404 });
   }
   const { userId } = JSON.parse(session);
   const user = await User.findById(userId);

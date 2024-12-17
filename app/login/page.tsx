@@ -51,7 +51,9 @@ export default function Login({}) {
     const data = await response.json();
 
     if (response.ok) {
-      setSession(data);
+      console.log(data);
+
+      setSession(data); // Store session data as an object
       Cookies.set("session", JSON.stringify({ userId: data._id }), {
         httpOnly: true,
         secure: true,

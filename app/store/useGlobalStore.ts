@@ -9,21 +9,34 @@ interface GlobalState {
   loadSessionFromCookies: () => void;
 }
 
-const useGlobalStore = create<GlobalState>(
-  (set): GlobalState => ({
+const useGlobalStore = create<GlobalState>((set): GlobalState => {
+  const initialState: GlobalState = {
     session: null,
     setSession: (session) => set({ session }),
     clearSession: () => {
       Cookies.remove("session");
       set({ session: null });
     },
-    loadSessionFromCookies: () => {
-      const sessionCookie = Cookies.get("session");
-      if (sessionCookie) {
-        set({ session: JSON.parse(sessionCookie) });
+    loadSessionFromCookies: async () => {
+      try {
+        const response = await fetch("/api/session", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const userData: IUser = await response.json();
+          set({ session: userData });
+        }
+      } catch (error) {
+        console.error("Error loading session from API", error);
       }
     },
-  })
-);
+  };
+
+  // Attempt to load session from cookies initially
+  initialState.loadSessionFromCookies();
+
+  return initialState;
+});
 
 export default useGlobalStore;

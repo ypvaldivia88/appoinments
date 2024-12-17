@@ -39,8 +39,6 @@ export default function Book() {
     } else if (session.isAdmin) {
       router.push("/admin");
     } else {
-      console.log(session);
-
       setFormValues({
         ...formValues,
         userId: session._id.toString(),

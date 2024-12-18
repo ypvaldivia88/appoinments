@@ -68,17 +68,14 @@ export default function MainNavigation() {
             height={40}
             className="mr-2"
           />
-          <Link
-            href="/"
-            className="text-xl font-bold text-pink-500 dark:text-pink-300"
-          >
+          <Link href="/" className="text-xl font-bold text-pink-500">
             Oh&apos;Diosa Nails
           </Link>
         </div>
         <div className="flex space-x-4">
           <Link
             href="/book"
-            className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
+            className="text-lg text-gray-700 hover:text-pink-500 transition-colors"
           >
             Reserva
           </Link>
@@ -86,23 +83,23 @@ export default function MainNavigation() {
             <div className="relative admin-menu">
               <button
                 onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
-                className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
+                className="text-lg text-gray-700 hover:text-pink-500 transition-colors"
               >
                 Administrar
               </button>
               {isAdminMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 shadow-lg rounded-md py-2">
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
                   <Link
                     href="/admin/users"
                     onClick={handleMenuOptionClick}
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                   >
                     Usuarios
                   </Link>
                   <Link
                     href="/admin/appointments"
                     onClick={handleMenuOptionClick}
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                   >
                     Turnos
                   </Link>
@@ -113,7 +110,7 @@ export default function MainNavigation() {
           {isAuthed && (
             <button
               onClick={handleLogout}
-              className="text-lg text-gray-700 dark:text-gray-300 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
+              className="text-lg text-gray-700 hover:text-pink-500 transition-colors"
             >
               Cerrar Sesión
             </button>

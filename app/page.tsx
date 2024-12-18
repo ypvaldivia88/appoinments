@@ -38,7 +38,7 @@ export default function Home() {
             Experimenta los mejores servicios de manicura en la ciudad.
           </p>
           <a
-            className="bg-white dark:bg-gray-800 text-primary dark:text-secondary font-bold py-2 px-4 rounded-full shadow-lg hover:bg-primary dark:hover:bg-secondary hover:text-white dark:hover:text-gray-800 transition-colors"
+            className="bg-white text-primary font-bold py-2 px-4 rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors"
             href="/book"
           >
             Reservar Ahora

@@ -66,25 +66,25 @@ export default function Book() {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-800 p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
+        className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
       >
         <div className="mb-4">
           <Calendar />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
             Nota
           </label>
           <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
         <button
           type="submit"
-          className="bg-pink-500 dark:bg-pink-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 dark:hover:bg-pink-900 transition-colors w-full"
+          className="bg-pink-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 transition-colors w-full"
         >
           Reservar
         </button>

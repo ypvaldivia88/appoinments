@@ -45,37 +45,35 @@ export default function Appointments() {
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Administración de Citas
       </h1>
-      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <table className="min-w-full bg-white dark:bg-gray-800">
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <table className="min-w-full bg-white">
           <thead>
             <tr className="table-row">
-              <th className="py-2 px-4 border-b dark:border-gray-700">
+              <th className="py-2 px-4 border-b">
                 Nombre <br /> Teléfono
               </th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">
+              <th className="py-2 px-4 border-b">
                 Fecha <br /> Hora
               </th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Acciones
-              </th>
+              <th className="py-2 px-4 border-b">Acciones</th>
             </tr>
           </thead>
           <tbody className="text-center">
             {appointments.map((appointment) => (
               <tr key={appointment.id} className="table-row">
-                <td className="py-2 px-4 border-b dark:border-gray-700">
+                <td className="py-2 px-4 border-b">
                   {appointment.user.name}
                   <br />
                   {appointment.user.phone}
                 </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
+                <td className="py-2 px-4 border-b">
                   {appointment.date}
                   <br />
                   {appointment.time}
                 </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
+                <td className="py-2 px-4 border-b">
                   <button
-                    className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
+                    className="bg-red-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 transition-colors"
                     onClick={() => handleDelete(appointment.id)}
                   >
                     <FaTrash />

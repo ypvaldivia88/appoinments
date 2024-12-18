@@ -57,48 +57,38 @@ export default function Users() {
         Gestión de Usuarios
       </h1>
       <button
-        className="bg-green-500 dark:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 dark:hover:bg-green-900 transition-colors mb-4 flex items-center gap-2"
+        className="bg-green-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 transition-colors mb-4 flex items-center gap-2"
         onClick={handleCreate}
       >
         <FaPlus /> Crear Usuario
       </button>
-      <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
-        <table className="min-w-full bg-white dark:bg-gray-800">
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
+        <table className="min-w-full bg-white">
           <thead>
             <tr className="table-row">
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Nombre
-              </th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Teléfono
-              </th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">Admin</th>
-              <th className="py-2 px-4 border-b dark:border-gray-700">
-                Acciones
-              </th>
+              <th className="py-2 px-4 border-b">Nombre</th>
+              <th className="py-2 px-4 border-b">Teléfono</th>
+              <th className="py-2 px-4 border-b">Admin</th>
+              <th className="py-2 px-4 border-b">Acciones</th>
             </tr>
           </thead>
           <tbody className="text-center">
             {users?.map((user) => (
               <tr key={user._id.toString()} className="table-row">
-                <td className="py-2 px-4 border-b dark:border-gray-700">
-                  {user.name}
-                </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
-                  {user.phone}
-                </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
+                <td className="py-2 px-4 border-b">{user.name}</td>
+                <td className="py-2 px-4 border-b">{user.phone}</td>
+                <td className="py-2 px-4 border-b">
                   {user.isAdmin ? "Sí" : "No"}
                 </td>
-                <td className="py-2 px-4 border-b dark:border-gray-700">
+                <td className="py-2 px-4 border-b">
                   <button
-                    className="bg-blue-500 dark:bg-blue-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-900 transition-colors mr-2"
+                    className="bg-blue-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors mr-2"
                     onClick={() => handleEdit(user)}
                   >
                     <FaEdit />
                   </button>
                   <button
-                    className="bg-red-500 dark:bg-red-700 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 dark:hover:bg-red-900 transition-colors"
+                    className="bg-red-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 transition-colors"
                     onClick={() => handleDelete(user._id.toString())}
                   >
                     <FaTrash />

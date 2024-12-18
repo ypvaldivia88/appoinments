@@ -69,7 +69,7 @@ export default function Login({}) {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
+        className=" p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-150 backdrop-contrast-125"
       >
         {errorMessage && (
           <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
@@ -128,7 +128,7 @@ export default function Login({}) {
         )}
         <button
           type="submit"
-          className="bg-pink-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 transition-colors w-full"
+          className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
         >
           {isRegister ? "Registrarse" : "Iniciar Sesión"}
         </button>

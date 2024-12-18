@@ -66,7 +66,7 @@ export default function Book() {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-slate-800 p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl"
+        className="p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-150 backdrop-contrast-125"
       >
         <div className="mb-4">
           <Calendar />
@@ -84,7 +84,7 @@ export default function Book() {
         </div>
         <button
           type="submit"
-          className="bg-pink-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 transition-colors w-full"
+          className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
         >
           Reservar
         </button>

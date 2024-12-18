@@ -68,7 +68,10 @@ export default function MainNavigation() {
             height={40}
             className="mr-2"
           />
-          <Link href="/" className="text-xl font-bold text-purple-400">
+          <Link
+            href="/"
+            className="text-xl font-bold text-purple-600 hover:text-purple-400 transition-colors"
+          >
             Oh&apos;Diosa Nails
           </Link>
         </div>

@@ -20,9 +20,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           Bienvenidos a Oh&apos;Diosa Nails
         </h1>
-        <p className="text-base md:text-lg text-white">
-          Tu destino local para unas uñas hermosas
-        </p>
+        <p className="text-base md:text-lg text-white">Las uñas de una diosa</p>
       </header>
       <main className="flex flex-col items-center gap-6 md:gap-8">
         {isClient && (
@@ -38,7 +36,7 @@ export default function Home() {
             Experimenta los mejores servicios de manicura en la ciudad.
           </p>
           <a
-            className="bg-pink-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-700 transition-colors w-full"
+            className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
             href="/book"
           >
             Reservar Ahora

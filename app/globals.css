@@ -5,8 +5,8 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --primary: #b5838d; /* Subtle pink */
-  --secondary: #ffb4a2; /* Light peach */
+  --primary: #8159c6;
+  --secondary: #ffe3a2;
 }
 
 body {
@@ -23,10 +23,12 @@ a:hover {
   color: var(--secondary);
 }
 
+
+
 .bg-gradient-main {
-  background: linear-gradient(to right, #0b7078, #432393, #9333ea);
+  background: linear-gradient(to bottom left, #0f172a, #1e1a78, #0f172a);
 }
 
 .bg-gradient-ios {
-  background: linear-gradient(to right, rgba(90, 97, 208, 0.2), rgba(38, 40, 55, 0.3), rgba(88, 88, 132, 0.2));
+  background: radial-gradient(ellipse at top, #0f172a, #334155);
 }

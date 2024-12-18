@@ -14,8 +14,8 @@ export default function Users() {
   const session = useGlobalStore((state) => state.session);
 
   useEffect(() => {
-    if (session && !session.isAdmin) {
-      // router.push("/login");
+    if (!session) {
+      router.push("/login");
     }
   }, [router, session]);
 

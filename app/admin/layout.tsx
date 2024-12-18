@@ -11,9 +11,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <aside
-        className={`fixed inset-y-0 left-0 transform ${
+        className={`fixed inset-y-0 left-0 transform transition-transform duration-300 ease-in-out w-64 text-white md:relative md:translate-x-0 backdrop-filter backdrop-blur-md bg-opacity-30 backdrop-saturate-50 backdrop-contrast-75 ${
           isNavOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out w-64  text-white md:relative md:translate-x-0 backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-50 backdrop-contrast-75`}
+        }`}
       >
         <div className="p-4">
           <h2 className="text-2xl font-bold">Administración</h2>

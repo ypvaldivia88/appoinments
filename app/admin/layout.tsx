@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <aside
         className={`fixed inset-y-0 left-0 transform ${
           isNavOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out w-64 bg-gray-800 text-white md:relative md:translate-x-0`}
+        } transition-transform duration-300 ease-in-out w-64  text-white md:relative md:translate-x-0 backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-50 backdrop-contrast-75`}
       >
         <div className="p-4">
           <h2 className="text-2xl font-bold">Administración</h2>
@@ -24,7 +24,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               className={`p-4 ${activeLink === "users" ? "bg-gray-700" : ""}`}
               onClick={() => setActiveLink("users")}
             >
-              <Link href="/admin/users">Administración de Usuarios</Link>
+              <Link
+                href="/admin/users"
+                className="text-xl font-bold text-purple-600 hover:text-purple-400 transition-colors"
+              >
+                Usuarios
+              </Link>
             </li>
             <li
               className={`p-4 ${
@@ -32,7 +37,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               }`}
               onClick={() => setActiveLink("appointments")}
             >
-              <Link href="/admin/appointments">Administración de Turnos</Link>
+              <Link
+                href="/admin/appointments"
+                className="text-xl font-bold text-purple-600 hover:text-purple-400 transition-colors"
+              >
+                Turnos
+              </Link>
             </li>
           </ul>
         </nav>

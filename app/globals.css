@@ -23,12 +23,18 @@ a:hover {
   color: var(--secondary);
 }
 
-
-
 .bg-gradient-main {
-  background: linear-gradient(to bottom left, #0f172a, #1e1a78, #0f172a);
+  background-color: #1f2544;
+    background-image: radial-gradient(at 47% 57%, #1f2544 0%, transparent 60%), radial-gradient(at 6% 35%, #474f7a 0%, transparent 50%), radial-gradient(at 86% 14%, #81689d 0%, transparent 40%), radial-gradient(at 88% 39%, #ffd0ec 0%, transparent 30%);
 }
 
-.bg-gradient-ios {
+.bg-gradient-secondary {
   background: radial-gradient(ellipse at top, #0f172a, #334155);
+}
+
+.bg-card {
+  background-color: gray;
+  background-clip: padding-box;
+  backdrop-filter: blur(8px) saturate(100%) contrast(100%);
+  opacity: 50%;
 }

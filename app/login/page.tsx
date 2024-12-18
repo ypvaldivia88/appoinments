@@ -69,59 +69,59 @@ export default function Login({}) {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className=" p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-150 backdrop-contrast-125"
+        className=" p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-50 backdrop-contrast-75"
       >
         {errorMessage && (
           <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
         )}
         {isRegister && (
           <div className="mb-4">
-            <label className="block text-gray-200 text-sm font-bold mb-2">
+            <label className="block text-white text-sm font-bold mb-2">
               Nombre
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
         )}
         <div className="mb-4">
-          <label className="block text-gray-200 text-sm font-bold mb-2">
+          <label className="block text-white text-sm font-bold mb-2">
             Teléfono
           </label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-200 text-sm font-bold mb-2">
+          <label className="block text-white text-sm font-bold mb-2">
             Contraseña
           </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
         {isRegister && (
           <div className="mb-4">
-            <label className="block text-gray-200 text-sm font-bold mb-2">
+            <label className="block text-white text-sm font-bold mb-2">
               Repetir Contraseña
             </label>
             <input
               type="password"
               value={repeatedPassword}
               onChange={(e) => setRepeatedPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>

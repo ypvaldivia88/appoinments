@@ -58,7 +58,7 @@ export default function MainNavigation() {
   };
 
   return (
-    <nav className="bg-gradient-ios shadow-md p-4">
+    <nav className="bg-gradient-secondary shadow-md p-4">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center justify-center gap-2 mb-2">
           <Image

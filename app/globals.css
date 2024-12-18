@@ -3,19 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #ec4899;
-  --secondary: #d946ef;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #f472b6;
-    --secondary: #e879f9;
-  }
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: #b5838d; /* Subtle pink */
+  --secondary: #ffb4a2; /* Light peach */
 }
 
 body {
@@ -30,4 +21,12 @@ a {
 
 a:hover {
   color: var(--secondary);
+}
+
+.bg-gradient-main {
+  @apply bg-gradient-to-r from-[#0b7078] via-[#432393] to-[#9333ea];
+}
+
+.bg-gradient-ios {
+  @apply bg-gradient-to-r from-[rgba(255,255,255,0.1)] via-[rgba(255,255,255,0.15)] to-[rgba(255,255,255,0.1)];
 }

@@ -58,21 +58,23 @@ export default function MainNavigation() {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md p-4">
+    <nav className="bg-gradient-ios shadow-md p-4">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <Image
-          src="/logo-small.png"
-          alt="Logo"
-          width={40}
-          height={40}
-          className="mr-2"
-        />
-        <Link
-          href="/"
-          className="text-xl font-bold text-pink-500 dark:text-pink-300 mb-4 md:mb-0"
-        >
-          Oh&apos;Diosa Nails
-        </Link>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <Image
+            src="/logo-small.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            className="mr-2"
+          />
+          <Link
+            href="/"
+            className="text-xl font-bold text-pink-500 dark:text-pink-300"
+          >
+            Oh&apos;Diosa Nails
+          </Link>
+        </div>
         <div className="flex space-x-4">
           <Link
             href="/book"

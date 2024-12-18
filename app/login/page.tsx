@@ -63,7 +63,7 @@ export default function Login({}) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         {isRegister ? "Registrarse" : "Iniciar Sesión"}
       </h1>
@@ -135,7 +135,7 @@ export default function Login({}) {
       </form>
       <button
         onClick={() => setIsRegister(!isRegister)}
-        className="mt-4 text-pink-500 dark:text-pink-300 hover:underline"
+        className="mt-4 text-primary dark:text-secondary hover:underline"
       >
         {isRegister
           ? "¿Ya tienes una cuenta? Iniciar Sesión"

@@ -15,7 +15,7 @@ export default function Home() {
   }, [loadSessionFromCookies]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 dark:from-pink-700 dark:via-purple-700 dark:to-indigo-700 p-4 md:p-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
       <header className="text-center mb-8 md:mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           Bienvenidos a Oh&apos;Diosa Nails
@@ -38,7 +38,7 @@ export default function Home() {
             Experimenta los mejores servicios de manicura en la ciudad.
           </p>
           <a
-            className="bg-white dark:bg-gray-800 text-pink-500 dark:text-pink-300 font-bold py-2 px-4 rounded-full shadow-lg hover:bg-pink-500 dark:hover:bg-pink-300 hover:text-white dark:hover:text-gray-800 transition-colors"
+            className="bg-white dark:bg-gray-800 text-primary dark:text-secondary font-bold py-2 px-4 rounded-full shadow-lg hover:bg-primary dark:hover:bg-secondary hover:text-white dark:hover:text-gray-800 transition-colors"
             href="/book"
           >
             Reservar Ahora

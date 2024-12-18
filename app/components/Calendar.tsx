@@ -23,13 +23,13 @@ export default function Calendar() {
   };
 
   return (
-    <div className="flex gap-10 justify-center mx-auto items-center flex-col pb-10 px-16">
-      <div className="w-96 h-96">
-        <div className="flex justify-between items-center px-5">
+    <div className="flex gap-4 md:gap-10 justify-center mx-auto items-center flex-col pb-4 md:pb-10 px-4 md:px-16">
+      <div className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto">
+        <div className="flex justify-between items-center px-2 md:px-5">
           <h1 className="select-none font-semibold">
             {months[today.month()]}, {today.year()}
           </h1>
-          <div className="flex gap-10 items-center">
+          <div className="flex gap-4 md:gap-10 items-center">
             <GrFormPrevious
               className="w-5 h-5 cursor-pointer hover:scale-105 transition-all"
               onClick={() => {
@@ -56,7 +56,7 @@ export default function Calendar() {
           {days.map((day, index) => (
             <h1
               key={index}
-              className="text-sm text-center h-14 w-14 grid place-content-center text-gray-500 select-none"
+              className="text-sm text-center h-10 md:h-14 w-10 md:w-14 grid place-content-center text-gray-500 select-none"
             >
               {day}
             </h1>
@@ -67,7 +67,7 @@ export default function Calendar() {
             ({ date, currentMonth, today }, index) => (
               <div
                 key={index}
-                className="p-2 text-center h-14 grid place-content-center text-sm border-t"
+                className="p-1 md:p-2 text-center h-10 md:h-14 grid place-content-center text-sm border-t"
               >
                 <h1
                   className={cn(
@@ -80,7 +80,7 @@ export default function Calendar() {
                     isDateWithAppointments(date)
                       ? "bg-green-500 text-white"
                       : "",
-                    "h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
+                    "h-8 md:h-10 w-8 md:w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
                   )}
                   onClick={() => {
                     setSelectDate(date);
@@ -93,7 +93,7 @@ export default function Calendar() {
           )}
         </div>
       </div>
-      <div className="h-auto w-96 px-5">
+      <div className="h-auto w-full max-w-xs md:max-w-md lg:max-w-lg px-2 md:px-5">
         <h1 className="font-semibold">
           Turnos disponibles para {selectDate.toDate().toLocaleDateString()}
         </h1>

@@ -60,13 +60,13 @@ export default function Book() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-2 md:p-4 lg:p-8">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 lg:mb-8">
         Reserva tu cita
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
+        className="bg-white dark:bg-gray-800 p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
       >
         <div className="mb-4">
           <Calendar />

@@ -52,7 +52,7 @@ export default function Users() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
+    <div className="flex flex-col items-start justify-center min-h-screen bg-gradient-main p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Gestión de Usuarios
       </h1>
@@ -62,8 +62,8 @@ export default function Users() {
       >
         <FaPlus /> Crear Usuario
       </button>
-      <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
-        <table className="min-w-full bg-slate-700">
+      <div className="backdrop-filter backdrop-contrast-75 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
+        <table className="min-w-full">
           <thead>
             <tr className="table-row">
               <th className="py-2 px-4 border-b">Nombre</th>

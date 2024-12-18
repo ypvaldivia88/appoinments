@@ -43,7 +43,7 @@ export default function UserModal({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md  mx-4">
         <h2 className="text-2xl font-bold mb-4 text-gray-200">
           {user ? "Editar Usuario" : "Crear Usuario"}
         </h2>

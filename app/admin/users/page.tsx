@@ -80,7 +80,7 @@ export default function Users() {
                 <td className="py-2 px-4 border-b">
                   {user.isAdmin ? "Sí" : "No"}
                 </td>
-                <td className="py-2 px-4 border-b">
+                <td className="py-2 px-4 border-b flex">
                   <button
                     className="bg-blue-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors mr-2"
                     onClick={() => handleEdit(user)}

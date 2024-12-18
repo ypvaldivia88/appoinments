@@ -69,59 +69,59 @@ export default function Login({}) {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
+        className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md"
       >
         {errorMessage && (
           <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
         )}
         {isRegister && (
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-gray-200 text-sm font-bold mb-2">
               Nombre
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
         )}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block text-gray-200 text-sm font-bold mb-2">
             Teléfono
           </label>
           <input
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block text-gray-200 text-sm font-bold mb-2">
             Contraseña
           </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
         {isRegister && (
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-gray-200 text-sm font-bold mb-2">
               Repetir Contraseña
             </label>
             <input
               type="password"
               value={repeatedPassword}
               onChange={(e) => setRepeatedPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>

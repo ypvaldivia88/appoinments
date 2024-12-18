@@ -24,7 +24,7 @@ a:hover {
 }
 
 .bg-gradient-main {
-  background: conic-gradient(at bottom right, #1d4ed8, #1e40af, #111827);
+  background: linear-gradient(to bottom left, #0f172a, #1e1a78, #0f172a);
 }
 
 .bg-gradient-secondary {

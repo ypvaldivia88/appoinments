@@ -1,5 +1,5 @@
 // route.ts
-import User from "@/app/models/User";
+import Appointment from "@/app/models/Appointment";
 import dbConnect from "@/app/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,7 +10,7 @@ export async function GET(
   try {
     await dbConnect();
     const { id } = await params;
-    const data = await User.findById(id);
+    const data = await Appointment.findById(id);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in GET function:", error);
@@ -29,12 +29,7 @@ export async function PUT(
     await dbConnect();
     const body = await request.json();
     const { id } = await params;
-    // remove password from body if it's empty
-    if (!body.password) {
-      delete body.password;
-    }
-
-    const data = await User.findByIdAndUpdate(id, body);
+    const data = await Appointment.findByIdAndUpdate(id, body);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in PUT function:", error);
@@ -52,7 +47,7 @@ export async function DELETE(
   try {
     await dbConnect();
     const { id } = await params;
-    await User.findByIdAndDelete(id);
+    await Appointment.findByIdAndDelete(id);
     return new Response(null, { status: 204 });
   } catch (error) {
     console.error("Error in DELETE function:", error);

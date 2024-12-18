@@ -30,37 +30,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-export async function PUT(req: NextRequest) {
-  try {
-    await dbConnect();
-    const { searchParams } = new URL(req.url);
-    const _id = searchParams.get("_id");
-    const data = await Appointment.findByIdAndUpdate(_id, await req.json(), {
-      new: true,
-    });
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    console.error("Error in PUT function:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(req: NextRequest) {
-  try {
-    await dbConnect();
-    const { searchParams } = new URL(req.url);
-    const _id = searchParams.get("_id");
-    await Appointment.findByIdAndDelete(_id);
-    return NextResponse.json(null, { status: 204 });
-  } catch (error) {
-    console.error("Error in DELETE function:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}

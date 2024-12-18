@@ -62,8 +62,8 @@ export default function Users() {
       >
         <FaPlus /> Crear Usuario
       </button>
-      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
-        <table className="min-w-full bg-white">
+      <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
+        <table className="min-w-full bg-slate-700">
           <thead>
             <tr className="table-row">
               <th className="py-2 px-4 border-b">Nombre</th>

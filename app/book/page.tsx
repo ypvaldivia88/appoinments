@@ -66,13 +66,13 @@ export default function Book() {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
+        className="bg-slate-800 p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl"
       >
         <div className="mb-4">
           <Calendar />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block text-gray-200 text-sm font-bold mb-2">
             Nota
           </label>
           <input

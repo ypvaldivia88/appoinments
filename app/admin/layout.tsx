@@ -26,14 +26,14 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               }`}
               onClick={() => setActiveLink("appointments")}
             >
-              <Link href="/admin/appointments">Administración de Citas</Link>
+              <Link href="/admin/appointments">Administración de Turnos</Link>
             </li>
           </ul>
         </nav>
       </aside>
-      <main className="flex-1 bg-gray-100">
-        <header className="bg-white shadow p-4">
-          <h1 className="text-xl font-bold text-red-950">
+      <main className="flex-1 bg-gray-700">
+        <header className="bg-slate-700 shadow p-4">
+          <h1 className="text-xl font-bold text-gray-200">
             Panel de Administración
           </h1>
         </header>

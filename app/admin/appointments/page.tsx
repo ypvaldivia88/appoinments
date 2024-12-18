@@ -43,10 +43,10 @@ export default function Appointments() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
-        Administración de Citas
+        Administración de Turnos
       </h1>
-      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <table className="min-w-full bg-white">
+      <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <table className="min-w-full bg-slate-700">
           <thead>
             <tr className="table-row">
               <th className="py-2 px-4 border-b">

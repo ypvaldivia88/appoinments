@@ -24,9 +24,9 @@ a:hover {
 }
 
 .bg-gradient-main {
-  @apply bg-gradient-to-r from-[#0b7078] via-[#432393] to-[#9333ea];
+  background: linear-gradient(to right, #0b7078, #432393, #9333ea);
 }
 
 .bg-gradient-ios {
-  @apply bg-gradient-to-r from-[rgba(255,255,255,0.1)] via-[rgba(255,255,255,0.15)] to-[rgba(255,255,255,0.1)];
+  background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0.3), rgba(255,255,255,0.2));
 }

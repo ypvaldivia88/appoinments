@@ -41,7 +41,7 @@ export default function Appointments() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Administración de Turnos
       </h1>

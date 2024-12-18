@@ -26,7 +26,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             >
               <Link
                 href="/admin/users"
-                className="text-xl font-bold text-purple-600 hover:text-purple-400 transition-colors"
+                className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
               >
                 Usuarios
               </Link>
@@ -39,7 +39,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             >
               <Link
                 href="/admin/appointments"
-                className="text-xl font-bold text-purple-600 hover:text-purple-400 transition-colors"
+                className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
               >
                 Turnos
               </Link>

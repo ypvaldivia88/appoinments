@@ -52,17 +52,17 @@ export default function Users() {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center min-h-screen bg-gradient-main p-4 md:p-8">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Gestión de Usuarios
       </h1>
       <button
-        className="bg-green-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-green-700 transition-colors mb-4 flex items-center gap-2"
+        className="bg-purple-600 text-white hover:bg-purple-400 transition-colors font-bold py-2 px-4 rounded-full shadow-lg mb-4 flex items-center gap-2"
         onClick={handleCreate}
       >
         <FaPlus /> Crear Usuario
       </button>
-      <div className="backdrop-filter backdrop-contrast-75 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto">
+      <div className="p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto bg-gray-500 bg-opacity-10">
         <table className="min-w-full">
           <thead>
             <tr className="table-row">
@@ -80,15 +80,15 @@ export default function Users() {
                 <td className="py-2 px-4 border-b">
                   {user.isAdmin ? "Sí" : "No"}
                 </td>
-                <td className="py-2 px-4 border-b flex">
+                <td className="py-2 px-4 border-b flex justify-center flex-nowrap">
                   <button
-                    className="bg-blue-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors mr-2"
+                    className=" text-blue-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-blue-700 transition-colors mr-2"
                     onClick={() => handleEdit(user)}
                   >
                     <FaEdit />
                   </button>
                   <button
-                    className="bg-red-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 transition-colors"
+                    className=" text-red-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-red-700 transition-colors"
                     onClick={() => handleDelete(user._id.toString())}
                   >
                     <FaTrash />

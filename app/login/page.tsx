@@ -63,13 +63,13 @@ export default function Login({}) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         {isRegister ? "Registrarse" : "Iniciar Sesión"}
       </h1>
       <form
         onSubmit={handleSubmit}
-        className=" p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md backdrop-filter  backdrop-blur-md bg-opacity-30 backdrop-saturate-50 backdrop-contrast-75"
+        className=" p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md bg-gray-500 bg-opacity-10"
       >
         {errorMessage && (
           <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>

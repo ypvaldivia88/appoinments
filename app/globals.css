@@ -24,8 +24,7 @@ a:hover {
 }
 
 .bg-gradient-main {
-  background-color: #1f2544;
-    background-image: radial-gradient(at 47% 57%, #1f2544 0%, transparent 60%), radial-gradient(at 6% 35%, #474f7a 0%, transparent 50%), radial-gradient(at 86% 14%, #81689d 0%, transparent 40%), radial-gradient(at 88% 39%, #ffd0ec 0%, transparent 30%);
+  background: conic-gradient(at bottom right, #1d4ed8, #1e40af, #111827);
 }
 
 .bg-gradient-secondary {

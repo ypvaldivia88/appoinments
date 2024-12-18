@@ -7,19 +7,9 @@ import Calendar from "@/app/components/Calendar";
 interface Appointment {
   date: string;
   description: string;
-  userId: string;
+  userId: string | null;
+  _id?: string;
 }
-
-const POST = async (url: string, data: Appointment) => {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return await res.json();
-};
 
 export default function Book() {
   const router = useRouter();
@@ -27,11 +17,10 @@ export default function Book() {
 
   const [description, setDescription] = useState("");
   const [sessionChecked, setSessionChecked] = useState(false);
-
   const [formValues, setFormValues] = useState<Appointment>({
     date: "",
     description: "",
-    userId: "",
+    userId: null,
   });
 
   useEffect(() => {
@@ -53,10 +42,7 @@ export default function Book() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const appointment: Appointment = formValues;
-
-    await POST("/api/appointments", appointment);
+    // on submit find the selected appointment by date and time, edit the appointment to add the description and userId
   };
 
   return (

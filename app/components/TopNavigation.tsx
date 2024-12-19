@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
 
-export default function MainNavigation() {
+export default function TopNavigation() {
   const router = useRouter();
   const { push } = router;
   const [isAdmin, setIsAdmin] = useState(false);

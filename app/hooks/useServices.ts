@@ -3,7 +3,7 @@ import { IService } from "@/app/models/Service";
 
 const useServices = () => {
   const [services, setServices] = useState<IService[]>([]);
-  const [newService, setNewService] = useState<IService | null>(null);
+  const [service, setService] = useState<IService | null>(null);
 
   useEffect(() => {
     fetchServices();
@@ -26,11 +26,11 @@ const useServices = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newService),
+        body: JSON.stringify(service),
       });
       const data = await response.json();
       setServices([...services, data]);
-      setNewService(null);
+      setService(null);
     } catch (error) {
       console.error("Error creating service:", error);
     }
@@ -69,8 +69,8 @@ const useServices = () => {
 
   return {
     services,
-    newService,
-    setNewService,
+    service,
+    setService,
     createService,
     updateService,
     deleteService,

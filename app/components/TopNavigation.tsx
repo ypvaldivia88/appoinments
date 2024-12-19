@@ -93,18 +93,25 @@ export default function TopNavigation() {
               {isAdminMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-slate-800 shadow-lg rounded-md py-2">
                   <Link
-                    href="/admin/users"
-                    onClick={handleMenuOptionClick}
-                    className="block px-4 py-2 text-gray-200 hover:bg-gray-700"
-                  >
-                    Usuarios
-                  </Link>
-                  <Link
                     href="/admin/appointments"
                     onClick={handleMenuOptionClick}
                     className="block px-4 py-2 text-gray-200 hover:bg-gray-700"
                   >
                     Turnos
+                  </Link>
+                  <Link
+                    href="/admin/services"
+                    onClick={handleMenuOptionClick}
+                    className="block px-4 py-2 text-gray-200 hover:bg-gray-700"
+                  >
+                    Servicios
+                  </Link>
+                  <Link
+                    href="/admin/users"
+                    onClick={handleMenuOptionClick}
+                    className="block px-4 py-2 text-gray-200 hover:bg-gray-700"
+                  >
+                    Usuarios
                   </Link>
                 </div>
               )}

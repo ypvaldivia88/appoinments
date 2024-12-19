@@ -1,8 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import useGlobalStore from "@/app/store/useGlobalStore";
 import Calendar from "@/app/components/Calendar";
+import useSession from "@/app/hooks/useSession";
 
 interface Appointment {
   date: string;
@@ -12,35 +11,26 @@ interface Appointment {
 }
 
 export default function Book() {
-  const router = useRouter();
-  const session = useGlobalStore((state) => state.session);
+  const { session, isAdmin, sessionChecked } = useSession();
 
   const [description, setDescription] = useState("");
-  const [sessionChecked, setSessionChecked] = useState(false);
   const [formValues, setFormValues] = useState<Appointment>({
     date: "",
     description: "",
     userId: null,
   });
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (!sessionChecked) {
-      setSessionChecked(true);
-      return;
-    }
+    if (!sessionChecked) return;
 
-    if (!session) {
-      router.push("/login");
-    } else {
+    if (session) {
       setFormValues({
         ...formValues,
         userId: session._id.toString(),
       });
-      setIsAdmin(session.isAdmin);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, session, sessionChecked]);
+  }, [session, sessionChecked]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -4,9 +4,13 @@ import { IAppointment } from "@/app/models/Appointment";
 const useAppointments = () => {
   const [appointments, setAppointments] = useState<IAppointment[]>([]);
   const [appointment, setAppointment] = useState<IAppointment | null>(null);
+  const [availableAppointments, setAvailableAppointments] = useState<{
+    [key: string]: string[];
+  }>({});
 
   useEffect(() => {
     fetchAppointments();
+    processAvailableAppointments();
   }, []);
 
   const fetchAppointments = async () => {
@@ -16,6 +20,25 @@ const useAppointments = () => {
       setAppointments(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
+    }
+  };
+
+  const processAvailableAppointments = async () => {
+    try {
+      const data = appointments
+        .filter((appointment) => !appointment.userId)
+        .reduce((acc, appointment) => {
+          const date = new Date(appointment.date).toISOString().split("T")[0];
+          if (acc[date]) {
+            acc[date].push(appointment.time);
+          } else {
+            acc[date] = [appointment.time];
+          }
+          return acc;
+        }, {} as { [key: string]: string[] });
+      setAvailableAppointments(data);
+    } catch (error) {
+      console.error("Error fetching available appointments:", error);
     }
   };
 
@@ -79,6 +102,7 @@ const useAppointments = () => {
     createAppointment,
     updateAppointment,
     deleteAppointment,
+    availableAppointments,
   };
 };
 

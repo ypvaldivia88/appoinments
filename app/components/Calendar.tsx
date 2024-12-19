@@ -3,13 +3,7 @@ import React, { useState } from "react";
 import { generateDate, months } from "@/app/util/calendar";
 import cn from "@/app/util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-
-// Simulated available appointments data
-const availableAppointments: { [key: string]: string[] } = {
-  "2024-12-15": ["10:00 AM", "11:00 AM", "2:00 PM"],
-  "2024-12-20": ["9:00 AM", "1:00 PM"],
-  // ...other dates
-};
+import useAppointments from "@/app/hooks/useAppointments";
 
 export default function Calendar() {
   const days = ["D", "L", "M", "M", "J", "V", "S"];
@@ -17,6 +11,7 @@ export default function Calendar() {
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const { availableAppointments } = useAppointments();
 
   const isDateWithAppointments = (date: dayjs.Dayjs) => {
     return availableAppointments[date.format("YYYY-MM-DD")];

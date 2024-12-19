@@ -3,7 +3,7 @@ import React from "react";
 interface FormFieldProps {
   label: string;
   type: string;
-  value: string | boolean | number;
+  value: string | boolean | number | Date;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   disabled?: boolean;
@@ -44,7 +44,13 @@ export default function FormField({
           </label>
           <input
             type={type}
-            value={typeof value === "boolean" ? undefined : value}
+            value={
+              typeof value === "boolean"
+                ? undefined
+                : value instanceof Date
+                ? value.toISOString()
+                : value
+            }
             onChange={onChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required={required}

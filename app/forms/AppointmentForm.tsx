@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IAppointment } from "@/app/models/Appointment";
 import GenericForm from "@/app/components/GenericForm";
 import FormField from "@/app/components/FormField";
@@ -11,7 +11,7 @@ interface AppointmentFormProps {
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
   const { appointment, createAppointment, setAppointment, updateAppointment } =
     useAppointments();
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);
@@ -24,13 +24,9 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       onSubmit={() => (isEditing ? updateAppointment : createAppointment)}
     >
       <FormField
-        type="datetime-local"
+        type="date"
         label="Fecha"
-        value={
-          appointment?.date
-            ? new Date(appointment.date).toISOString().slice(0, 16)
-            : ""
-        }
+        value={appointment?.date || ""}
         onChange={(e) =>
           setAppointment({
             ...appointment,
@@ -39,7 +35,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
         }
       />
       <FormField
-        type="text"
+        type="time"
         label="Hora"
         value={appointment?.time || ""}
         onChange={(e) =>

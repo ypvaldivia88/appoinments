@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
 import { IUser } from "@/app/models/User";
-import UserForm from "@/app/components/UserForm";
+import UserForm from "@/app/forms/UserForm";
 import { useRouter } from "next/navigation";
 import useGlobalStore from "@/app/store/useGlobalStore";
 

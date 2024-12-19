@@ -1,0 +1,56 @@
+import React, { useEffect } from "react";
+import { IAppointment } from "@/app/models/Appointment";
+import GenericForm from "@/app/components/GenericForm";
+import FormField from "@/app/components/FormField";
+import useAppointments from "../hooks/useAppointments";
+
+interface AppointmentFormProps {
+  onClose: () => void;
+}
+
+const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
+  const { appointment, createAppointment, setAppointment, updateAppointment } =
+    useAppointments();
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  useEffect(() => {
+    setIsEditing(appointment?._id !== undefined);
+  }, [appointment]);
+
+  return (
+    <GenericForm
+      title={isEditing ? "Editar Turno" : "Crear Turno"}
+      onClose={() => onClose()}
+      onSubmit={() => (isEditing ? updateAppointment : createAppointment)}
+    >
+      <FormField
+        type="datetime-local"
+        label="Fecha"
+        value={
+          appointment?.date
+            ? new Date(appointment.date).toISOString().slice(0, 16)
+            : ""
+        }
+        onChange={(e) =>
+          setAppointment({
+            ...appointment,
+            date: e.target.value,
+          } as unknown as IAppointment)
+        }
+      />
+      <FormField
+        type="text"
+        label="Hora"
+        value={appointment?.time || ""}
+        onChange={(e) =>
+          setAppointment({
+            ...appointment,
+            time: e.target.value,
+          } as IAppointment)
+        }
+      />
+    </GenericForm>
+  );
+};
+
+export default AppointmentForm;

@@ -18,7 +18,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
 
   return (
     <GenericForm
-      title="Services"
+      title={isEditing ? "Editar Servicio" : "Crear Servicio"}
       onClose={() => onClose()}
       onSubmit={() => (isEditing ? updateService : createService)}
     >

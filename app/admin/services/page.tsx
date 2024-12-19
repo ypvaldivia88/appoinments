@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import useServices from "@/app/hooks/useServices";
-import ServiceForm from "@/app/components/ServiceForm";
+import ServiceForm from "@/app/forms/ServiceForm";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { IService } from "@/app/models/Service";
 

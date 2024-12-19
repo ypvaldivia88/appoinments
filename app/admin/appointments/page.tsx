@@ -1,80 +1,66 @@
 "use client";
-import { useState, useEffect } from "react";
-import { FaTrash } from "react-icons/fa";
+import React from "react";
+import useAppointments from "@/app/hooks/useAppointments";
+import AppointmentForm from "@/app/forms/AppointmentForm";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { IAppointment } from "@/app/models/Appointment";
 
-interface User {
-  name: string | null;
-  phone: string;
-}
+const AppointmentsPage: React.FC = () => {
+  const { appointments, setAppointment, deleteAppointment } = useAppointments();
 
-interface Appointment {
-  id: number;
-  date: string;
-  time: string;
-  user: User;
-}
+  const [showModal, setShowModal] = React.useState(false);
 
-export default function Appointments() {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const handleDelete = async (_id: string) => {
+    await deleteAppointment(_id);
+  };
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      const response = await fetch("/api/appointments");
-      const data = await response.json();
-      setAppointments(data);
-    };
+  const handleEdit = (appointment: IAppointment) => {
+    setAppointment(appointment);
+    setShowModal(true);
+  };
 
-    fetchAppointments();
-  }, []);
-
-  const handleDelete = async (id: number) => {
-    await fetch("/api/appointments", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    });
-    setAppointments(
-      appointments.filter((appointment) => appointment.id !== id)
-    );
+  const handleCreate = () => {
+    setAppointment(null);
+    setShowModal(true);
   };
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-4 md:p-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8 text-center">
-        Administración de Turnos
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
+        Gestión de Turnos
       </h1>
-      <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <table className="min-w-full bg-slate-700">
+      <button
+        className="bg-purple-600 text-white hover:bg-purple-400 transition-colors font-bold py-2 px-4 rounded-full shadow-lg mb-4 flex items-center gap-2"
+        onClick={handleCreate}
+      >
+        <FaPlus /> Crear Turno
+      </button>
+      <div className="p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto bg-gray-500 bg-opacity-10">
+        <table className="min-w-full">
           <thead>
             <tr className="table-row">
-              <th className="py-2 px-4 border-b">
-                Nombre <br /> Teléfono
-              </th>
-              <th className="py-2 px-4 border-b">
-                Fecha <br /> Hora
-              </th>
+              <th className="py-2 px-4 border-b">Fecha</th>
+              <th className="py-2 px-4 border-b">Hora</th>
               <th className="py-2 px-4 border-b">Acciones</th>
             </tr>
           </thead>
           <tbody className="text-center">
-            {appointments.map((appointment) => (
-              <tr key={appointment.id} className="table-row">
+            {appointments?.map((appointment) => (
+              <tr key={appointment._id.toString()} className="table-row">
                 <td className="py-2 px-4 border-b">
-                  {appointment.user.name}
-                  <br />
-                  {appointment.user.phone}
+                  {appointment.date.toLocaleDateString()}
                 </td>
-                <td className="py-2 px-4 border-b">
-                  {appointment.date}
-                  <br />
-                  {appointment.time}
-                </td>
-                <td className="py-2 px-4 border-b">
+                <td className="py-2 px-4 border-b">{appointment.time}</td>
+                <td className="py-2 px-4 border-b flex justify-center flex-nowrap">
                   <button
-                    className="bg-red-500 text-white font-bold py-1 px-2 rounded-full shadow-lg hover:bg-red-700 transition-colors"
-                    onClick={() => handleDelete(appointment.id)}
+                    className=" text-blue-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-blue-700 transition-colors mr-2"
+                    onClick={() => handleEdit(appointment)}
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
+                    className=" text-red-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-red-700 transition-colors"
+                    onClick={() => handleDelete(appointment._id.toString())}
                   >
                     <FaTrash />
                   </button>
@@ -84,6 +70,9 @@ export default function Appointments() {
           </tbody>
         </table>
       </div>
+      {showModal && <AppointmentForm onClose={() => setShowModal(false)} />}
     </div>
   );
-}
+};
+
+export default AppointmentsPage;

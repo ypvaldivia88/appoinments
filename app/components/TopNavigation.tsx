@@ -1,25 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import useGlobalStore from "@/app/store/useGlobalStore";
+import useSession from "@/app/hooks/useSession";
 
 export default function TopNavigation() {
-  const router = useRouter();
-  const { push } = router;
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isAuthed, setIsAuthed] = useState(false);
+  const { isAdmin, isAuthed, handleLogout } = useSession();
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
-  const session = useGlobalStore((state) => state.session);
-  const clearSession = useGlobalStore((state) => state.clearSession);
-
-  useEffect(() => {
-    if (session) {
-      setIsAdmin(session.isAdmin);
-      setIsAuthed(true);
-    }
-  }, [session]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,25 +20,6 @@ export default function TopNavigation() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const handleLogout = async () => {
-    const endpoint = "/api/logout";
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (response.ok) {
-      clearSession();
-      setIsAdmin(false);
-      setIsAuthed(false);
-      setTimeout(() => {
-        push("/login");
-      }, 1000); // wait for 1 second before redirecting
-    }
-  };
 
   const handleMenuOptionClick = () => {
     setIsAdminMenuOpen(false);

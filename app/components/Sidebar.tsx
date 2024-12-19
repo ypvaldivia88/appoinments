@@ -15,7 +15,7 @@ export default function Sidebar({
 }: SidebarProps) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 transform transition-transform duration-300 ease-in-out w-64 text-white md:relative md:translate-x-0 backdrop-filter backdrop-blur-md bg-opacity-30 backdrop-saturate-50 backdrop-contrast-75 ${
+      className={`fixed inset-y-0 left-0 transform transition-transform duration-300 ease-in-out w-64 text-white md:relative md:translate-x-0  ${
         isNavOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -24,41 +24,43 @@ export default function Sidebar({
       </div>
       <nav>
         <ul>
-          <li
-            className={`p-4 ${activeLink === "users" ? "bg-gray-700" : ""}`}
-            onClick={() => setActiveLink("users")}
+          <Link
+            href="/admin/users"
+            className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
           >
-            <Link
-              href="/admin/users"
-              className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
+            <li
+              className={`p-4 ${activeLink === "users" ? "bg-gray-700" : ""}`}
+              onClick={() => setActiveLink("users")}
             >
               Usuarios
-            </Link>
-          </li>
-          <li
-            className={`p-4 ${
-              activeLink === "appointments" ? "bg-gray-700" : ""
-            }`}
-            onClick={() => setActiveLink("appointments")}
+            </li>
+          </Link>
+          <Link
+            href="/admin/appointments"
+            className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
           >
-            <Link
-              href="/admin/appointments"
-              className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
+            <li
+              className={`p-4 ${
+                activeLink === "appointments" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveLink("appointments")}
             >
               Turnos
-            </Link>
-          </li>
-          <li
-            className={`p-4 ${activeLink === "services" ? "bg-gray-700" : ""}`}
-            onClick={() => setActiveLink("services")}
+            </li>
+          </Link>
+          <Link
+            href="/admin/services"
+            className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
           >
-            <Link
-              href="/admin/services"
-              className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
+            <li
+              className={`p-4 ${
+                activeLink === "services" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveLink("services")}
             >
               Servicios
-            </Link>
-          </li>
+            </li>
+          </Link>
         </ul>
       </nav>
     </aside>

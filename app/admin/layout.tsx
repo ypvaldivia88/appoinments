@@ -26,7 +26,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <div ref={sidebarRef}>
+      <div ref={sidebarRef} className="bg-gradient-secondary">
         <Sidebar
           isNavOpen={isNavOpen}
           activeLink={activeLink}

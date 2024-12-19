@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "@/app/components/Calendar";
 import useSession from "@/app/hooks/useSession";
+import { useRouter } from "next/navigation";
 
 interface Appointment {
   date: string;
@@ -11,6 +12,7 @@ interface Appointment {
 }
 
 export default function Book() {
+  const router = useRouter();
   const { session, isAdmin, sessionChecked } = useSession();
 
   const [description, setDescription] = useState("");
@@ -23,13 +25,14 @@ export default function Book() {
   useEffect(() => {
     if (!sessionChecked) return;
 
-    if (session) {
+    if (!session) {
+      router.push("/login");
+    } else {
       setFormValues({
         ...formValues,
         userId: session._id.toString(),
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, sessionChecked]);
 
   const handleSubmit = async (e: React.FormEvent) => {

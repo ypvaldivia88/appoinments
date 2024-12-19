@@ -17,11 +17,23 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     setIsEditing(appointment?._id !== undefined);
   }, [appointment]);
 
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (appointment) {
+      if (isEditing) {
+        await updateAppointment(appointment._id.toString(), appointment);
+      } else {
+        await createAppointment(appointment);
+      }
+    }
+    onClose();
+  };
+
   return (
     <GenericForm
       title={isEditing ? "Editar Turno" : "Crear Turno"}
       onClose={() => onClose()}
-      onSubmit={() => (isEditing ? updateAppointment : createAppointment)}
+      onSubmit={handleSubmit}
     >
       <FormField
         type="date"

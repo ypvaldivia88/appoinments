@@ -3,11 +3,24 @@
 import { ReactNode, useState, useEffect, useRef } from "react";
 import { FaBars } from "react-icons/fa";
 import Sidebar from "@/app/components/Sidebar";
+import { useRouter } from "next/navigation";
+import useSession from "@/app/hooks/useSession";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const { session, sessionChecked } = useSession();
+
   const [activeLink, setActiveLink] = useState("users");
   const [isNavOpen, setIsNavOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sessionChecked) return;
+
+    if (!session) {
+      router.push("/login");
+    }
+  }, [session, sessionChecked]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

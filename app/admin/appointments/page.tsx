@@ -20,7 +20,7 @@ const AppointmentsPage: React.FC = () => {
   };
 
   const handleCreate = () => {
-    setAppointment(null);
+    setAppointment(undefined);
     setShowModal(true);
   };
 
@@ -48,7 +48,7 @@ const AppointmentsPage: React.FC = () => {
             {appointments?.map((appointment) => (
               <tr key={appointment._id.toString()} className="table-row">
                 <td className="py-2 px-4 border-b">
-                  {appointment.date.toLocaleDateString()}
+                  {new Date(appointment.date).toLocaleDateString()}
                 </td>
                 <td className="py-2 px-4 border-b">{appointment.time}</td>
                 <td className="py-2 px-4 border-b flex justify-center flex-nowrap">

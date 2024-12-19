@@ -18,7 +18,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    await dbConnect();
+    const conn = await dbConnect();
+    console.log("Connection:", conn);
+    
     const appointment = new Appointment(await req.json());
     const data = await appointment.save();
     return NextResponse.json(data, { status: 201 });

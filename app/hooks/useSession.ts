@@ -17,10 +17,9 @@ export default function useSession() {
       return;
     }
 
-    const pathname = path.split("?")[0];
-
-    if (!session && pathname !== "/login") {
-      router.push("/login");
+    if (!session) {
+      setIsAdmin(false);
+      setIsAuthed(false);
     } else {
       setIsAdmin(session?.isAdmin || false);
       setIsAuthed(!!session);

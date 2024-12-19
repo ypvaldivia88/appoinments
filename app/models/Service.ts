@@ -15,6 +15,7 @@ const ServiceSchema: Schema = new Schema({
   duration: { type: Number, required: true },
 });
 
-const Service = mongoose.model<IService>("Service", ServiceSchema);
+const Service =
+  mongoose.models.Service || mongoose.model<IService>("Service", ServiceSchema);
 
 export default Service;

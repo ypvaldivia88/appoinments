@@ -7,7 +7,7 @@ export interface IUser extends Document {
   phone: string;
   password: string;
   isAdmin: boolean;
-  appointments: mongoose.Types.ObjectId[]; // Add appointments field
+  appointments?: mongoose.Types.ObjectId[]; // Add appointments field
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 

@@ -42,7 +42,7 @@ export default function Appointments() {
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-4 md:p-8">
-      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8 text-center">
         Administración de Turnos
       </h1>
       <div className="bg-slate-700 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl">

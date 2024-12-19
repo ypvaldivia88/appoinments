@@ -44,6 +44,19 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 Turnos
               </Link>
             </li>
+            <li
+              className={`p-4 ${
+                activeLink === "services" ? "bg-gray-700" : ""
+              }`}
+              onClick={() => setActiveLink("services")}
+            >
+              <Link
+                href="/admin/services"
+                className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
+              >
+                Servicios
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>

@@ -2,14 +2,18 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IAppointment extends Document {
   date: Date;
-  description: string;
+  time: string;
+  note: string;
   userId: mongoose.Types.ObjectId;
+  services?: mongoose.Types.ObjectId[];
 }
 
 const AppointmentSchema: Schema<IAppointment> = new Schema({
   date: { type: Date, required: true },
-  description: { type: String, required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Ensure reference to User model
+  time: { type: String, required: true },
+  note: { type: String, required: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  services: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
 });
 
 const Appointment: Model<IAppointment> =

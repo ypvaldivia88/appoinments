@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import useGlobalStore from "@/app/store/useGlobalStore";
 import Calendar from "@/app/components/Calendar";
-import useAppointmentCrud from "@/app/hooks/useAppointmentCrud";
 
 interface Appointment {
   date: string;
@@ -24,9 +23,6 @@ export default function Book() {
     userId: null,
   });
   const [isAdmin, setIsAdmin] = useState(false);
-  const { appointmentList } = useAppointmentCrud((appointment) => {
-    console.log("Appointment saved:", appointment);
-  });
 
   useEffect(() => {
     if (!sessionChecked) {

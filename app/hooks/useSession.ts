@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import useGlobalStore from "@/app/store/useGlobalStore";
 
 export default function useSession() {
   const router = useRouter();
+  const path = usePathname();
   const session = useGlobalStore((state) => state.session);
   const clearSession = useGlobalStore((state) => state.clearSession);
   const [sessionChecked, setSessionChecked] = useState(false);
@@ -16,13 +17,15 @@ export default function useSession() {
       return;
     }
 
-    if (!session) {
+    const pathname = path.split("?")[0];
+
+    if (!session && pathname !== "/login") {
       router.push("/login");
     } else {
-      setIsAdmin(session.isAdmin);
-      setIsAuthed(true);
+      setIsAdmin(session?.isAdmin || false);
+      setIsAuthed(!!session);
     }
-  }, [session, sessionChecked, router]);
+  }, [session, sessionChecked, router, path]);
 
   const handleLogout = async () => {
     const endpoint = "/api/logout";

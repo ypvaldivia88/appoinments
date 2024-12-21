@@ -4,9 +4,9 @@ export interface IAppointment extends Document {
   date: Date;
   time: string;
   note?: string;
-  _id: mongoose.Types.ObjectId;
-  userId?: mongoose.Types.ObjectId;
-  services?: mongoose.Types.ObjectId[];
+  _id: string;
+  userId?: string;
+  services?: string[];
 }
 
 const AppointmentSchema: Schema<IAppointment> = new Schema({

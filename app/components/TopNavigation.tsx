@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import useSession from "@/app/hooks/useSession";
+import useSession from "@/hooks/useSession";
 
 export default function TopNavigation() {
   const { isAdmin, isAuthed, handleLogout } = useSession();

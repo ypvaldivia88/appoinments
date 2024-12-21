@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import useGlobalStore from "@/app/store/useGlobalStore";
+import useGlobalStore from "@/store/useGlobalStore";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);

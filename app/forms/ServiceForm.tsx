@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { IService } from "@/app/models/Service";
-import GenericForm from "@/app/components/GenericForm";
-import FormField from "@/app/components/FormField";
+import { IService } from "@/models/Service";
+import GenericForm from "@/components/GenericForm";
+import FormField from "@/components/FormField";
 import useServices from "../hooks/useServices";
 
 interface ServiceFormProps {

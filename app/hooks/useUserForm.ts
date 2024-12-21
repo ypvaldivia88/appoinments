@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { IUser } from "@/app/models/User";
-import useValidation from "@/app/hooks/useValidation";
+import { IUser } from "@/models/User";
+import useValidation from "@/hooks/useValidation";
 
 export default function useUserForm(
   user: IUser | null,

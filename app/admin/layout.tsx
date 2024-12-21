@@ -2,9 +2,9 @@
 
 import { ReactNode, useState, useEffect, useRef } from "react";
 import { FaBars } from "react-icons/fa";
-import Sidebar from "@/app/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import { useRouter } from "next/navigation";
-import useSession from "@/app/hooks/useSession";
+import useSession from "@/hooks/useSession";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const router = useRouter();

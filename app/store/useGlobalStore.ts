@@ -1,10 +1,12 @@
 import { create } from "zustand";
-import { IUser } from "@/app/models/User";
+import { IUser } from "@/models/User";
 import Cookies from "js-cookie";
 
 interface GlobalState {
   session: IUser | null;
+  sessionChecked: boolean;
   setSession: (session: IUser) => void;
+  setSessionChecked: (sessionChecked: boolean) => void;
   clearSession: () => void;
   loadSessionFromCookies: () => void;
 }
@@ -19,6 +21,10 @@ const useGlobalStore = create<GlobalState>((set): GlobalState => {
     clearSession: () => {
       Cookies.remove("userId");
       set({ session: null });
+    },
+    sessionChecked: false,
+    setSessionChecked: (sessionChecked: boolean) => {
+      set({ sessionChecked });
     },
     loadSessionFromCookies: async () => {
       try {

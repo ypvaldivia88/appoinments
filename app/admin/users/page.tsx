@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-import { IUser } from "@/app/models/User";
-import UserForm from "@/app/forms/UserForm";
+import { IUser } from "@/models/User";
+import UserForm from "@/forms/UserForm";
 import { useRouter } from "next/navigation";
-import useGlobalStore from "@/app/store/useGlobalStore";
+import useGlobalStore from "@/store/useGlobalStore";
 
 export default function Users() {
   const router = useRouter();

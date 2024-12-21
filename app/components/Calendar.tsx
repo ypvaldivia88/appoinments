@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { generateDate, months } from "@/app/util/calendar";
-import cn from "@/app/util/cn";
+import { generateDate, months } from "@/util/calendar";
+import cn from "@/util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import useAppointments from "@/app/hooks/useAppointments";
+import useAppointments from "@/hooks/useAppointments";
 
 export default function Calendar() {
   const days = ["D", "L", "M", "M", "J", "V", "S"];

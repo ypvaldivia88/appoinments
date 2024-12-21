@@ -1,6 +1,6 @@
 // route.ts
-import Appointment from "@/app/models/Appointment";
-import dbConnect from "@/app/lib/dbConnect";
+import Appointment from "@/models/Appointment";
+import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

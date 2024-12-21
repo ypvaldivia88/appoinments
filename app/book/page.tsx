@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Calendar from "@/app/components/Calendar";
-import useSession from "@/app/hooks/useSession";
+import Calendar from "@/components/Calendar";
+import useSession from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
 
 interface Appointment {

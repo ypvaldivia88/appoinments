@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/Modal";
 
 interface GenericFormProps {
   title: string;

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import useValidation from "@/app/hooks/useValidation";
-import useGlobalStore from "@/app/store/useGlobalStore";
+import useValidation from "@/hooks/useValidation";
+import useGlobalStore from "@/store/useGlobalStore";
 
 interface FormValues {
   name: string;

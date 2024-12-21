@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IAppointment } from "@/app/models/Appointment";
+import { IAppointment } from "@/models/Appointment";
 
 const useAppointments = () => {
   const [appointments, setAppointments] = useState<IAppointment[]>([]);
@@ -16,6 +16,9 @@ const useAppointments = () => {
     try {
       const response = await fetch("/api/appointments");
       const data = await response.json();
+      if (!response.ok) {
+        return;
+      }
       setAppointments(data);
       processAvailableAppointments(data);
     } catch (error) {

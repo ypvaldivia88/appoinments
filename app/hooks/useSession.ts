@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import useGlobalStore from "@/app/store/useGlobalStore";
+import useGlobalStore from "@/store/useGlobalStore";
 
 export default function useSession() {
   const router = useRouter();

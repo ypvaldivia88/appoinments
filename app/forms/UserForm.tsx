@@ -1,7 +1,7 @@
-import { IUser } from "@/app/models/User";
-import useUserForm from "@/app/hooks/useUserForm";
-import GenericForm from "@/app/components/GenericForm";
-import FormField from "@/app/components/FormField";
+import { IUser } from "@/models/User";
+import useUserForm from "@/hooks/useUserForm";
+import GenericForm from "@/components/GenericForm";
+import FormField from "@/components/FormField";
 
 export default function UserForm({
   user,

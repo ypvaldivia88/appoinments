@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IService } from "@/app/models/Service";
+import { IService } from "@/models/Service";
 
 const useServices = () => {
   const [services, setServices] = useState<IService[]>([]);

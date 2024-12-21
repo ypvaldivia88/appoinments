@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import useAppointments from "@/app/hooks/useAppointments";
-import AppointmentForm from "@/app/forms/AppointmentForm";
+import useAppointments from "@/hooks/useAppointments";
+import AppointmentForm from "@/forms/AppointmentForm";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import { IAppointment } from "@/app/models/Appointment";
+import { IAppointment } from "@/models/Appointment";
 
 const AppointmentsPage: React.FC = () => {
   const { appointments, setAppointment, deleteAppointment } = useAppointments();

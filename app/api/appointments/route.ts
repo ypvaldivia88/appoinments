@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import Appointment from "@/app/models/Appointment";
-import dbConnect from "@/app/lib/dbConnect";
+import Appointment from "@/models/Appointment";
+import dbConnect from "@/lib/dbConnect";
 
 export async function GET() {
   try {

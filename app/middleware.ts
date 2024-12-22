@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import useGlobalStore from "@/store/useGlobalStore";
+import useSessionStore from "@/stores/useSessionStore";
 
 // List of routes that require authentication
 const protectedRoutes = ["/book"];
 const adminRoutes = ["/admin"];
 
 export default function auth(req: NextRequest): NextResponse {
-  const { session, sessionChecked } = useGlobalStore.getState();
+  const { session, sessionChecked } = useSessionStore.getState();
 
   if (!sessionChecked) {
     return NextResponse.next();

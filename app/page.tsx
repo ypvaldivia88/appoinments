@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import useGlobalStore from "@/store/useGlobalStore";
+import useSessionStore from "@/stores/useSessionStore";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
-  const loadSessionFromCookies = useGlobalStore(
+  const loadSessionFromCookies = useSessionStore(
     (state) => state.loadSessionFromCookies
   );
 

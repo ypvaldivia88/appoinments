@@ -4,14 +4,14 @@ import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
 import { IUser } from "@/models/User";
 import UserForm from "@/forms/UserForm";
 import { useRouter } from "next/navigation";
-import useGlobalStore from "@/store/useGlobalStore";
+import useSessionStore from "@/stores/useSessionStore";
 
 export default function Users() {
   const router = useRouter();
   const [users, setUsers] = useState<IUser[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-  const session = useGlobalStore((state) => state.session);
+  const session = useSessionStore((state) => state.session);
 
   useEffect(() => {
     if (!session) {

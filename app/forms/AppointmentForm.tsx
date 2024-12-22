@@ -10,11 +10,11 @@ interface AppointmentFormProps {
 }
 
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
-  const { appointment, createAppointment, setAppointment, updateAppointment } =
-    useAppointments();
+  const { createAppointment, updateAppointment } = useAppointments();
   const { services } = useServices();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [appointment, setAppointment] = useState<IAppointment | undefined>();
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);

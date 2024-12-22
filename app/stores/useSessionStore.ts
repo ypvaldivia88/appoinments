@@ -11,7 +11,7 @@ interface GlobalState {
   loadSessionFromCookies: () => void;
 }
 
-const useGlobalStore = create<GlobalState>((set): GlobalState => {
+const useSessionStore = create<GlobalState>((set): GlobalState => {
   const initialState: GlobalState = {
     session: null,
     setSession: (session: IUser) => {
@@ -51,4 +51,4 @@ const useGlobalStore = create<GlobalState>((set): GlobalState => {
   return initialState;
 });
 
-export default useGlobalStore;
+export default useSessionStore;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import useValidation from "@/hooks/useValidation";
-import useGlobalStore from "@/store/useGlobalStore";
+import useSessionStore from "@/stores/useSessionStore";
 
 interface FormValues {
   name: string;
@@ -24,7 +24,7 @@ export default function Login({}) {
   const [repeatedPassword, setRepeatedPassword] =
     useState<FormValues["password"]>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const setSession = useGlobalStore((state) => state.setSession);
+  const setSession = useSessionStore((state) => state.setSession);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

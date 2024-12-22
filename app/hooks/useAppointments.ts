@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { IAppointment } from "@/models/Appointment";
+import useAppointmentsStore from "@/stores/appointmentsStore";
 
 const useAppointments = () => {
-  const [appointments, setAppointments] = useState<IAppointment[]>([]);
-  const [appointment, setAppointment] = useState<IAppointment>();
-  const [availableAppointments, setAvailableAppointments] = useState<{
-    [key: string]: string[];
-  }>({});
+  const {
+    appointments,
+    appointment,
+    availableAppointments,
+    setAppointments,
+    setAppointment,
+    setAvailableAppointments,
+  } = useAppointmentsStore();
 
   useEffect(() => {
     fetchAppointments();
@@ -16,7 +20,7 @@ const useAppointments = () => {
     try {
       const response = await fetch("/api/appointments");
       const data = await response.json();
-      if (!response.ok) {
+      if (response.ok) {
         return;
       }
       setAppointments(data);

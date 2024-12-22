@@ -1,9 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useServiceStore } from "@/stores/serviceStore";
 import { IService } from "@/models/Service";
 
 const useServices = () => {
-  const [services, setServices] = useState<IService[]>([]);
-  const [service, setService] = useState<IService | null>(null);
+  const {
+    services,
+    service,
+    setServices,
+    setService,
+    addService,
+    updateService,
+    removeService,
+  } = useServiceStore();
 
   useEffect(() => {
     fetchServices();
@@ -29,14 +37,14 @@ const useServices = () => {
         body: JSON.stringify(service),
       });
       const data = await response.json();
-      setServices([...services, data]);
+      addService(data);
       setService(null);
     } catch (error) {
       console.error("Error creating service:", error);
     }
   };
 
-  const updateService = async (id: string, updatedService: IService) => {
+  const updateServiceById = async (id: string, updatedService: IService) => {
     try {
       const response = await fetch(`/api/services/${id}`, {
         method: "PUT",
@@ -46,22 +54,18 @@ const useServices = () => {
         body: JSON.stringify(updatedService),
       });
       const data = await response.json();
-      setServices(
-        services.map((service) =>
-          service._id.toString() === id ? data : service
-        )
-      );
+      updateService(id, data);
     } catch (error) {
       console.error("Error updating service:", error);
     }
   };
 
-  const deleteService = async (id: string) => {
+  const deleteServiceById = async (id: string) => {
     try {
       await fetch(`/api/services/${id}`, {
         method: "DELETE",
       });
-      setServices(services.filter((service) => service._id.toString() !== id));
+      removeService(id);
     } catch (error) {
       console.error("Error deleting service:", error);
     }
@@ -72,8 +76,8 @@ const useServices = () => {
     service,
     setService,
     createService,
-    updateService,
-    deleteService,
+    updateService: updateServiceById,
+    deleteService: deleteServiceById,
   };
 };
 

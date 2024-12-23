@@ -5,12 +5,23 @@ import cn from "@/util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import useAppointments from "@/hooks/useAppointments";
 
-export default function Calendar() {
+export default function Calendar({
+  selectedDate,
+  setSelectedDate,
+  selectedTime,
+  setSelectedTime,
+}: {
+  selectedDate?: Date;
+  setSelectedDate: (date: Date) => void;
+  selectedTime?: string;
+  setSelectedTime: (time: string) => void;
+}): React.JSX.Element {
   const days = ["D", "L", "M", "M", "J", "V", "S"];
+  selectedDate = selectedDate || new Date();
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
-  const [selectDate, setSelectDate] = useState(currentDate);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  // const [selectedDate, setSelectedDate] = useState(currentDate);
+  // const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const { availableAppointments } = useAppointments();
 
   const isDateWithAppointments = (date: dayjs.Dayjs) => {
@@ -68,8 +79,8 @@ export default function Calendar() {
                   className={cn(
                     currentMonth ? "" : "text-gray-400",
                     today ? "border-white border-2 text-white" : "",
-                    selectDate.toDate().toDateString() ===
-                      date.toDate().toDateString()
+                    dayjs(selectedDate).format("YYYY-MM-DD") ===
+                      date.format("YYYY-MM-DD")
                       ? "bg-black text-white"
                       : "",
                     isDateWithAppointments(date)
@@ -78,7 +89,7 @@ export default function Calendar() {
                     "h-8 md:h-10 w-8 md:w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
                   )}
                   onClick={() => {
-                    setSelectDate(date);
+                    setSelectedDate(date.toDate());
                   }}
                 >
                   {date.date()}
@@ -90,27 +101,28 @@ export default function Calendar() {
       </div>
       <div className="h-auto w-full max-w-xs md:max-w-md lg:max-w-lg px-2 md:px-5">
         <h1 className="font-semibold">
-          Citas disponibles para {selectDate.toDate().toLocaleDateString()}
+          Citas disponibles para{" "}
+          {dayjs(selectedDate).toDate().toLocaleDateString()}
         </h1>
-        {isDateWithAppointments(selectDate) ? (
+        {isDateWithAppointments(dayjs(selectedDate)) ? (
           <ul>
-            {availableAppointments[selectDate.format("YYYY-MM-DD")].map(
-              (time, index) => (
-                <li key={index} className="text-gray-300">
-                  <label>
-                    <input
-                      type="radio"
-                      name="appointment"
-                      value={time}
-                      checked={selectedTime === time}
-                      onChange={() => setSelectedTime(time)}
-                      className="mr-2"
-                    />
-                    {time}
-                  </label>
-                </li>
-              )
-            )}
+            {availableAppointments[
+              dayjs(selectedDate).format("YYYY-MM-DD")
+            ].map((time, index) => (
+              <li key={index} className="text-gray-300">
+                <label>
+                  <input
+                    type="radio"
+                    name="appointment"
+                    value={time}
+                    checked={selectedTime === time}
+                    onChange={() => setSelectedTime(time)}
+                    className="mr-2"
+                  />
+                  {time}
+                </label>
+              </li>
+            ))}
           </ul>
         ) : (
           <p className="text-gray-400">No hay Citas para este día.</p>

@@ -4,31 +4,22 @@ import Calendar from "@/components/Calendar";
 import useSession from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
 import FormField from "@/components/FormField";
-import useServices from "@/hooks/useServices";
-import useAppointments from "@/hooks/useAppointments";
 import ServiceSelector from "@/components/ServiceSelector";
 import { IService } from "@/models/Service";
-
-interface Appointment {
-  date: string;
-  description: string;
-  userId: string | null;
-  _id?: string;
-}
+import { IAppointment } from "@/models/Appointment";
 
 export default function Book() {
   const router = useRouter();
   const { session, sessionChecked } = useSession();
-  const { appointment, createAppointment, updateAppointment } =
-    useAppointments();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
-
   const [description, setDescription] = useState("");
-  const [formValues, setFormValues] = useState<Appointment>({
-    date: "",
-    description: "",
-    userId: null,
+  const [formValues, setFormValues] = useState<Partial<IAppointment>>({
+    _id: "",
+    date: new Date(),
+    time: "",
+    userId: undefined,
+    services: [],
   });
 
   useEffect(() => {
@@ -37,10 +28,10 @@ export default function Book() {
     if (!session) {
       router.push("/login");
     } else {
-      setFormValues({
-        ...formValues,
+      setFormValues((prev) => ({
+        ...prev,
         userId: session._id.toString(),
-      });
+      }));
     }
   }, [session, sessionChecked]);
 
@@ -57,7 +48,16 @@ export default function Book() {
         onSubmit={handleSubmit}
         className="p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl bg-gray-500 bg-opacity-10"
       >
-        <Calendar />
+        <Calendar
+          selectedDate={formValues.date}
+          setSelectedDate={(date) =>
+            setFormValues((prev) => ({ ...prev, date }))
+          }
+          selectedTime={formValues.time}
+          setSelectedTime={(time) =>
+            setFormValues((prev) => ({ ...prev, time }))
+          }
+        />
         <ServiceSelector
           selectedServices={selectedServices}
           setSelectedServices={setSelectedServices}

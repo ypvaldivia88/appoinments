@@ -18,7 +18,9 @@ const AppointmentSchema: Schema<IAppointment> = new Schema({
     ref: "User",
     required: false,
   },
-  services: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
+  services: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Service", required: false },
+  ],
 });
 
 const Appointment: Model<IAppointment> =

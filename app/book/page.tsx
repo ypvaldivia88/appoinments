@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import Calendar from "@/components/Calendar";
 import useSession from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
+import FormField from "@/components/FormField";
+import useServices from "@/hooks/useServices";
+import useAppointments from "@/hooks/useAppointments";
+import ServiceSelector from "@/components/ServiceSelector";
+import { IService } from "@/models/Service";
 
 interface Appointment {
   date: string;
@@ -13,7 +18,11 @@ interface Appointment {
 
 export default function Book() {
   const router = useRouter();
-  const { session, isAdmin, sessionChecked } = useSession();
+  const { session, sessionChecked } = useSession();
+  const { appointment, createAppointment, updateAppointment } =
+    useAppointments();
+
+  const [selectedServices, setSelectedServices] = useState<IService[]>([]);
 
   const [description, setDescription] = useState("");
   const [formValues, setFormValues] = useState<Appointment>({
@@ -42,33 +51,28 @@ export default function Book() {
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-2 md:p-4 lg:p-8">
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 lg:mb-8">
-        {isAdmin ? "Administra tus Cita" : "Reserva tu cita"}
+        Reserva tu cita
       </h1>
       <form
         onSubmit={handleSubmit}
         className="p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl bg-gray-500 bg-opacity-10"
       >
-        <div className="mb-4">
-          <Calendar />
-        </div>
-        {!isAdmin && (
-          <div className="mb-4">
-            <label className="block text-gray-200 text-sm font-bold mb-2">
-              Nota
-            </label>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-        )}
+        <Calendar />
+        <ServiceSelector
+          selectedServices={selectedServices}
+          setSelectedServices={setSelectedServices}
+        />
+        <FormField
+          type="text"
+          label="Nota"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
         <button
           type="submit"
           className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
         >
-          {isAdmin ? "Actualizar" : "Reservar"}
+          Reservar
         </button>
       </form>
     </div>

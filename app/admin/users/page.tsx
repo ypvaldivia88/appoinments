@@ -10,7 +10,6 @@ export default function Users() {
   const router = useRouter();
   const [users, setUsers] = useState<IUser[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const session = useSessionStore((state) => state.session);
 
   useEffect(() => {
@@ -41,13 +40,11 @@ export default function Users() {
     );
   };
 
-  const handleEdit = (user: IUser) => {
-    setCurrentUser(user);
+  const handleEdit = () => {
     setShowModal(true);
   };
 
   const handleCreate = () => {
-    setCurrentUser(null);
     setShowModal(true);
   };
 
@@ -83,7 +80,7 @@ export default function Users() {
                 <td className="py-2 px-4 border-b flex justify-center flex-nowrap">
                   <button
                     className=" text-blue-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-blue-700 transition-colors mr-2"
-                    onClick={() => handleEdit(user)}
+                    onClick={() => handleEdit()}
                   >
                     <FaEdit />
                   </button>
@@ -99,24 +96,7 @@ export default function Users() {
           </tbody>
         </table>
       </div>
-      {showModal && (
-        <UserForm
-          user={currentUser}
-          onClose={() => setShowModal(false)}
-          onSave={(savedUser) => {
-            setUsers((prevUsers) => {
-              if (currentUser) {
-                return prevUsers.map((user) =>
-                  user._id === savedUser._id ? savedUser : user
-                );
-              } else {
-                return [...prevUsers, savedUser];
-              }
-            });
-            setShowModal(false);
-          }}
-        />
-      )}
+      {showModal && <UserForm onClose={() => setShowModal(false)} />}
     </div>
   );
 }

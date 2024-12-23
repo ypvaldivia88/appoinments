@@ -1,72 +1,68 @@
+import React, { useEffect } from "react";
 import { IUser } from "@/models/User";
-import useUserForm from "@/hooks/useUserForm";
 import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
+import useUsers from "@/hooks/useUsers";
 
-export default function UserForm({
-  user,
-  onClose,
-  onSave,
-}: {
-  user: IUser | null;
+interface UserFormProps {
   onClose: () => void;
-  onSave: (user: IUser) => void;
-}) {
-  const {
-    name,
-    setName,
-    phone,
-    setPhone,
-    password,
-    setPassword,
-    confirmPassword,
-    setConfirmPassword,
-    isAdmin,
-    setIsAdmin,
-    error,
-    handleSubmit,
-  } = useUserForm(user, onSave);
+}
+
+const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
+  const { user, createUser, setUser, updateUser } = useUsers();
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  useEffect(() => {
+    setIsEditing(user?._id !== undefined);
+  }, [user]);
 
   return (
     <GenericForm
-      title={user ? "Editar Usuario" : "Crear Usuario"}
-      onSubmit={handleSubmit}
-      onClose={onClose}
+      title={isEditing ? "Editar Servicio" : "Crear Servicio"}
+      onClose={() => onClose()}
+      onSubmit={() => (isEditing ? updateUser : createUser)}
     >
       <FormField
-        label="Nombre"
         type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
+        label="Name"
+        value={user?.name || ""}
+        onChange={(e) => setUser({ ...user, name: e.target.value } as IUser)}
       />
       <FormField
-        label="Teléfono"
-        type="tel"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        required
-        disabled={!!user}
+        type="text"
+        label="Email"
+        value={user?.phone || ""}
+        onChange={(e) =>
+          setUser({
+            ...user,
+            email: e.target.value,
+          } as unknown as IUser)
+        }
       />
       <FormField
-        label="Contraseña"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        type="text"
+        label="Password"
+        value={user?.password || ""}
+        onChange={(e) =>
+          setUser({
+            ...user,
+            password: e.target.value,
+          } as IUser)
+        }
       />
       <FormField
-        label="Repetir Contraseña"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
-      <FormField
-        label="Es Admin"
         type="checkbox"
-        value={isAdmin}
-        onChange={(e) => setIsAdmin(e.target.checked)}
+        label="Administrador"
+        value={user?.isAdmin || false}
+        onChange={(e) =>
+          setUser({
+            ...user,
+            isAdmin: e.target.value,
+          } as unknown as IUser)
+        }
       />
     </GenericForm>
   );
-}
+};
+
+export default UserForm;

@@ -5,7 +5,7 @@ import dbConnect from "@/lib/dbConnect";
 export async function GET() {
   try {
     await dbConnect();
-    const data = await Appointment.find().populate("services");
+    const data = await Appointment.find();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in GET function:", error);

@@ -20,7 +20,8 @@ const useAppointments = () => {
     try {
       const response = await fetch("/api/appointments");
       const data = await response.json();
-      if (response.ok) {
+      if (!response.ok) {
+        console.error("Error fetching appointments:", data);
         return;
       }
       setAppointments(data);
@@ -32,6 +33,9 @@ const useAppointments = () => {
 
   const processAvailableAppointments = async (data: IAppointment[]) => {
     try {
+      if (!data.length) {
+        return;
+      }
       const availableAppointments = data
         .filter((app) => !app.userId)
         .reduce((acc, appointment) => {

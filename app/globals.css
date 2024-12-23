@@ -37,3 +37,10 @@ a:hover {
   backdrop-filter: blur(8px) saturate(100%) contrast(100%);
   opacity: 50%;
 }
+.font-dancing-script {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-lora {
+  font-family: 'Lora', serif;
+}

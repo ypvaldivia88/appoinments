@@ -48,7 +48,7 @@ export default function Sidebar({
               }`}
               onClick={() => setActiveLink("appointments")}
             >
-              Turnos
+              Citas
             </li>
           </Link>
           <Link

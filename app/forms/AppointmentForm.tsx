@@ -46,7 +46,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
 
   return (
     <GenericForm
-      title={isEditing ? "Editar Turno" : "Crear Turno"}
+      title={isEditing ? "Editar Cita" : "Crear Cita"}
       onClose={() => onClose()}
       onSubmit={handleSubmit}
     >

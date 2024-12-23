@@ -90,7 +90,7 @@ export default function Calendar() {
       </div>
       <div className="h-auto w-full max-w-xs md:max-w-md lg:max-w-lg px-2 md:px-5">
         <h1 className="font-semibold">
-          Turnos disponibles para {selectDate.toDate().toLocaleDateString()}
+          Citas disponibles para {selectDate.toDate().toLocaleDateString()}
         </h1>
         {isDateWithAppointments(selectDate) ? (
           <ul>
@@ -113,7 +113,7 @@ export default function Calendar() {
             )}
           </ul>
         ) : (
-          <p className="text-gray-400">No hay turnos para este día.</p>
+          <p className="text-gray-400">No hay Citas para este día.</p>
         )}
       </div>
     </div>

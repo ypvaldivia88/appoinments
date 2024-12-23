@@ -42,7 +42,7 @@ export default function Book() {
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-2 md:p-4 lg:p-8">
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 lg:mb-8">
-        {isAdmin ? "Administra tus Citas" : "Reserva tu cita"}
+        {isAdmin ? "Administra tus Cita" : "Reserva tu cita"}
       </h1>
       <form
         onSubmit={handleSubmit}

@@ -30,7 +30,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TopNavigation />
-        {children}
+        <div
+          className="relative flex flex-col items-center justify-center min-h-screen  p-4 md:p-8 text-gray-300"
+          style={{
+            backgroundImage: "url(/main.avif)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-main opacity-75"></div>
+          <div className="relative z-1">{children}</div>
+        </div>
       </body>
     </html>
   );

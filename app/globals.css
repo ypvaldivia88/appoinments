@@ -32,7 +32,7 @@ a:hover {
 }
 
 .bg-card {
-  background-color: gray;
+  background-color: rgba(35, 34, 34, 0.129);
   background-clip: padding-box;
   backdrop-filter: blur(8px) saturate(100%) contrast(100%);
   opacity: 50%;

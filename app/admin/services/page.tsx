@@ -25,7 +25,7 @@ const ServicesPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-main p-4 md:p-8">
+    <div className="flex flex-col items-center justify-start min-h-screen p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Gestión de Servicios
       </h1>
@@ -35,7 +35,7 @@ const ServicesPage: React.FC = () => {
       >
         <FaPlus /> Crear Servicio
       </button>
-      <div className="p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl overflow-x-auto bg-gray-500 bg-opacity-10">
+      <div className="p-6 md:p-8 rounded-lg shadow-lg w-full max-w-80 md:max-w-screen-2xl overflow-x-auto bg-gradient-secondary">
         <table className="min-w-full">
           <thead>
             <tr className="table-row">
@@ -53,19 +53,21 @@ const ServicesPage: React.FC = () => {
                 <td className="py-2 px-4 border-b">{service.description}</td>
                 <td className="py-2 px-4 border-b">{service.price}</td>
                 <td className="py-2 px-4 border-b">{service.duration}</td>
-                <td className="py-2 px-4 border-b flex justify-center flex-nowrap">
-                  <button
-                    className=" text-blue-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-blue-700 transition-colors mr-2"
-                    onClick={() => handleEdit(service)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className=" text-red-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-red-700 transition-colors"
-                    onClick={() => handleDelete(service._id.toString())}
-                  >
-                    <FaTrash />
-                  </button>
+                <td className="py-2 px-4 border-b">
+                  <div className="flex justify-center flex-nowrap gap-4 items-center">
+                    <button
+                      className=" text-blue-500 font-bold rounded-full shadow-lg hover:text-blue-700 transition-colors"
+                      onClick={() => handleEdit(service)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className=" text-red-500 font-bold rounded-full shadow-lg hover:text-red-700 transition-colors"
+                      onClick={() => handleDelete(service._id.toString())}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

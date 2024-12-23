@@ -29,7 +29,7 @@ export default function Calendar({
   };
 
   return (
-    <div className="flex gap-4 md:gap-10 justify-center mx-auto items-center flex-col pb-4 md:pb-10 px-4 md:px-16">
+    <div className="flex gap-4 justify-center items-center flex-col border-2 border-gray-300 rounded-lg p-4">
       <div className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto">
         <div className="flex justify-between items-center px-2 md:px-5">
           <h1 className="select-none font-semibold">
@@ -99,7 +99,7 @@ export default function Calendar({
           )}
         </div>
       </div>
-      <div className="h-auto w-full max-w-xs md:max-w-md lg:max-w-lg px-2 md:px-5">
+      <div className="h-auto w-full">
         <h1 className="font-semibold">
           Citas disponibles para{" "}
           {dayjs(selectedDate).toDate().toLocaleDateString()}

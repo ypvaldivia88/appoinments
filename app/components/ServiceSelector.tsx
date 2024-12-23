@@ -21,14 +21,15 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
   };
 
   return (
-    <div className="p-4 bg-white rounded shadow-md">
+    <div className="flex flex-col items-start gap-2 mb-2">
+      <h1>Servicios</h1>
       {services.map((service) => (
         <div key={service._id.toString()} className="flex items-center mb-2">
           <input
             type="checkbox"
             checked={selectedServices.includes(service)}
             onChange={() => handleSelectService(service)}
-            className="mr-2"
+            className="mr-2 bg-white rounded shadow-md"
           />
           <label className="text-gray-700">{service.name}</label>
         </div>

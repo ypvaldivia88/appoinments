@@ -15,7 +15,7 @@ export default function Home() {
   }, [loadSessionFromCookies]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-main p-4 md:p-8">
+    <>
       <header className="text-center mb-8 md:mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           Bienvenidos a Oh&apos;Diosa Nails
@@ -46,6 +46,6 @@ export default function Home() {
       <footer className="mt-8 md:mt-12 text-center text-white">
         <p>&copy; 2024 Oh&rsquo;Diosa Nails. Todos los derechos reservados.</p>
       </footer>
-    </div>
+    </>
   );
 }

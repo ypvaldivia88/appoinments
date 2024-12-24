@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IAppointment extends Document {
+  _id: string | undefined;
   date: Date;
   time: string;
   note?: string;
-  _id: string;
   userId?: string;
   services?: string[];
 }

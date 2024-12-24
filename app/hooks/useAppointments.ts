@@ -86,12 +86,16 @@ const useAppointments = () => {
       const data = await response.json();
       setAppointments(
         appointments.map((appointment) =>
-          appointment._id.toString() === id ? data : appointment
+          appointment._id && appointment._id.toString() === id
+            ? data
+            : appointment
         )
       );
       processAvailableAppointments(
         appointments.map((appointment) =>
-          appointment._id.toString() === id ? data : appointment
+          appointment._id && appointment._id.toString() === id
+            ? data
+            : appointment
         )
       );
     } catch (error) {
@@ -105,10 +109,14 @@ const useAppointments = () => {
         method: "DELETE",
       });
       setAppointments(
-        appointments.filter((appointment) => appointment._id.toString() !== id)
+        appointments.filter(
+          (appointment) => appointment._id && appointment._id.toString() !== id
+        )
       );
       processAvailableAppointments(
-        appointments.filter((appointment) => appointment._id.toString() !== id)
+        appointments.filter(
+          (appointment) => appointment._id && appointment._id.toString() !== id
+        )
       );
     } catch (error) {
       console.error("Error deleting appointment:", error);

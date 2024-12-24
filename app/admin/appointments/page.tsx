@@ -46,7 +46,7 @@ const AppointmentsPage: React.FC = () => {
           </thead>
           <tbody className="text-center">
             {appointments?.map((appointment) => (
-              <tr key={appointment._id.toString()} className="table-row">
+              <tr key={appointment._id?.toString() || ""} className="table-row">
                 <td className="py-2 px-4 border-b">
                   {new Date(appointment.date).toLocaleDateString()}
                 </td>
@@ -60,7 +60,10 @@ const AppointmentsPage: React.FC = () => {
                   </button>
                   <button
                     className=" text-red-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-red-700 transition-colors"
-                    onClick={() => handleDelete(appointment._id.toString())}
+                    onClick={() =>
+                      appointment._id &&
+                      handleDelete(appointment._id.toString())
+                    }
                   >
                     <FaTrash />
                   </button>

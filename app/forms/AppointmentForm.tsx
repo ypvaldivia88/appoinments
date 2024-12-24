@@ -35,7 +35,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     e.preventDefault();
     if (appointment) {
       appointment.services = selectedServices;
-      if (isEditing) {
+      if (isEditing && appointment._id) {
         await updateAppointment(appointment._id.toString(), appointment);
       } else {
         await createAppointment(appointment);

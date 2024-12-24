@@ -7,19 +7,20 @@ import FormField from "@/components/FormField";
 import ServiceSelector from "@/components/ServiceSelector";
 import { IService } from "@/models/Service";
 import { IAppointment } from "@/models/Appointment";
+import useAppointments from "@/hooks/useAppointments";
 
 export default function Book() {
   const router = useRouter();
   const { session, sessionChecked } = useSession();
+  const { createAppointment } = useAppointments();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
-  const [description, setDescription] = useState("");
   const [formValues, setFormValues] = useState<Partial<IAppointment>>({
-    _id: "",
-    date: new Date(),
-    time: "",
+    _id: undefined,
     userId: undefined,
+    date: new Date(),
     services: [],
+    note: "",
   });
 
   useEffect(() => {
@@ -37,6 +38,11 @@ export default function Book() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await createAppointment({
+      ...formValues,
+      services: selectedServices.map((s) => s._id.toString()),
+      userId: session?._id.toString(),
+    } as IAppointment);
   };
 
   return (
@@ -65,8 +71,10 @@ export default function Book() {
         <FormField
           type="text"
           label="Nota"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={formValues.note || ""}
+          onChange={(e) =>
+            setFormValues((prev) => ({ ...prev, note: e.target.value }))
+          }
         />
         <button
           type="submit"

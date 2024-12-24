@@ -1,4 +1,4 @@
-// route.ts
+// Original source file: app/api/appointments/[id]/route.ts
 import Appointment from "@/models/Appointment";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";

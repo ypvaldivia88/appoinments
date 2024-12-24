@@ -123,6 +123,22 @@ const useAppointments = () => {
     }
   };
 
+  const fetchUserActiveAppointment = async (userId: string) => {
+    try {
+      const response = await fetch(`/api/appointments/${userId}/active`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Error fetching active appointments:", data);
+        return;
+      }
+      setAppointments(data);
+    } catch (error) {
+      console.error("Error fetching active appointments:", error);
+    }
+  };
+
   return {
     appointments,
     appointment,
@@ -131,6 +147,7 @@ const useAppointments = () => {
     updateAppointment,
     deleteAppointment,
     availableAppointments,
+    fetchUserActiveAppointment,
   };
 };
 

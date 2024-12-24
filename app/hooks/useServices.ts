@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useServiceStore } from "@/stores/serviceStore";
-import { IService } from "@/models/Service";
+import { useServiceStore } from "@/stores/useServiceStore";
 
 const useServices = () => {
   const {
@@ -39,22 +38,26 @@ const useServices = () => {
       const data = await response.json();
       addService(data);
       setService(null);
+      await fetchServices();
     } catch (error) {
       console.error("Error creating service:", error);
     }
   };
 
-  const updateServiceById = async (id: string, updatedService: IService) => {
+  const updateServiceById = async () => {
     try {
+      if (!service?._id) return;
+      const id = service._id.toString();
       const response = await fetch(`/api/services/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedService),
+        body: JSON.stringify(service),
       });
       const data = await response.json();
       updateService(id, data);
+      await fetchServices();
     } catch (error) {
       console.error("Error updating service:", error);
     }
@@ -66,6 +69,7 @@ const useServices = () => {
         method: "DELETE",
       });
       removeService(id);
+      await fetchServices();
     } catch (error) {
       console.error("Error deleting service:", error);
     }

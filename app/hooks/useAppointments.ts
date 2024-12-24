@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { IAppointment } from "@/models/Appointment";
-import useAppointmentsStore from "@/stores/appointmentsStore";
+import useAppointmentsStore from "@/stores/useAppointmentsStore";
 
 const useAppointments = () => {
   const {

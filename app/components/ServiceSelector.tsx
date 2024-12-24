@@ -23,23 +23,25 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
   return (
     <div className="flex flex-col items-start gap-2 mb-2">
       <h1>Servicios</h1>
-      {services.map((service) => (
-        <div
-          key={service._id.toString()}
-          className="flex items-center mb-2 bg-gray-100 rounded shadow-md p-2"
-        >
-          <input
-            id={service._id.toString()}
-            type="checkbox"
-            checked={selectedServices.includes(service)}
-            onChange={() => handleSelectService(service)}
-            className="mr-2"
-          />
-          <label htmlFor={service._id.toString()} className="text-gray-700">
-            {service.name}
-          </label>
-        </div>
-      ))}
+      <div className="flex gap-4">
+        {services.map((service) => (
+          <div
+            key={service._id.toString()}
+            className="flex items-center mb-2 bg-gray-100 rounded shadow-md p-2"
+          >
+            <input
+              id={service._id.toString()}
+              type="checkbox"
+              checked={selectedServices.includes(service)}
+              onChange={() => handleSelectService(service)}
+              className="mr-2"
+            />
+            <label htmlFor={service._id.toString()} className="text-gray-700">
+              {service.name}
+            </label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

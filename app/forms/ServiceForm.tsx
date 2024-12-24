@@ -16,11 +16,21 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
     setIsEditing(service?._id !== undefined);
   }, [service]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing) {
+      await updateService();
+    } else {
+      await createService();
+    }
+    onClose();
+  };
+
   return (
     <GenericForm
       title={isEditing ? "Editar Servicio" : "Crear Servicio"}
-      onClose={() => onClose()}
-      onSubmit={() => (isEditing ? updateService : createService)}
+      onClose={onClose}
+      onSubmit={handleSubmit}
     >
       <FormField
         type="text"

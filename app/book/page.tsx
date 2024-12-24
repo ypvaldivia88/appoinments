@@ -8,11 +8,13 @@ import ServiceSelector from "@/components/ServiceSelector";
 import { IService } from "@/models/Service";
 import { IAppointment } from "@/models/Appointment";
 import useAppointments from "@/hooks/useAppointments";
+import useValidation from "@/hooks/useValidation";
 
 export default function Book() {
   const router = useRouter();
   const { session, sessionChecked } = useSession();
   const { createAppointment } = useAppointments();
+  const { validateAppointment } = useValidation();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
   const [formValues, setFormValues] = useState<Partial<IAppointment>>({
@@ -38,11 +40,17 @@ export default function Book() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createAppointment({
+    const payload: IAppointment = {
       ...formValues,
       services: selectedServices.map((s) => s._id.toString()),
       userId: session?._id.toString(),
-    } as IAppointment);
+    } as IAppointment;
+    const errors = validateAppointment(payload);
+    if (errors.length) {
+      alert(errors.join("\n"));
+    } else {
+      await createAppointment(payload);
+    }
   };
 
   return (

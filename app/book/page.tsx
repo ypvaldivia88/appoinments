@@ -84,10 +84,16 @@ export default function Book() {
         </div>
       </div>
       <button
-        className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full mt-4"
+        className="font-bold py-2 px-4 rounded-full shadow-lg bg-red-600 text-white hover:bg-orange-400 transition-colors w-full mt-4"
         onClick={() => {
           if (userActiveAppointment?._id) {
-            deleteAppointment(userActiveAppointment._id.toString());
+            if (
+              confirm(
+                "Cuidado! Esta acción no se puede revertir. ¿Estás segur@ de que deseas cancelar esta cita?"
+              )
+            ) {
+              deleteAppointment(userActiveAppointment._id.toString());
+            }
           }
         }}
       >

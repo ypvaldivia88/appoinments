@@ -4,9 +4,11 @@ import useAppointments from "@/hooks/useAppointments";
 import AppointmentForm from "@/forms/AppointmentForm";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { IAppointment } from "@/models/Appointment";
+import useAppointmentsStore from "@/stores/useAppointmentsStore";
 
 const AppointmentsPage: React.FC = () => {
-  const { appointments, setAppointment, deleteAppointment } = useAppointments();
+  const { deleteAppointment } = useAppointments();
+  const { appointments, setAppointment } = useAppointmentsStore();
 
   const [showModal, setShowModal] = React.useState(false);
 

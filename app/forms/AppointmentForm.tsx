@@ -4,17 +4,19 @@ import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
 import useServices from "@/hooks/useServices";
+import useAppointmentsStore from "@/stores/useAppointmentsStore";
 
 interface AppointmentFormProps {
   onClose: () => void;
 }
 
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
+  const { appointment, setAppointment } = useAppointmentsStore();
   const { createAppointment, updateAppointment } = useAppointments();
   const { services } = useServices();
+
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [appointment, setAppointment] = useState<IAppointment | undefined>();
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);

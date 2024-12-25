@@ -1,20 +1,23 @@
 import { useEffect } from "react";
 import { IAppointment } from "@/models/Appointment";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
+import useSession from "@/hooks/useSession";
+import { useServiceStore } from "@/stores/useServiceStore";
 
 const useAppointments = () => {
   const {
     appointments,
-    appointment,
-    availableAppointments,
     setAppointments,
     setAppointment,
     setAvailableAppointments,
+    setUserActiveAppointment,
   } = useAppointmentsStore();
+  const { services } = useServiceStore();
+  const { session } = useSession();
 
   useEffect(() => {
     fetchAppointments();
-  }, []);
+  }, [session]);
 
   const fetchAppointments = async () => {
     try {
@@ -26,6 +29,7 @@ const useAppointments = () => {
       }
       setAppointments(data);
       processAvailableAppointments(data);
+      fetchUserActiveAppointment(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
@@ -51,6 +55,28 @@ const useAppointments = () => {
     } catch (error) {
       console.error("Error fetching available appointments:", error);
     }
+  };
+
+  const fetchUserActiveAppointment = async (data: IAppointment[]) => {
+    console.log("fetchUserActiveAppointment", data);
+
+    if (!session || !data.length) {
+      return;
+    }
+
+    const userAppointment = data.find(
+      (app) => app.userId === session._id.toString()
+    );
+
+    if (userAppointment) {
+      userAppointment.services = services
+        .filter((service) =>
+          userAppointment.services?.includes(service._id.toString())
+        )
+        .map((service) => service.name);
+      setUserActiveAppointment(userAppointment);
+    }
+    return userAppointment;
   };
 
   const createAppointment = async (newAppointment: IAppointment) => {
@@ -118,36 +144,20 @@ const useAppointments = () => {
           (appointment) => appointment._id && appointment._id.toString() !== id
         )
       );
+      fetchUserActiveAppointment(
+        appointments.filter(
+          (appointment) => appointment._id && appointment._id.toString() !== id
+        )
+      );
     } catch (error) {
       console.error("Error deleting appointment:", error);
     }
   };
 
-  const fetchUserActiveAppointment = async (userId: string) => {
-    try {
-      const response = await fetch(`/api/appointments/${userId}/active`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        console.error("Error fetching active appointments:", data);
-        return;
-      }
-      setAppointments(data);
-    } catch (error) {
-      console.error("Error fetching active appointments:", error);
-    }
-  };
-
   return {
-    appointments,
-    appointment,
-    setAppointment,
     createAppointment,
     updateAppointment,
     deleteAppointment,
-    availableAppointments,
-    fetchUserActiveAppointment,
   };
 };
 

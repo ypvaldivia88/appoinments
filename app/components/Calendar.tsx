@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { generateDate, months } from "@/util/calendar";
 import cn from "@/util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import useAppointments from "@/hooks/useAppointments";
+import useAppointmentsStore from "@/stores/useAppointmentsStore";
 
 export default function Calendar({
   selectedDate,
@@ -22,7 +22,7 @@ export default function Calendar({
   const [today, setToday] = useState(currentDate);
   // const [selectedDate, setSelectedDate] = useState(currentDate);
   // const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const { availableAppointments } = useAppointments();
+  const { availableAppointments } = useAppointmentsStore();
 
   const isDateWithAppointments = (date: dayjs.Dayjs) => {
     return availableAppointments[date.format("YYYY-MM-DD")];

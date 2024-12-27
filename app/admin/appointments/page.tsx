@@ -6,13 +6,30 @@ import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { IAppointment } from "@/models/Appointment";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import AppointmentBulkForm from "@/forms/AppointmentBulkForm";
+import Calendar from "@/components/Calendar";
 
 const AppointmentsPage: React.FC = () => {
   const { deleteAppointment } = useAppointments();
-  const { appointments, setAppointment } = useAppointmentsStore();
+  const { appointment, appointments, setAppointment } = useAppointmentsStore();
 
   const [showModal, setShowModal] = React.useState(false);
   const [showBulkModal, setShowBulkModal] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
+    undefined
+  );
+
+  const handleSelectedTime = (time: string) => {
+    setSelectedTime(time);
+    const appointment = appointments.find(
+      (app) => selectedDate && app.date === new Date(selectedDate)
+    );
+    if (appointment) {
+      setAppointment(appointment);
+    }
+  };
+  const [selectedTime, setSelectedTime] = React.useState<string | undefined>(
+    undefined
+  );
 
   const handleDelete = async (_id: string) => {
     await deleteAppointment(_id);
@@ -48,42 +65,32 @@ const AppointmentsPage: React.FC = () => {
         </button>
       </div>
       <div className="p-6 md:p-8 rounded-lg shadow-lg w-full max-w-80 md:max-w-screen-2xl overflow-x-auto bg-gradient-secondary">
-        <table className="min-w-full">
-          <thead>
-            <tr className="table-row">
-              <th className="py-2 px-4 border-b">Fecha</th>
-              <th className="py-2 px-4 border-b">Hora</th>
-              <th className="py-2 px-4 border-b">Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {appointments?.map((appointment) => (
-              <tr key={appointment._id?.toString() || ""} className="table-row">
-                <td className="py-2 px-4 border-b">
-                  {new Date(appointment.date).toLocaleDateString()}
-                </td>
-                <td className="py-2 px-4 border-b">{appointment.time}</td>
-                <td className="py-2 px-4 border-b flex justify-center flex-nowrap">
-                  <button
-                    className=" text-blue-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-blue-700 transition-colors mr-2"
-                    onClick={() => handleEdit(appointment)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className=" text-red-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-red-700 transition-colors"
-                    onClick={() =>
-                      appointment._id &&
-                      handleDelete(appointment._id.toString())
-                    }
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Calendar
+          selectedDate={selectedDate}
+          setSelectedDate={(date: Date) => setSelectedDate(date)}
+          selectedTime={selectedTime}
+          setSelectedTime={(time: string) => handleSelectedTime(time)}
+        />
+        {appointment && (
+          <div>
+            <button
+              className="text-blue-600 hover:text-blue-400 transition-colors"
+              onClick={() => handleEdit(appointment)}
+            >
+              <FaEdit />
+            </button>
+            <button
+              className="text-red-600 hover:text-red-400 transition-colors"
+              onClick={() => {
+                if (appointment._id) {
+                  handleDelete(appointment._id.toString());
+                }
+              }}
+            >
+              <FaTrash />
+            </button>
+          </div>
+        )}
       </div>
       {showModal && <AppointmentForm onClose={() => setShowModal(false)} />}
       {showBulkModal && (

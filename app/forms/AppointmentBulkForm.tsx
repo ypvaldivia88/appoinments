@@ -71,7 +71,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       <FormField
         type="date"
         label="Fecha de Inicio"
-        value={appointment?.date || ""}
+        value={appointment?.date || Date.now()}
         onChange={(e) =>
           setAppointment({
             ...appointment,

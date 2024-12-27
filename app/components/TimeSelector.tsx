@@ -32,7 +32,7 @@ const TimeSelector: React.FC<TimeSelectorProps> = ({
   };
 
   return (
-    <div className="flex flex-col my-4 gap-2">
+    <div className="flex flex-col my-4 gap-2 max-h-72 overflow-auto">
       <label>Horarios</label>
       {times.map((time, index) => (
         <div key={index} className="flex gap-2 items-center justify-start">

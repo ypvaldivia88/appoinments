@@ -16,13 +16,13 @@ export default function Calendar({
   selectedTime?: string;
   setSelectedTime: (time: string) => void;
 }): React.JSX.Element {
+  const { availableAppointments } = useAppointmentsStore();
+
   const days = ["D", "L", "M", "M", "J", "V", "S"];
   selectedDate = selectedDate || new Date();
   const currentDate = dayjs();
+
   const [today, setToday] = useState(currentDate);
-  // const [selectedDate, setSelectedDate] = useState(currentDate);
-  // const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const { availableAppointments } = useAppointmentsStore();
 
   const isDateWithAppointments = (date: dayjs.Dayjs) => {
     return availableAppointments[date.format("YYYY-MM-DD")];
@@ -110,13 +110,13 @@ export default function Calendar({
           {dayjs(selectedDate).toDate().toLocaleDateString()}
         </h1>
         {isDateWithAppointments(dayjs(selectedDate)) ? (
-          <ul className="my-2 flex gap-4">
+          <ul className="my-2 flex gap-2 flex-wrap justify-items-center items-center">
             {availableAppointments[
               dayjs(selectedDate).format("YYYY-MM-DD")
             ].map((time, index) => (
               <li
                 key={index}
-                className="text-gray-700 bg-slate-300 px-4 py-2 max-w-fit rounded-md"
+                className="text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md"
               >
                 <label>
                   <input

@@ -29,9 +29,7 @@ export default function RootLayout({
       <body
         className={`${dancingScript.variable} ${lora.variable} antialiased`}
       >
-        <div className="sticky top-0 z-10">
-          <TopNavigation />
-        </div>
+        <TopNavigation />
         <div
           className="relative flex flex-col items-center justify-center p-4 md:p-8 text-gray-300 min-h-screen"
           style={{

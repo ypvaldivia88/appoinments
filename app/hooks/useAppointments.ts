@@ -6,9 +6,7 @@ import { useServiceStore } from "@/stores/useServiceStore";
 
 const useAppointments = () => {
   const {
-    appointments,
     setAppointments,
-    setAppointment,
     setAvailableAppointments,
     setUserActiveAppointment,
   } = useAppointmentsStore();
@@ -80,17 +78,14 @@ const useAppointments = () => {
 
   const createAppointment = async (newAppointment: IAppointment) => {
     try {
-      const response = await fetch("/api/appointments", {
+      await fetch("/api/appointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newAppointment),
       });
-      const data = await response.json();
-      setAppointments([...appointments, data]);
-      processAvailableAppointments([...appointments, data]);
-      setAppointment(undefined);
+      await fetchAppointments();
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
@@ -101,28 +96,14 @@ const useAppointments = () => {
     updatedAppointment: IAppointment
   ) => {
     try {
-      const response = await fetch(`/api/appointments/${id}`, {
+      await fetch(`/api/appointments/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedAppointment),
       });
-      const data = await response.json();
-      setAppointments(
-        appointments.map((appointment) =>
-          appointment._id && appointment._id.toString() === id
-            ? data
-            : appointment
-        )
-      );
-      processAvailableAppointments(
-        appointments.map((appointment) =>
-          appointment._id && appointment._id.toString() === id
-            ? data
-            : appointment
-        )
-      );
+      await fetchAppointments();
     } catch (error) {
       console.error("Error updating appointment:", error);
     }
@@ -130,22 +111,10 @@ const useAppointments = () => {
 
   const deleteAppointment = async (id: string) => {
     try {
-      const response = await fetch(`/api/appointments/${id}`, {
+      await fetch(`/api/appointments/${id}`, {
         method: "DELETE",
       });
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.error("Error deleting appointment:", data);
-        return;
-      }
-
-      const modifiedAppointments = appointments.filter(
-        (appointment) => appointment._id && appointment._id !== id
-      );
-      setAppointments(modifiedAppointments);
-      processAvailableAppointments(modifiedAppointments);
-      fetchUserActiveAppointment(modifiedAppointments);
+      await fetchAppointments();
     } catch (error) {
       console.error("Error deleting appointment:", error);
     }

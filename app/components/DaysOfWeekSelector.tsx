@@ -10,7 +10,7 @@ const DaysOfWeekSelector: React.FC<DaysOfWeekSelectorProps> = ({
   onDaysOfWeekChange,
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-2">
       <label>Días de la Semana</label>
       <div className="flex gap-2">
         {["0", "1", "2", "3", "4", "5", "6"].map((day) => (

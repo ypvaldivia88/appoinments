@@ -5,6 +5,7 @@ import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import DaysOfWeekSelector from "@/components/DaysOfWeekSelector";
+import TimeSelector from "@/components/TimeSelector";
 
 interface AppointmentFormProps {
   onClose: () => void;
@@ -15,7 +16,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
   const { createAppointment } = useAppointments();
   const [isEditing, setIsEditing] = useState(false);
   const [daysOfWeek, setDaysOfWeek] = useState<string[]>([]);
-  const [timeInterval, setTimeInterval] = useState<number>(60);
+  const [times, setTimes] = useState<string[]>(["08:30"]);
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);
@@ -31,7 +32,6 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
 
       for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
         if (daysOfWeek.includes(d.getDay().toString())) {
-          const times = generateTimesForDay(d, timeInterval);
           times.forEach((time) => {
             const { note, userId, services } = appointment;
             appointmentsToCreate.push({
@@ -52,23 +52,14 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     onClose();
   };
 
-  const generateTimesForDay = (date: Date, interval: number) => {
-    const times: string[] = [];
-    const start = new Date(date);
-    start.setHours(9, 0, 0, 0); // Start at 9:00 AM
-    const end = new Date(date);
-    end.setHours(18, 0, 0, 0); // End at 6:00 PM
-
-    for (let t = start; t < end; t.setMinutes(t.getMinutes() + interval)) {
-      times.push(t.toTimeString().split(" ")[0].substring(0, 5));
-    }
-    return times;
-  };
-
   const handleDaysOfWeekChange = (day: string) => {
     setDaysOfWeek((prev) =>
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
     );
+  };
+
+  const handleTimeChange = (newTimes: string[]) => {
+    setTimes(newTimes);
   };
 
   return (
@@ -92,12 +83,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
         daysOfWeek={daysOfWeek}
         onDaysOfWeekChange={handleDaysOfWeekChange}
       />
-      <FormField
-        type="number"
-        label="Intervalo de Tiempo (minutos)"
-        value={timeInterval}
-        onChange={(e) => setTimeInterval(parseInt(e.target.value))}
-      />
+      <TimeSelector times={times} onTimesChange={handleTimeChange} />
     </GenericForm>
   );
 };

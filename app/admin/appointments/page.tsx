@@ -35,7 +35,7 @@ const AppointmentsPage: React.FC = () => {
       </h1>
       <div className="flex flex-col">
         <button
-          className="bg-purple-600 text-white hover:bg-purple-400 transition-colors font-bold py-2 px-4 rounded-full shadow-lg mb-4 flex items-center gap-2 justify-center"
+          className="bg-purple-950 text-white hover:bg-purple-400 transition-colors font-bold py-2 px-4 rounded-full shadow-lg mb-4 flex items-center gap-2 justify-center"
           onClick={() => setShowBulkModal(true)}
         >
           <FaPlus /> Citas por Lotes

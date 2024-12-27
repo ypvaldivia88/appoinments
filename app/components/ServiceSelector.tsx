@@ -27,7 +27,7 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
         {services.map((service) => (
           <div
             key={service._id.toString()}
-            className="flex items-center mb-2 bg-gray-100 rounded shadow-md p-2"
+            className="flex items-center mb-2 text-gray-700 bg-slate-300 px-4 py-2 max-w-fit rounded-md"
           >
             <input
               id={service._id.toString()}

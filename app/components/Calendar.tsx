@@ -28,6 +28,11 @@ export default function Calendar({
     return availableAppointments[date.format("YYYY-MM-DD")];
   };
 
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+    setSelectedTime("");
+  };
+
   return (
     <div className="flex gap-4 justify-center items-center flex-col border-2 border-gray-300 rounded-lg p-4">
       <div className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto">
@@ -89,7 +94,7 @@ export default function Calendar({
                     "h-8 md:h-10 w-8 md:w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none"
                   )}
                   onClick={() => {
-                    setSelectedDate(date.toDate());
+                    handleDateChange(date.toDate());
                   }}
                 >
                   {date.date()}
@@ -105,11 +110,14 @@ export default function Calendar({
           {dayjs(selectedDate).toDate().toLocaleDateString()}
         </h1>
         {isDateWithAppointments(dayjs(selectedDate)) ? (
-          <ul>
+          <ul className="my-2 flex gap-4">
             {availableAppointments[
               dayjs(selectedDate).format("YYYY-MM-DD")
             ].map((time, index) => (
-              <li key={index} className="text-gray-300">
+              <li
+                key={index}
+                className="text-gray-700 bg-slate-300 px-4 py-2 max-w-fit rounded-md"
+              >
                 <label>
                   <input
                     type="radio"

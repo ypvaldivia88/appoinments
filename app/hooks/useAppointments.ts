@@ -64,9 +64,8 @@ const useAppointments = () => {
       return;
     }
 
-    const userAppointment = data.find(
-      (app) => app.userId === session._id.toString()
-    );
+    const userAppointment =
+      data.find((app) => app.userId === session._id.toString()) || undefined;
 
     if (userAppointment) {
       userAppointment.services = services
@@ -131,24 +130,22 @@ const useAppointments = () => {
 
   const deleteAppointment = async (id: string) => {
     try {
-      await fetch(`/api/appointments/${id}`, {
+      const response = await fetch(`/api/appointments/${id}`, {
         method: "DELETE",
       });
-      setAppointments(
-        appointments.filter(
-          (appointment) => appointment._id && appointment._id.toString() !== id
-        )
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Error deleting appointment:", data);
+        return;
+      }
+
+      const modifiedAppointments = appointments.filter(
+        (appointment) => appointment._id && appointment._id !== id
       );
-      processAvailableAppointments(
-        appointments.filter(
-          (appointment) => appointment._id && appointment._id.toString() !== id
-        )
-      );
-      fetchUserActiveAppointment(
-        appointments.filter(
-          (appointment) => appointment._id && appointment._id.toString() !== id
-        )
-      );
+      setAppointments(modifiedAppointments);
+      processAvailableAppointments(modifiedAppointments);
+      fetchUserActiveAppointment(modifiedAppointments);
     } catch (error) {
       console.error("Error deleting appointment:", error);
     }

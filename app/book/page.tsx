@@ -16,32 +16,33 @@ export default function Book() {
   const { session, sessionChecked } = useSession();
   const { validateAppointment } = useValidation();
   const { createAppointment, deleteAppointment } = useAppointments();
-  const { userActiveAppointment } = useAppointmentsStore();
+  const { userActiveAppointment, setUserActiveAppointment } =
+    useAppointmentsStore();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
   const [formValues, setFormValues] = useState<Partial<IAppointment>>({
     _id: undefined,
     userId: undefined,
     date: new Date(),
+    time: "",
     services: [],
     note: "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!sessionChecked) return;
-
-    if (!session) {
-      router.push("/login");
-    } else {
-      setFormValues((prev) => ({
-        ...prev,
-        userId: session._id.toString(),
-      }));
+    if (sessionChecked && !session) {
+      return router.push("/login");
     }
+    setFormValues((prev) => ({
+      ...prev,
+      userId: session?._id.toString(),
+    }));
   }, [session, sessionChecked]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const payload: IAppointment = {
       ...formValues,
       services: selectedServices.map((s) => s._id.toString()),
@@ -50,10 +51,30 @@ export default function Book() {
     const errors = validateAppointment(payload);
     if (errors.length) {
       alert(errors.join("\n"));
-    } else {
-      await createAppointment(payload);
+      return;
     }
+    await createAppointment(payload);
+    setLoading(false);
   };
+
+  const handleCancelAppointment = async () => {
+    setLoading(true);
+    if (userActiveAppointment?._id) {
+      if (
+        confirm(
+          "Cuidado! Esta acción no se puede revertir. ¿Estás segur@ de que deseas cancelar esta cita?"
+        )
+      ) {
+        await deleteAppointment(userActiveAppointment._id);
+        setUserActiveAppointment(undefined);
+      }
+    }
+    setLoading(false);
+  };
+
+  if (!sessionChecked || loading) {
+    return <div>Cargando...</div>;
+  }
 
   return userActiveAppointment ? (
     <div className="flex flex-col items-center justify-start min-h-screen p-2 md:p-4 lg:p-8">
@@ -85,17 +106,7 @@ export default function Book() {
       </div>
       <button
         className="font-bold py-2 px-4 rounded-full shadow-lg bg-red-600 text-white hover:bg-orange-400 transition-colors w-full mt-4"
-        onClick={() => {
-          if (userActiveAppointment?._id) {
-            if (
-              confirm(
-                "Cuidado! Esta acción no se puede revertir. ¿Estás segur@ de que deseas cancelar esta cita?"
-              )
-            ) {
-              deleteAppointment(userActiveAppointment._id.toString());
-            }
-          }
-        }}
+        onClick={handleCancelAppointment}
       >
         Cancelar Cita
       </button>
@@ -119,24 +130,33 @@ export default function Book() {
             setFormValues((prev) => ({ ...prev, time }))
           }
         />
-        <ServiceSelector
-          selectedServices={selectedServices}
-          setSelectedServices={setSelectedServices}
-        />
-        <FormField
-          type="text"
-          label="Nota"
-          value={formValues.note || ""}
-          onChange={(e) =>
-            setFormValues((prev) => ({ ...prev, note: e.target.value }))
-          }
-        />
-        <button
-          type="submit"
-          className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
-        >
-          Reservar
-        </button>
+        {!formValues?.time ? (
+          <h1 className="text-md font-bold text-white my-8">
+            Seleccione una <span className="text-green-400">Fecha Hábil</span> y
+            una Hora para su cita
+          </h1>
+        ) : (
+          <>
+            <ServiceSelector
+              selectedServices={selectedServices}
+              setSelectedServices={setSelectedServices}
+            />
+            <FormField
+              type="text"
+              label="Nota"
+              value={formValues.note || ""}
+              onChange={(e) =>
+                setFormValues((prev) => ({ ...prev, note: e.target.value }))
+              }
+            />
+            <button
+              type="submit"
+              className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
+            >
+              Reservar
+            </button>
+          </>
+        )}
       </form>
     </div>
   );

@@ -3,7 +3,6 @@ import { IAppointment } from "@/models/Appointment";
 import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
-import useServices from "@/hooks/useServices";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 
 interface AppointmentFormProps {
@@ -13,30 +12,15 @@ interface AppointmentFormProps {
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
   const { appointment, setAppointment } = useAppointmentsStore();
   const { createAppointment, updateAppointment } = useAppointments();
-  const { services } = useServices();
-
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);
   }, [appointment]);
 
-  const handleServiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { options } = event.target;
-    const selected = [];
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        selected.push(options[i].value);
-      }
-    }
-    setSelectedServices(selected);
-  };
-
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (appointment) {
-      appointment.services = selectedServices;
       if (isEditing && appointment._id) {
         await updateAppointment(appointment._id.toString(), appointment);
       } else {
@@ -74,22 +58,6 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
           } as IAppointment)
         }
       />
-      <div className="mb-4">
-        <label className="block text-gray-200 text-sm font-bold mb-2">
-          Servicios
-        </label>
-        <select
-          multiple
-          value={selectedServices}
-          onChange={handleServiceChange}
-        >
-          {services.map((service) => (
-            <option key={service._id.toString()} value={service._id.toString()}>
-              {service.name}
-            </option>
-          ))}
-        </select>
-      </div>
     </GenericForm>
   );
 };

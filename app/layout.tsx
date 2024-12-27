@@ -29,9 +29,11 @@ export default function RootLayout({
       <body
         className={`${dancingScript.variable} ${lora.variable} antialiased`}
       >
-        <TopNavigation />
+        <div className="sticky top-0 z-10">
+          <TopNavigation />
+        </div>
         <div
-          className="relative flex flex-col items-center justify-center min-h-screen  p-4 md:p-8 text-gray-300"
+          className="relative flex flex-col items-center justify-center p-4 md:p-8 text-gray-300 min-h-screen"
           style={{
             backgroundImage: "url(/main.avif)",
             backgroundSize: "cover",

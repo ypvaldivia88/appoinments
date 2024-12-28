@@ -17,6 +17,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [daysOfWeek, setDaysOfWeek] = useState<string[]>([]);
   const [times, setTimes] = useState<string[]>(["08:30"]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);
@@ -24,6 +25,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setLoading(true);
     if (appointment) {
       const appointmentsToCreate: IAppointment[] = [];
       const startDate = new Date(appointment.date);
@@ -62,7 +64,9 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     setTimes(newTimes);
   };
 
-  return (
+  return loading ? (
+    "Cargando..."
+  ) : (
     <GenericForm
       title={isEditing ? "Editar Cita" : "Crear Citas en Masa"}
       onClose={() => onClose()}

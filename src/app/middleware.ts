@@ -7,6 +7,7 @@ const adminRoutes = ["/admin"];
 
 export default function auth(req: NextRequest): NextResponse {
   const { session } = useSessionStore.getState();
+  console.log("session", session);
 
   // if (!sessionChecked) {
   //   return NextResponse.next();

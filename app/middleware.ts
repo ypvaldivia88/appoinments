@@ -6,11 +6,11 @@ const protectedRoutes = ["/book"];
 const adminRoutes = ["/admin"];
 
 export default function auth(req: NextRequest): NextResponse {
-  const { session, sessionChecked } = useSessionStore.getState();
+  const { session } = useSessionStore.getState();
 
-  if (!sessionChecked) {
-    return NextResponse.next();
-  }
+  // if (!sessionChecked) {
+  //   return NextResponse.next();
+  // }
 
   const isProtectedRoute = adminRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { IService } from "@/models/Service";
 import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
-import useServices from "../hooks/useServices";
+import useServices from "@/hooks/useServices";
 
 interface ServiceFormProps {
   onClose: () => void;

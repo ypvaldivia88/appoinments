@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Dancing_Script, Lora } from "next/font/google";
 import "./globals.css";
-import TopNavigation from "./components/TopNavigation";
+import TopNavigation from "@/components/TopNavigation";
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],

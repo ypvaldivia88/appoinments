@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { generateDate, months } from "@/util/calendar";
 import cn from "@/util/cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
@@ -32,6 +32,11 @@ export default function Calendar({
     setSelectedDate(date);
     setSelectedTime("");
   };
+
+  useEffect(() => {
+    // Trigger a re-render when availableAppointments changes
+    setToday(dayjs());
+  }, [availableAppointments]);
 
   return (
     <div className="flex gap-4 justify-center items-center flex-col border-2 border-gray-300 rounded-lg p-4">

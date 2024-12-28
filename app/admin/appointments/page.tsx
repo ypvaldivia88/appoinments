@@ -3,14 +3,13 @@ import React from "react";
 import useAppointments from "@/hooks/useAppointments";
 import AppointmentForm from "@/forms/AppointmentForm";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import { IAppointment } from "@/models/Appointment";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import AppointmentBulkForm from "@/forms/AppointmentBulkForm";
 import Calendar from "@/components/Calendar";
 
 const AppointmentsPage: React.FC = () => {
   const { deleteAppointment } = useAppointments();
-  const { appointment, appointments, setAppointment } = useAppointmentsStore();
+  const { appointments, setAppointment } = useAppointmentsStore();
 
   const [showModal, setShowModal] = React.useState(false);
   const [showBulkModal, setShowBulkModal] = React.useState(false);
@@ -18,25 +17,30 @@ const AppointmentsPage: React.FC = () => {
     undefined
   );
 
-  const handleSelectedTime = (time: string) => {
-    setSelectedTime(time);
-    const appointment = appointments.find(
-      (app) => selectedDate && app.date === new Date(selectedDate)
-    );
-    if (appointment) {
-      setAppointment(appointment);
-    }
-  };
   const [selectedTime, setSelectedTime] = React.useState<string | undefined>(
     undefined
   );
 
-  const handleDelete = async (_id: string) => {
-    await deleteAppointment(_id);
+  const handleDelete = async () => {
+    const id = appointments.find(
+      (app) =>
+        new Date(app.date).toISOString().split("T")[0] ===
+          selectedDate?.toISOString().split("T")[0] && app.time === selectedTime
+    )?._id;
+    if (!id) {
+      return;
+    }
+    await deleteAppointment(id);
   };
 
-  const handleEdit = (appointment: IAppointment) => {
-    setAppointment(appointment);
+  const handleEdit = () => {
+    // Find the appointment by date and time
+    const data = appointments.find(
+      (app) =>
+        new Date(app.date).toISOString().split("T")[0] ===
+          selectedDate?.toISOString().split("T")[0] && app.time === selectedTime
+    );
+    setAppointment(data);
     setShowModal(true);
   };
 
@@ -69,23 +73,19 @@ const AppointmentsPage: React.FC = () => {
           selectedDate={selectedDate}
           setSelectedDate={(date: Date) => setSelectedDate(date)}
           selectedTime={selectedTime}
-          setSelectedTime={(time: string) => handleSelectedTime(time)}
+          setSelectedTime={(time: string) => setSelectedTime(time)}
         />
-        {appointment && (
-          <div>
+        {selectedTime && (
+          <div className="flex items-center justify-around mt-4">
             <button
-              className="text-blue-600 hover:text-blue-400 transition-colors"
-              onClick={() => handleEdit(appointment)}
+              className="px-4 py-2 rounded-md bg-blue-600 hover:text-blue-400 transition-colors"
+              onClick={handleEdit}
             >
               <FaEdit />
             </button>
             <button
-              className="text-red-600 hover:text-red-400 transition-colors"
-              onClick={() => {
-                if (appointment._id) {
-                  handleDelete(appointment._id.toString());
-                }
-              }}
+              className="px-4 py-2 rounded-md bg-red-600 hover:text-red-400 transition-colors"
+              onClick={handleDelete}
             >
               <FaTrash />
             </button>

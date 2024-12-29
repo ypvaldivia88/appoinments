@@ -33,6 +33,18 @@ const AppointmentsPage: React.FC = () => {
     await deleteAppointment(id);
   };
 
+  const handleSelectedTime = (time: string) => {
+    setSelectedTime(time);
+    const appointment = appointments.find(
+      (app) =>
+        new Date(app.date).toISOString().split("T")[0] ===
+          selectedDate?.toISOString().split("T")[0] && app.time === time
+    );
+    console.log("appointment", appointment);
+
+    if (appointment) setAppointment(appointment);
+  };
+
   const handleEdit = () => {
     // Find the appointment by date and time
     const data = appointments.find(
@@ -73,21 +85,21 @@ const AppointmentsPage: React.FC = () => {
           selectedDate={selectedDate}
           setSelectedDate={(date: Date) => setSelectedDate(date)}
           selectedTime={selectedTime}
-          setSelectedTime={(time: string) => setSelectedTime(time)}
+          setSelectedTime={handleSelectedTime}
         />
         {selectedTime && (
           <div className="flex items-center justify-around mt-4">
             <button
-              className="px-4 py-2 rounded-md bg-blue-600 hover:text-blue-400 transition-colors"
+              className="px-4 py-2 rounded-md bg-blue-600 hover:text-blue-400 transition-colors flex items-center gap-2 flex-nowrap"
               onClick={handleEdit}
             >
-              <FaEdit />
+              <FaEdit /> Editar
             </button>
             <button
-              className="px-4 py-2 rounded-md bg-red-600 hover:text-red-400 transition-colors"
+              className="px-4 py-2 rounded-md bg-red-600 hover:text-red-400 transition-colors flex items-center gap-2 flex-nowrap"
               onClick={handleDelete}
             >
-              <FaTrash />
+              <FaTrash /> Eliminar
             </button>
           </div>
         )}

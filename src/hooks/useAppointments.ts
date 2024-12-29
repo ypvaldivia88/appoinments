@@ -15,7 +15,7 @@ const useAppointments = () => {
 
   useEffect(() => {
     fetchAppointments();
-  }, [session]);
+  }, []);
 
   const fetchAppointments = async () => {
     try {
@@ -56,8 +56,6 @@ const useAppointments = () => {
   };
 
   const fetchUserActiveAppointment = async (data: IAppointment[]) => {
-    console.log("fetchUserActiveAppointment", data);
-
     if (!session || !data.length) {
       return;
     }

@@ -27,7 +27,6 @@ const useAppointments = () => {
       }
       setAppointments(data);
       processAvailableAppointments(data);
-      fetchUserActiveAppointment(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
@@ -38,40 +37,27 @@ const useAppointments = () => {
       if (!data.length) {
         return;
       }
-      const availableAppointments = data
-        .filter((app) => !app.userId)
-        .reduce((acc, appointment) => {
-          const date = new Date(appointment.date).toISOString().split("T")[0];
-          if (acc[date]) {
-            acc[date].push(appointment.time);
-          } else {
-            acc[date] = [appointment.time];
-          }
-          return acc;
-        }, {} as { [key: string]: string[] });
+      const availableAppointments = data.filter((app) => !app.userId);
+
       setAvailableAppointments(availableAppointments);
+
+      if (session) {
+        const userAppointment =
+          data.find((app) => app.userId === session._id.toString()) ||
+          undefined;
+
+        if (userAppointment) {
+          userAppointment.services = services
+            .filter((service) =>
+              userAppointment.services?.includes(service._id.toString())
+            )
+            .map((service) => service.name);
+          setUserActiveAppointment(userAppointment);
+        }
+      }
     } catch (error) {
       console.error("Error fetching available appointments:", error);
     }
-  };
-
-  const fetchUserActiveAppointment = async (data: IAppointment[]) => {
-    if (!session || !data.length) {
-      return;
-    }
-
-    const userAppointment =
-      data.find((app) => app.userId === session._id.toString()) || undefined;
-
-    if (userAppointment) {
-      userAppointment.services = services
-        .filter((service) =>
-          userAppointment.services?.includes(service._id.toString())
-        )
-        .map((service) => service.name);
-      setUserActiveAppointment(userAppointment);
-    }
-    return userAppointment;
   };
 
   const createAppointment = async (newAppointment: IAppointment) => {

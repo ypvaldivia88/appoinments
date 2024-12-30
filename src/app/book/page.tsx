@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "@/components/Calendar";
 import useSession from "@/hooks/useSession";
-import { useRouter } from "next/navigation";
 import FormField from "@/components/FormField";
 import ServiceSelector from "@/components/ServiceSelector";
 import { IService } from "@/models/Service";
@@ -12,8 +11,7 @@ import useValidation from "@/hooks/useValidation";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 
 export default function Book() {
-  const router = useRouter();
-  const { session, sessionChecked } = useSession();
+  const { session } = useSession();
   const { validateAppointment } = useValidation();
   const { createAppointment, deleteAppointment } = useAppointments();
   const { userActiveAppointment, setUserActiveAppointment } =
@@ -31,14 +29,11 @@ export default function Book() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (sessionChecked && !session) {
-      return router.push("/login");
-    }
     setFormValues((prev) => ({
       ...prev,
       userId: session?._id.toString(),
     }));
-  }, [session, sessionChecked]);
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +67,7 @@ export default function Book() {
     setLoading(false);
   };
 
-  if (!sessionChecked || loading) {
+  if (loading) {
     return <div>Cargando...</div>;
   }
 

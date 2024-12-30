@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Calendar from "@/components/Calendar";
 import useSession from "@/hooks/useSession";
 import FormField from "@/components/FormField";
@@ -18,28 +18,17 @@ export default function Book() {
     useAppointmentsStore();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
-  const [formValues, setFormValues] = useState<Partial<IAppointment>>({
-    _id: undefined,
-    userId: undefined,
-    date: new Date(),
-    time: "",
-    services: [],
-    note: "",
-  });
+  const [selectedAppointment, setSelectedAppointment] = useState<
+    IAppointment | undefined
+  >(undefined);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setFormValues((prev) => ({
-      ...prev,
-      userId: session?._id.toString(),
-    }));
-  }, [session]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const payload: IAppointment = {
-      ...formValues,
+      ...selectedAppointment,
       services: selectedServices.map((s) => s._id.toString()),
       userId: session?._id.toString(),
     } as IAppointment;
@@ -116,16 +105,12 @@ export default function Book() {
         className="p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl bg-gradient-secondary flex flex-col gap-2"
       >
         <Calendar
-          selectedDate={formValues.date}
-          setSelectedDate={(date) =>
-            setFormValues((prev) => ({ ...prev, date }))
-          }
-          selectedTime={formValues.time}
-          setSelectedTime={(time) =>
-            setFormValues((prev) => ({ ...prev, time }))
-          }
+          selectedDate={selectedDate}
+          setSelectedDate={(date) => setSelectedDate(date)}
+          selectedAppointment={selectedAppointment as IAppointment}
+          setSelectedAppointment={(app) => setSelectedAppointment(app)}
         />
-        {!formValues?.time ? (
+        {selectedAppointment === undefined ? (
           <h1 className="text-md font-bold text-white my-8">
             Seleccione una <span className="text-green-400">Fecha Hábil</span> y
             una Hora para su cita
@@ -139,9 +124,15 @@ export default function Book() {
             <FormField
               type="text"
               label="Nota"
-              value={formValues.note || ""}
+              value={selectedAppointment.note || ""}
               onChange={(e) =>
-                setFormValues((prev) => ({ ...prev, note: e.target.value }))
+                setSelectedAppointment(
+                  (prev) =>
+                    ({
+                      ...prev,
+                      note: e.target.value,
+                    } as IAppointment)
+                )
               }
             />
             <button

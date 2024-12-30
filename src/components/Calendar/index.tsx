@@ -10,13 +10,13 @@ import AppointmentsList from "@/components/Calendar/AppointmentsList";
 export default function Calendar({
   selectedDate,
   setSelectedDate,
-  selectedTime,
-  setSelectedTime,
+  selectedAppointment,
+  setSelectedAppointment,
 }: {
   selectedDate?: Date;
   setSelectedDate: (date: Date) => void;
-  selectedTime?: string;
-  setSelectedTime: (time: string) => void;
+  selectedAppointment?: IAppointment | undefined;
+  setSelectedAppointment: (appointment: IAppointment | undefined) => void;
 }): React.JSX.Element {
   const { availableAppointments } = useAppointmentsStore();
 
@@ -44,7 +44,7 @@ export default function Calendar({
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    setSelectedTime("");
+    setSelectedAppointment(undefined);
     filterAppointmentsByDate(availableAppointments, date);
   };
 
@@ -67,12 +67,14 @@ export default function Calendar({
           availableAppointments={availableAppointments}
         />
       </div>
-      <AppointmentsList
-        selectedDate={selectedDate}
-        selectedTime={selectedTime}
-        setSelectedTime={setSelectedTime}
-        currentDayAppointments={currentDayAppointments}
-      />
+      <div className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto">
+        <AppointmentsList
+          selectedDate={selectedDate}
+          selectedAppointment={selectedAppointment}
+          setSelectedAppointment={setSelectedAppointment}
+          currentDayAppointments={currentDayAppointments}
+        />
+      </div>
     </div>
   );
 }

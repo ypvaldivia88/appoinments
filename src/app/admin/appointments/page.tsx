@@ -6,6 +6,7 @@ import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import AppointmentBulkForm from "@/forms/AppointmentBulkForm";
 import Calendar from "@/components/Calendar";
+import { IAppointment } from "@/models/Appointment";
 
 const AppointmentsPage: React.FC = () => {
   const { deleteAppointment } = useAppointments();
@@ -16,16 +17,13 @@ const AppointmentsPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     undefined
   );
-
-  const [selectedTime, setSelectedTime] = React.useState<string | undefined>(
-    undefined
-  );
+  const [selectedAppointment, setSelectedAppointment] = React.useState<
+    IAppointment | undefined
+  >(undefined);
 
   const handleDelete = async () => {
     const id = appointments.find(
-      (app) =>
-        new Date(app.date).toISOString().split("T")[0] ===
-          selectedDate?.toISOString().split("T")[0] && app.time === selectedTime
+      (app) => app._id === selectedAppointment?._id
     )?._id;
     if (!id) {
       return;
@@ -33,26 +31,8 @@ const AppointmentsPage: React.FC = () => {
     await deleteAppointment(id);
   };
 
-  const handleSelectedTime = (time: string) => {
-    setSelectedTime(time);
-    const appointment = appointments.find(
-      (app) =>
-        new Date(app.date).toISOString().split("T")[0] ===
-          selectedDate?.toISOString().split("T")[0] && app.time === time
-    );
-    console.log("appointment", appointment);
-
-    if (appointment) setAppointment(appointment);
-  };
-
   const handleEdit = () => {
-    // Find the appointment by date and time
-    const data = appointments.find(
-      (app) =>
-        new Date(app.date).toISOString().split("T")[0] ===
-          selectedDate?.toISOString().split("T")[0] && app.time === selectedTime
-    );
-    setAppointment(data);
+    setAppointment(selectedAppointment);
     setShowModal(true);
   };
 
@@ -84,10 +64,10 @@ const AppointmentsPage: React.FC = () => {
         <Calendar
           selectedDate={selectedDate}
           setSelectedDate={(date: Date) => setSelectedDate(date)}
-          selectedTime={selectedTime}
-          setSelectedTime={handleSelectedTime}
+          selectedAppointment={selectedAppointment}
+          setSelectedAppointment={(app) => setSelectedAppointment(app)}
         />
-        {selectedTime && (
+        {selectedAppointment && (
           <div className="flex items-center justify-around mt-4">
             <button
               className="px-4 py-2 rounded-md bg-blue-600 hover:text-blue-400 transition-colors flex items-center gap-2 flex-nowrap"

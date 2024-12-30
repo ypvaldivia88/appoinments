@@ -41,6 +41,7 @@ export default function AppointmentsList({
                   checked={selectedAppointment?._id === app._id}
                   className="mr-2 cursor-pointer"
                   readOnly={app.userId ? true : false}
+                  onChange={() => setSelectedAppointment(app)}
                 />
                 {app.time}
                 {app.userId}

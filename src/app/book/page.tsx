@@ -13,7 +13,7 @@ import useAppointmentsStore from "@/stores/useAppointmentsStore";
 export default function Book() {
   const { session } = useSession();
   const { validateAppointment } = useValidation();
-  const { createAppointment, deleteAppointment } = useAppointments();
+  const { updateAppointment, deleteAppointment } = useAppointments();
   const { userActiveAppointment, setUserActiveAppointment } =
     useAppointmentsStore();
 
@@ -37,7 +37,11 @@ export default function Book() {
       alert(errors.join("\n"));
       return;
     }
-    await createAppointment(payload);
+    if (!payload._id) {
+      alert("Seleccione una Hora para su cita");
+      return;
+    }
+    await updateAppointment(payload._id.toString(), payload);
     setLoading(false);
   };
 
@@ -62,7 +66,7 @@ export default function Book() {
 
   return userActiveAppointment ? (
     <div className="flex flex-col items-center justify-start min-h-screen p-2 md:p-4 lg:p-8">
-      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 lg:mb-8">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 lg:mb-8 text-center">
         Ya tienes una Cita planificada
       </h1>
       <div className="p-6 md:p-8 lg:p-10 rounded-lg shadow-lg w-full md:max-w-xl bg-gradient-secondary flex flex-col gap-4">

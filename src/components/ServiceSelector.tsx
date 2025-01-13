@@ -27,16 +27,19 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
         {services.map((service) => (
           <div
             key={service._id.toString()}
-            className="flex flex-wrap items-center mb-2 text-gray-700 bg-slate-300 px-4 py-2 max-w-fit rounded-md"
+            className="flex flex-wrap items-center mb-2 text-gray-700 bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer"
           >
             <input
               id={service._id.toString()}
               type="checkbox"
               checked={selectedServices.includes(service)}
               onChange={() => handleSelectService(service)}
-              className="mr-2"
+              className="mr-2 cursor-pointer"
             />
-            <label htmlFor={service._id.toString()} className="text-gray-700">
+            <label
+              htmlFor={service._id.toString()}
+              className="text-gray-700 cursor-pointer"
+            >
               {service.name}
             </label>
           </div>

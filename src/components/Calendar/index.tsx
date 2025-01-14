@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { IAppointment } from "@/models/Appointment";
 import Header from "@/components/Calendar/Header";
 import DaysHeader from "@/components/Calendar/DaysHeader";
@@ -43,12 +43,6 @@ export default function Calendar({
     setAppointment(undefined);
     filterAppointmentsByDate(appointments, date);
   };
-
-  useEffect(() => {
-    // Trigger a re-render when availableAppointments changes
-    setToday(dayjs());
-    if (appointments) filterAppointmentsByDate(appointments, today.toDate());
-  }, [appointments]);
 
   return (
     <div className="flex gap-4 justify-center items-center flex-col border-2 border-gray-300 rounded-lg p-4">

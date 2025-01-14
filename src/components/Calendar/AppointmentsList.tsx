@@ -11,6 +11,7 @@ export default function AppointmentsList({
   currentDayAppointments: IAppointment[];
 }) {
   const { appointment, setAppointment } = AppointmentsStore();
+  
   return (
     <div className="h-auto w-full">
       <h1 className="font-semibold text-center">
@@ -23,7 +24,7 @@ export default function AppointmentsList({
               key={index}
               className={cn(
                 "text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer",
-                app?.userId ? "bg-yellow-600 text-white" : ""
+                app?.userId !== undefined ? "bg-yellow-600 text-white" : ""
               )}
               onClick={() => setAppointment(app)}
             >

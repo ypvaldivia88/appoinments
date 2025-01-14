@@ -27,7 +27,7 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
         <div>Contacte al gestor para que proporcione servicios a contratar</div>
       )}
       <div className="flex gap-4">
-        {services.map((service) => (
+        {services.map((service: IService) => (
           <div
             key={service._id.toString()}
             className="flex flex-wrap items-center mb-2 text-gray-700 bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer"

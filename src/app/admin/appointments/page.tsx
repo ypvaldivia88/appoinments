@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import AppointmentForm from "@/forms/AppointmentForm";
 import { FaPlus } from "react-icons/fa";
 import AppointmentsStore from "@/stores/AppointmentsStore";
@@ -7,13 +7,19 @@ import AppointmentBulkForm from "@/forms/AppointmentBulkForm";
 import Calendar from "@/components/Calendar";
 
 const AppointmentsPage: React.FC = () => {
-  const { setAppointment } = AppointmentsStore();
+  const { setAppointment, appointment } = AppointmentsStore();
 
   const [showModal, setShowModal] = React.useState(false);
   const [showBulkModal, setShowBulkModal] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     undefined
   );
+
+  useEffect(() => {
+    if (appointment) {
+      setShowModal(true);
+    }
+  }, [appointment]);
 
   const handleCreate = () => {
     setAppointment(undefined);
@@ -45,7 +51,14 @@ const AppointmentsPage: React.FC = () => {
           setSelectedDate={(date: Date) => setSelectedDate(date)}
         />
       </div>
-      {showModal && <AppointmentForm onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <AppointmentForm
+          onClose={() => {
+            setAppointment(undefined);
+            setShowModal(false);
+          }}
+        />
+      )}
       {showBulkModal && (
         <AppointmentBulkForm onClose={() => setShowBulkModal(false)} />
       )}

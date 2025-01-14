@@ -5,6 +5,7 @@ interface GenericFormProps {
   title: string;
   onSubmit: (e: React.FormEvent) => void;
   onClose: () => void;
+  onDelete?: () => void;
   children: React.ReactNode;
 }
 
@@ -12,6 +13,7 @@ export default function GenericForm({
   title,
   onSubmit,
   onClose,
+  onDelete,
   children,
 }: GenericFormProps) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,15 @@ export default function GenericForm({
             >
               Cancelar
             </button>
+            {onDelete && (
+              <button
+                type="button"
+                className="bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-red-700 transition-colors mr-2"
+                onClick={onDelete}
+              >
+                Eliminar
+              </button>
+            )}
             <button
               type="submit"
               className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"

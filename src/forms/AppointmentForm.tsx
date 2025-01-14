@@ -3,15 +3,26 @@ import { IAppointment } from "@/models/Appointment";
 import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
-import AppointmentsStore from "@/stores/AppointmentsStore";
+import dayjs from "dayjs";
+import { IUser } from "@/models/User";
+import { IService } from "@/models/Service";
+import useServices from "@/hooks/useServices";
 
 interface AppointmentFormProps {
   onClose: () => void;
 }
 
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
-  const { appointment, setAppointment } = AppointmentsStore();
-  const { createAppointment, updateAppointment } = useAppointments();
+  const {
+    appointment,
+    setAppointment,
+    createAppointment,
+    updateAppointment,
+    deleteAppointment,
+  } = useAppointments();
+
+  const { services } = useServices();
+
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -30,20 +41,33 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     onClose();
   };
 
+  const handleDelete = async () => {
+    if (appointment?._id) {
+      // confirm before delete
+      if (window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
+        await deleteAppointment(appointment._id);
+        onClose();
+      }
+    }
+  };
+
+  console.log(appointment);
+
   return (
     <GenericForm
       title={isEditing ? "Editar Cita" : "Crear Cita"}
       onClose={() => onClose()}
       onSubmit={handleSubmit}
+      onDelete={appointment ? handleDelete : undefined}
     >
       <FormField
         type="date"
         label="Fecha"
-        value={appointment?.date || ""}
+        value={dayjs(appointment?.date).format("YYYY-MM-DD") || ""}
         onChange={(e) =>
           setAppointment({
             ...appointment,
-            date: e.target.value,
+            date: dayjs(e.target.value).toDate(),
           } as unknown as IAppointment)
         }
       />
@@ -58,6 +82,23 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
           } as IAppointment)
         }
       />
+      {typeof appointment?.userId === "object" &&
+        appointment?.userId !== null && (
+          <p className="text-sm text-gray-400 mb-4">
+            <strong className="text-gray-200">Cliente:</strong>{" "}
+            {(appointment.userId as IUser).name}
+          </p>
+        )}
+      {appointment?.services && appointment.services.length > 0 && (
+        <p className="text-sm text-gray-400 mb-4">
+          <strong className="text-gray-200">Servicios:</strong>{" "}
+          {services.map((service: IService) => {
+            if (appointment.services?.includes(service._id.toString())) {
+              return service.name;
+            }
+          })}
+        </p>
+      )}
     </GenericForm>
   );
 };

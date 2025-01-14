@@ -1,7 +1,6 @@
 import React from "react";
 import { IAppointment } from "@/models/Appointment";
 import cn from "@/util/cn";
-import useSession from "@/hooks/useSession";
 
 export default function AppointmentsList({
   selectedDate,
@@ -14,7 +13,6 @@ export default function AppointmentsList({
   setSelectedAppointment: (appointment: IAppointment | undefined) => void;
   currentDayAppointments: IAppointment[];
 }) {
-  const { session } = useSession();
   return (
     <div className="h-auto w-full">
       <h1 className="font-semibold text-center">
@@ -27,9 +25,7 @@ export default function AppointmentsList({
               key={index}
               className={cn(
                 "text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer",
-                selectedAppointment?.userId && session?.isAdmin
-                  ? "bg-purple-600 text-white"
-                  : ""
+                app?.userId ? "bg-yellow-600 text-white" : ""
               )}
               onClick={() => setSelectedAppointment(app)}
             >
@@ -44,7 +40,6 @@ export default function AppointmentsList({
                   onChange={() => setSelectedAppointment(app)}
                 />
                 {app.time}
-                {app.userId}
               </label>
             </li>
           ))}

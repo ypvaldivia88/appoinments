@@ -1,17 +1,23 @@
 import { useEffect } from "react";
 import { IAppointment } from "@/models/Appointment";
-import useAppointmentsStore from "@/stores/useAppointmentsStore";
+import AppointmentsStore from "@/stores/AppointmentsStore";
 import useSession from "@/hooks/useSession";
-import { useServiceStore } from "@/stores/useServiceStore";
+import { ServiceStore } from "@/stores/ServiceStore";
 
 const useAppointments = () => {
   const {
+    appointment,
+    setAppointment,
+    appointments,
     setAppointments,
+    availableAppointments,
     setAvailableAppointments,
+    reservedAppointments,
     setReservedAppointments,
+    userActiveAppointment,
     setUserActiveAppointment,
-  } = useAppointmentsStore();
-  const { services } = useServiceStore();
+  } = AppointmentsStore();
+  const { services } = ServiceStore();
   const { session } = useSession();
 
   useEffect(() => {
@@ -107,6 +113,16 @@ const useAppointments = () => {
   };
 
   return {
+    appointment,
+    setAppointment,
+    appointments,
+    setAppointments,
+    availableAppointments,
+    setAvailableAppointments,
+    reservedAppointments,
+    setReservedAppointments,
+    userActiveAppointment,
+    setUserActiveAppointment,
     createAppointment,
     updateAppointment,
     deleteAppointment,

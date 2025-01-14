@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import useSessionStore from "@/stores/useSessionStore";
+import SessionStore from "@/stores/SessionStore";
 
 export default function useSession() {
   const router = useRouter();
   const path = usePathname();
-  const session = useSessionStore((state) => state.session);
-  const clearSession = useSessionStore((state) => state.clearSession);
+  const session = SessionStore((state) => state.session);
+  const clearSession = SessionStore((state) => state.clearSession);
   const [sessionChecked, setSessionChecked] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);

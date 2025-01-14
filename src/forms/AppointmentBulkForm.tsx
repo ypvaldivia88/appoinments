@@ -3,7 +3,7 @@ import { IAppointment } from "@/models/Appointment";
 import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
-import useAppointmentsStore from "@/stores/useAppointmentsStore";
+import AppointmentsStore from "@/stores/AppointmentsStore";
 import DaysOfWeekSelector from "@/components/DaysOfWeekSelector";
 import TimeSelector from "@/components/TimeSelector";
 
@@ -12,7 +12,7 @@ interface AppointmentFormProps {
 }
 
 const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
-  const { appointment, setAppointment } = useAppointmentsStore();
+  const { appointment, setAppointment } = AppointmentsStore();
   const { createAppointment } = useAppointments();
   const [isEditing, setIsEditing] = useState(false);
   const [daysOfWeek, setDaysOfWeek] = useState<string[]>([]);

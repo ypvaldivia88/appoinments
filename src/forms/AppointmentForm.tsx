@@ -3,14 +3,14 @@ import { IAppointment } from "@/models/Appointment";
 import GenericForm from "@/components/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
-import useAppointmentsStore from "@/stores/useAppointmentsStore";
+import AppointmentsStore from "@/stores/AppointmentsStore";
 
 interface AppointmentFormProps {
   onClose: () => void;
 }
 
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
-  const { appointment, setAppointment } = useAppointmentsStore();
+  const { appointment, setAppointment } = AppointmentsStore();
   const { createAppointment, updateAppointment } = useAppointments();
   const [isEditing, setIsEditing] = useState(false);
 

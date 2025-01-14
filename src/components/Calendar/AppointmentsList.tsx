@@ -1,18 +1,16 @@
 import React from "react";
 import { IAppointment } from "@/models/Appointment";
 import cn from "@/util/cn";
+import AppointmentsStore from "@/stores/AppointmentsStore";
 
 export default function AppointmentsList({
   selectedDate,
-  selectedAppointment,
-  setSelectedAppointment,
   currentDayAppointments,
 }: {
   selectedDate?: Date;
-  selectedAppointment?: IAppointment | undefined;
-  setSelectedAppointment: (appointment: IAppointment | undefined) => void;
   currentDayAppointments: IAppointment[];
 }) {
+  const { appointment, setAppointment } = AppointmentsStore();
   return (
     <div className="h-auto w-full">
       <h1 className="font-semibold text-center">
@@ -27,17 +25,17 @@ export default function AppointmentsList({
                 "text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer",
                 app?.userId ? "bg-yellow-600 text-white" : ""
               )}
-              onClick={() => setSelectedAppointment(app)}
+              onClick={() => setAppointment(app)}
             >
               <label className="cursor-pointer">
                 <input
                   type="radio"
-                  name="selectedAppointment"
+                  name="Appointment"
                   value={app._id}
-                  checked={selectedAppointment?._id === app._id}
+                  checked={appointment?._id === app._id}
                   className="mr-2 cursor-pointer"
                   readOnly={app.userId ? true : false}
-                  onChange={() => setSelectedAppointment(app)}
+                  onChange={() => setAppointment(app)}
                 />
                 {app.time}
               </label>

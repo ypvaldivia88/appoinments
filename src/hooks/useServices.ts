@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useServiceStore } from "@/stores/useServiceStore";
+import { ServiceStore } from "@/stores/ServiceStore";
 
 const useServices = () => {
   const {
@@ -10,7 +10,7 @@ const useServices = () => {
     addService,
     updateService,
     removeService,
-  } = useServiceStore();
+  } = ServiceStore();
 
   useEffect(() => {
     fetchServices();

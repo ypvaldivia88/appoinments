@@ -1,24 +1,20 @@
 import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
-import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import { IAppointment } from "@/models/Appointment";
 import Header from "@/components/Calendar/Header";
 import DaysHeader from "@/components/Calendar/DaysHeader";
 import DatesGrid from "@/components/Calendar/DatesGrid";
 import AppointmentsList from "@/components/Calendar/AppointmentsList";
+import useAppointments from "@/hooks/useAppointments";
 
 export default function Calendar({
   selectedDate,
   setSelectedDate,
-  selectedAppointment,
-  setSelectedAppointment,
 }: {
   selectedDate?: Date;
   setSelectedDate: (date: Date) => void;
-  selectedAppointment?: IAppointment | undefined;
-  setSelectedAppointment: (appointment: IAppointment | undefined) => void;
 }): React.JSX.Element {
-  const { appointments } = useAppointmentsStore();
+  const { appointments, setAppointment } = useAppointments();
 
   const days = ["D", "L", "M", "M", "J", "V", "S"];
   selectedDate = selectedDate || new Date();
@@ -44,7 +40,7 @@ export default function Calendar({
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    setSelectedAppointment(undefined);
+    setAppointment(undefined);
     filterAppointmentsByDate(appointments, date);
   };
 
@@ -63,14 +59,11 @@ export default function Calendar({
           today={today}
           selectedDate={selectedDate}
           handleDateChange={handleDateChange}
-          availableAppointments={appointments}
         />
       </div>
       <div className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto">
         <AppointmentsList
           selectedDate={selectedDate}
-          selectedAppointment={selectedAppointment}
-          setSelectedAppointment={setSelectedAppointment}
           currentDayAppointments={currentDayAppointments}
         />
       </div>

@@ -11,7 +11,7 @@ interface UserState {
   removeUser: (id: string) => void;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const UserStore = create<UserState>((set) => ({
   users: [],
   user: null,
   setUsers: (users) => set({ users }),

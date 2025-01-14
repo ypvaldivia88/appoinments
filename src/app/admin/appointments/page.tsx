@@ -1,40 +1,19 @@
 "use client";
 import React from "react";
-import useAppointments from "@/hooks/useAppointments";
 import AppointmentForm from "@/forms/AppointmentForm";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import useAppointmentsStore from "@/stores/useAppointmentsStore";
+import { FaPlus } from "react-icons/fa";
+import AppointmentsStore from "@/stores/AppointmentsStore";
 import AppointmentBulkForm from "@/forms/AppointmentBulkForm";
 import Calendar from "@/components/Calendar";
-import { IAppointment } from "@/models/Appointment";
 
 const AppointmentsPage: React.FC = () => {
-  const { deleteAppointment } = useAppointments();
-  const { appointments, setAppointment } = useAppointmentsStore();
+  const { setAppointment } = AppointmentsStore();
 
   const [showModal, setShowModal] = React.useState(false);
   const [showBulkModal, setShowBulkModal] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     undefined
   );
-  const [selectedAppointment, setSelectedAppointment] = React.useState<
-    IAppointment | undefined
-  >(undefined);
-
-  const handleDelete = async () => {
-    const id = appointments.find(
-      (app) => app._id === selectedAppointment?._id
-    )?._id;
-    if (!id) {
-      return;
-    }
-    await deleteAppointment(id);
-  };
-
-  const handleEdit = () => {
-    setAppointment(selectedAppointment);
-    setShowModal(true);
-  };
 
   const handleCreate = () => {
     setAppointment(undefined);
@@ -64,25 +43,7 @@ const AppointmentsPage: React.FC = () => {
         <Calendar
           selectedDate={selectedDate}
           setSelectedDate={(date: Date) => setSelectedDate(date)}
-          selectedAppointment={selectedAppointment}
-          setSelectedAppointment={(app) => setSelectedAppointment(app)}
         />
-        {selectedAppointment && (
-          <div className="flex items-center justify-around mt-4">
-            <button
-              className="px-4 py-2 rounded-md bg-blue-600 hover:text-blue-400 transition-colors flex items-center gap-2 flex-nowrap"
-              onClick={handleEdit}
-            >
-              <FaEdit /> Editar
-            </button>
-            <button
-              className="px-4 py-2 rounded-md bg-red-600 hover:text-red-400 transition-colors flex items-center gap-2 flex-nowrap"
-              onClick={handleDelete}
-            >
-              <FaTrash /> Eliminar
-            </button>
-          </div>
-        )}
       </div>
       {showModal && <AppointmentForm onClose={() => setShowModal(false)} />}
       {showBulkModal && (

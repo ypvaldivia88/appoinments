@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useUserStore } from "@/stores/useUserStore";
+import { UserStore } from "@/stores/UserStore";
 import { IUser } from "@/models/User";
 
 const useUsers = () => {
   const { users, user, setUsers, setUser, addUser, updateUser, removeUser } =
-    useUserStore();
+    UserStore();
 
   useEffect(() => {
     fetchUsers();

@@ -1,29 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import dayjs from "dayjs";
 import { generateDate } from "@/util/calendar";
 import cn from "@/util/cn";
 import { IAppointment } from "@/models/Appointment";
+import AppointmentsStore from "@/stores/AppointmentsStore";
 
 export default function DatesGrid({
   today,
   selectedDate,
   handleDateChange,
-  availableAppointments,
 }: {
   today: dayjs.Dayjs;
   selectedDate?: Date;
   handleDateChange: (date: Date) => void;
-  availableAppointments: IAppointment[];
 }) {
-  // Preprocess appointments into a map for quick lookup
-  const appointmentMap = new Map<string, IAppointment[]>();
-  availableAppointments.forEach((app) => {
-    const dateKey = dayjs(app.date).format("YYYY-MM-DD");
-    if (!appointmentMap.has(dateKey)) {
-      appointmentMap.set(dateKey, []);
+  const { appointments } = AppointmentsStore();
+  const [appointmentMap, setAppointmentMap] = React.useState<
+    Map<string, IAppointment[]>
+  >(new Map());
+
+  useEffect(() => {
+    // Trigger a re-render when availableAppointments changes
+    if (appointments) {
+      // Preprocess appointments into a map for quick lookup
+      const appMap = new Map<string, IAppointment[]>();
+      appointments.forEach((app) => {
+        const dateKey = dayjs(app.date).format("YYYY-MM-DD");
+        if (!appMap.has(dateKey)) {
+          appMap.set(dateKey, []);
+        }
+        appMap.get(dateKey)!.push(app);
+      });
+      setAppointmentMap(appMap);
     }
-    appointmentMap.get(dateKey)!.push(app);
-  });
+  }, [appointments]);
 
   return (
     <div className="grid grid-cols-7">

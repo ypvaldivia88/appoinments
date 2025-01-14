@@ -11,7 +11,7 @@ interface ServiceState {
   removeService: (id: string) => void;
 }
 
-export const useServiceStore = create<ServiceState>((set) => ({
+export const ServiceStore = create<ServiceState>((set) => ({
   services: [],
   service: null,
   setServices: (services) => set({ services }),

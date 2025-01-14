@@ -16,7 +16,7 @@ interface AppointmentsState {
   ) => void;
 }
 
-const useAppointmentsStore = create<AppointmentsState>((set) => ({
+const AppointmentsStore = create<AppointmentsState>((set) => ({
   appointments: [] as IAppointment[],
   appointment: undefined as IAppointment | undefined,
   availableAppointments: [] as IAppointment[],
@@ -33,4 +33,4 @@ const useAppointmentsStore = create<AppointmentsState>((set) => ({
     set({ userActiveAppointment }),
 }));
 
-export default useAppointmentsStore;
+export default AppointmentsStore;

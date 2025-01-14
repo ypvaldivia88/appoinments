@@ -23,6 +23,9 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
   return (
     <div className="flex flex-col items-start gap-2 mb-2">
       <h1>Servicios</h1>
+      {services.length === 0 && (
+        <div>Contacte al gestor para que proporcione servicios a contratar</div>
+      )}
       <div className="flex gap-4">
         {services.map((service) => (
           <div

@@ -8,6 +8,7 @@ const useAppointments = () => {
   const {
     setAppointments,
     setAvailableAppointments,
+    setReservedAppointments,
     setUserActiveAppointment,
   } = useAppointmentsStore();
   const { services } = useServiceStore();
@@ -38,8 +39,9 @@ const useAppointments = () => {
         return;
       }
       const availableAppointments = data.filter((app) => !app.userId);
-
       setAvailableAppointments(availableAppointments);
+      const reservedAppointments = data.filter((app) => app.userId);
+      setReservedAppointments(reservedAppointments);
 
       if (session) {
         const userAppointment =

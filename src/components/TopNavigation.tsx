@@ -44,13 +44,7 @@ export default function TopNavigation() {
           </Link>
         </div>
         <div className="flex space-x-4">
-          <Link
-            href="/book"
-            className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
-          >
-            Reserva
-          </Link>
-          {isAdmin && (
+          {isAdmin ? (
             <div className="relative admin-menu">
               <button
                 onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
@@ -84,6 +78,13 @@ export default function TopNavigation() {
                 </div>
               )}
             </div>
+          ) : (
+            <Link
+              href="/book"
+              className="text-lg text-blue-200 hover:text-purple-400 transition-colors"
+            >
+              Reserva
+            </Link>
           )}
           {isAuthed && (
             <button

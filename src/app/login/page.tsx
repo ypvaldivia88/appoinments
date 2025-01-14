@@ -25,8 +25,10 @@ export default function Login({}) {
     useState<FormValues["password"]>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const setSession = useSessionStore((state) => state.setSession);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
     setErrorMessage(null); // Clear previous error message
     const errors = validateUser(
@@ -53,13 +55,15 @@ export default function Login({}) {
 
     if (response.ok) {
       Cookies.set("userId", data._id.toString());
+      Cookies.set("isAdmin", data.isAdmin);
       setSession(data);
       setTimeout(() => {
-        push("/book");
+        push(data.isAdmin ? "/admin/appointments" : "/book");
       }, 1000);
     } else {
       setErrorMessage(data.error || data.message);
     }
+    setLoading(false);
   };
 
   return (
@@ -136,6 +140,7 @@ export default function Login({}) {
       <button
         onClick={() => setIsRegister(!isRegister)}
         className="mt-4 text-secondary hover:underline"
+        disabled={loading}
       >
         {isRegister
           ? "¿Ya tienes una cuenta? Iniciar Sesión"

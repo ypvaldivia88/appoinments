@@ -18,7 +18,7 @@ export default function Calendar({
   selectedAppointment?: IAppointment | undefined;
   setSelectedAppointment: (appointment: IAppointment | undefined) => void;
 }): React.JSX.Element {
-  const { availableAppointments } = useAppointmentsStore();
+  const { appointments } = useAppointmentsStore();
 
   const days = ["D", "L", "M", "M", "J", "V", "S"];
   selectedDate = selectedDate || new Date();
@@ -45,15 +45,14 @@ export default function Calendar({
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
     setSelectedAppointment(undefined);
-    filterAppointmentsByDate(availableAppointments, date);
+    filterAppointmentsByDate(appointments, date);
   };
 
   useEffect(() => {
     // Trigger a re-render when availableAppointments changes
     setToday(dayjs());
-    if (availableAppointments)
-      filterAppointmentsByDate(availableAppointments, today.toDate());
-  }, [availableAppointments]);
+    if (appointments) filterAppointmentsByDate(appointments, today.toDate());
+  }, [appointments]);
 
   return (
     <div className="flex gap-4 justify-center items-center flex-col border-2 border-gray-300 rounded-lg p-4">
@@ -64,7 +63,7 @@ export default function Calendar({
           today={today}
           selectedDate={selectedDate}
           handleDateChange={handleDateChange}
-          availableAppointments={availableAppointments}
+          availableAppointments={appointments}
         />
       </div>
       <div className="w-full max-w-xs md:max-w-md lg:max-w-lg h-auto">

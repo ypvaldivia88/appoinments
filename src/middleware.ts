@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import useSessionStore from "@/stores/useSessionStore";
 
 // List of routes that require authentication
 const protectedRoutes = ["/book"];
 const adminRoutes = ["/admin"];
 
 export default function auth(req: NextRequest): NextResponse {
-  const { session } = useSessionStore.getState();
-  console.log("session", session);
-
-  // if (!sessionChecked) {
-  //   return NextResponse.next();
-  // }
+  const userId = req.cookies.get("userId");
+  const isAdmin = req.cookies.get("isAdmin");
+  console.log("[middleware userId]", userId);
+  console.log("[middleware isAdmin]", isAdmin);
 
   const isProtectedRoute = adminRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)
@@ -21,7 +18,7 @@ export default function auth(req: NextRequest): NextResponse {
     req.nextUrl.pathname.startsWith(route)
   );
 
-  if ((!session && isProtectedRoute) || (!session?.isAdmin && isAdminRoute)) {
+  if ((!userId && isProtectedRoute) || (!isAdmin && isAdminRoute)) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

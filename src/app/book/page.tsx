@@ -125,26 +125,30 @@ export default function Book() {
               selectedServices={selectedServices}
               setSelectedServices={setSelectedServices}
             />
-            <FormField
-              type="text"
-              label="Nota"
-              value={selectedAppointment.note || ""}
-              onChange={(e) =>
-                setSelectedAppointment(
-                  (prev) =>
-                    ({
-                      ...prev,
-                      note: e.target.value,
-                    } as IAppointment)
-                )
-              }
-            />
-            <button
-              type="submit"
-              className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
-            >
-              Reservar
-            </button>
+            {selectedServices.length > 0 && (
+              <>
+                <FormField
+                  type="text"
+                  label="Nota"
+                  value={selectedAppointment.note || ""}
+                  onChange={(e) =>
+                    setSelectedAppointment(
+                      (prev) =>
+                        ({
+                          ...prev,
+                          note: e.target.value,
+                        } as IAppointment)
+                    )
+                  }
+                />
+                <button
+                  type="submit"
+                  className="font-bold py-2 px-4 rounded-full shadow-lg bg-purple-600 text-white hover:bg-purple-400 transition-colors w-full"
+                >
+                  Reservar
+                </button>
+              </>
+            )}
           </>
         )}
       </form>

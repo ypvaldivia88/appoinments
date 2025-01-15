@@ -3,8 +3,7 @@ import { UserStore } from "@/stores/UserStore";
 import { IUser } from "@/models/User";
 
 const useUsers = () => {
-  const { users, user, setUsers, setUser, addUser, updateUser, removeUser } =
-    UserStore();
+  const { users, user, setUsers, setUser } = UserStore();
 
   useEffect(() => {
     fetchUsers();
@@ -29,15 +28,15 @@ const useUsers = () => {
         },
         body: JSON.stringify(user),
       });
-      const data = await response.json();
-      addUser(data);
+      await response.json();
       setUser(null);
+      await fetchUsers();
     } catch (error) {
       console.error("Error creating user:", error);
     }
   };
 
-  const updateUserById = async (id: string, updatedUser: IUser) => {
+  const updateUser = async (id: string, updatedUser: IUser) => {
     try {
       const response = await fetch(`/api/users/${id}`, {
         method: "PUT",
@@ -46,19 +45,19 @@ const useUsers = () => {
         },
         body: JSON.stringify(updatedUser),
       });
-      const data = await response.json();
-      updateUser(id, data);
+      await response.json();
+      await fetchUsers();
     } catch (error) {
       console.error("Error updating user:", error);
     }
   };
 
-  const deleteUserById = async (id: string) => {
+  const deleteUser = async (id: string) => {
     try {
       await fetch(`/api/users/${id}`, {
         method: "DELETE",
       });
-      removeUser(id);
+      await fetchUsers();
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -69,8 +68,8 @@ const useUsers = () => {
     user,
     setUser,
     createUser,
-    updateUser: updateUserById,
-    deleteUser: deleteUserById,
+    updateUser,
+    deleteUser,
   };
 };
 

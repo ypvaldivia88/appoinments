@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect } from "react";
 import { IUser } from "@/models/User";
 import GenericForm from "@/components/GenericForm";
@@ -16,32 +17,39 @@ const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
     setIsEditing(user?._id !== undefined);
   }, [user]);
 
+  const handleSubmit = () => {
+    isEditing && user?._id
+      ? updateUser(user._id.toString(), user)
+      : createUser();
+    onClose();
+  };
+
   return (
     <GenericForm
       title={isEditing ? "Editar Servicio" : "Crear Servicio"}
       onClose={() => onClose()}
-      onSubmit={() => (isEditing ? updateUser : createUser)}
+      onSubmit={handleSubmit}
     >
       <FormField
         type="text"
-        label="Name"
+        label="Nombre"
         value={user?.name || ""}
         onChange={(e) => setUser({ ...user, name: e.target.value } as IUser)}
       />
       <FormField
-        type="text"
-        label="Email"
+        type="phone"
+        label="Teléfono"
         value={user?.phone || ""}
         onChange={(e) =>
           setUser({
             ...user,
-            email: e.target.value,
+            phone: e.target.value,
           } as unknown as IUser)
         }
       />
       <FormField
         type="text"
-        label="Password"
+        label="Contraseña"
         value={user?.password || ""}
         onChange={(e) =>
           setUser({
@@ -52,12 +60,12 @@ const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
       />
       <FormField
         type="checkbox"
-        label="Administrador"
-        value={user?.isAdmin || false}
+        label="¿Es Administrador?"
+        checked={user?.isAdmin as boolean}
         onChange={(e) =>
           setUser({
             ...user,
-            isAdmin: e.target.value,
+            isAdmin: e.target.checked,
           } as unknown as IUser)
         }
       />

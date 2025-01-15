@@ -1,50 +1,21 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-import { IUser } from "@/models/User";
 import UserForm from "@/forms/UserForm";
-import { useRouter } from "next/navigation";
-import SessionStore from "@/stores/SessionStore";
+import useUsers from "@/hooks/useUsers";
+import { IUser } from "@/models/User";
 
 export default function Users() {
-  const router = useRouter();
-  const [users, setUsers] = useState<IUser[]>([]);
+  const { users, deleteUser, setUser } = useUsers();
   const [showModal, setShowModal] = useState(false);
-  const session = SessionStore((state) => state.session);
 
-  useEffect(() => {
-    if (!session) {
-      router.push("/login");
-    }
-  }, [router, session]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch("/api/users");
-      const data = await response.json();
-      setUsers(data);
-    };
-
-    fetchUsers();
-  }, []);
-
-  const handleDelete = async (_id: string) => {
-    await fetch(`/api/users/${_id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    setUsers((prevUsers) =>
-      prevUsers.filter((user) => user._id.toString() !== _id)
-    );
-  };
-
-  const handleEdit = () => {
+  const handleEdit = (user: IUser) => {
+    setUser(user);
     setShowModal(true);
   };
 
   const handleCreate = () => {
+    setUser(null);
     setShowModal(true);
   };
 
@@ -81,13 +52,13 @@ export default function Users() {
                   <td className="py-2 px-4 border-b flex justify-center flex-nowrap">
                     <button
                       className=" text-blue-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-blue-700 transition-colors mr-2"
-                      onClick={() => handleEdit()}
+                      onClick={() => handleEdit(user)}
                     >
                       <FaEdit />
                     </button>
                     <button
                       className=" text-red-500 font-bold py-1 px-2 rounded-full shadow-lg hover:text-red-700 transition-colors"
-                      onClick={() => handleDelete(user._id.toString())}
+                      onClick={() => deleteUser(user._id.toString())}
                     >
                       <FaTrash />
                     </button>

@@ -68,14 +68,14 @@ const useAppointments = () => {
     }
   };
 
-  const createAppointment = async (newAppointment: IAppointment) => {
+  const createAppointment = async () => {
     try {
       await fetch("/api/appointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newAppointment),
+        body: JSON.stringify(appointment),
       });
       await fetchAppointments();
     } catch (error) {
@@ -83,17 +83,18 @@ const useAppointments = () => {
     }
   };
 
-  const updateAppointment = async (
-    id: string,
-    updatedAppointment: IAppointment
-  ) => {
+  const updateAppointment = async () => {
+    if (!appointment?._id) {
+      console.error("Appointment ID is missing");
+      return;
+    }
     try {
-      await fetch(`/api/appointments/${id}`, {
+      await fetch(`/api/appointments/${appointment?._id?.toString()}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedAppointment),
+        body: JSON.stringify(appointment),
       });
       await fetchAppointments();
     } catch (error) {

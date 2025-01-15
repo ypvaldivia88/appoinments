@@ -33,9 +33,9 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     e.preventDefault();
     if (appointment) {
       if (isEditing && appointment._id) {
-        await updateAppointment(appointment._id.toString(), appointment);
+        await updateAppointment();
       } else {
-        await createAppointment(appointment);
+        await createAppointment();
       }
     }
     onClose();
@@ -51,8 +51,6 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     }
   };
 
-  console.log(appointment);
-
   return (
     <GenericForm
       title={isEditing ? "Editar Cita" : "Crear Cita"}
@@ -63,18 +61,18 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       <FormField
         type="date"
         label="Fecha"
-        value={dayjs(appointment?.date).format("YYYY-MM-DD") || ""}
+        value={appointment?.date}
         onChange={(e) =>
           setAppointment({
             ...appointment,
-            date: dayjs(e.target.value).toDate(),
+            date: e.target.value,
           } as unknown as IAppointment)
         }
       />
       <FormField
         type="time"
         label="Hora"
-        value={appointment?.time || ""}
+        value={appointment?.time as string}
         onChange={(e) =>
           setAppointment({
             ...appointment,

@@ -3,7 +3,6 @@ import { IAppointment } from "@/models/Appointment";
 import GenericForm from "@/forms/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
-import dayjs from "dayjs";
 import { IUser } from "@/models/User";
 import { IService } from "@/models/Service";
 import useServices from "@/hooks/useServices";

@@ -6,6 +6,7 @@ import useAppointments from "@/hooks/useAppointments";
 import { IUser } from "@/models/User";
 import { IService } from "@/models/Service";
 import useServices from "@/hooks/useServices";
+import useUsers from "@/hooks/useUsers";
 
 interface AppointmentFormProps {
   onClose: () => void;
@@ -21,6 +22,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
   } = useAppointments();
 
   const { services } = useServices();
+  const { users } = useUsers();
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -79,23 +81,39 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
           } as IAppointment)
         }
       />
-      {typeof appointment?.userId === "object" &&
-        appointment?.userId !== null && (
-          <p className="text-sm text-gray-400 mb-4">
-            <strong className="text-gray-200">Cliente:</strong>{" "}
-            {(appointment.userId as IUser).name}
-          </p>
-        )}
-      {appointment?.services && appointment.services.length > 0 && (
-        <p className="text-sm text-gray-400 mb-4">
-          <strong className="text-gray-200">Servicios:</strong>{" "}
-          {services.map((service: IService) => {
-            if (appointment.services?.includes(service._id.toString())) {
-              return service.name;
-            }
-          })}
-        </p>
-      )}
+      <FormField
+        type="select"
+        label="Cliente"
+        value={appointment?.userId as string}
+        onChange={(e) =>
+          setAppointment({
+            ...appointment,
+            userId: e.target.value,
+          } as IAppointment)
+        }
+        options={users.map((user: IUser) => ({
+          key: user._id.toString(),
+          label: user.name,
+        }))}
+      />
+      <FormField
+        type="select-multiple"
+        label="Servicios"
+        value={appointment?.services as string[]}
+        onChange={(e) =>
+          setAppointment({
+            ...appointment,
+            services: Array.from(
+              (e.target as HTMLSelectElement).selectedOptions,
+              (option) => option.value
+            ),
+          } as IAppointment)
+        }
+        options={services.map((service: IService) => ({
+          key: service._id.toString(),
+          label: service.name,
+        }))}
+      />
     </GenericForm>
   );
 };

@@ -82,6 +82,23 @@ const useAppointments = () => {
       console.error("Error creating appointment:", error);
     }
   };
+  
+  const createBulkAppointments = async (apps: IAppointment[]) => {
+    try {
+      for (const app of apps) {
+        await fetch("/api/appointments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(app),
+        });
+      }
+      await fetchAppointments();
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+    }
+  };
 
   const updateAppointment = async () => {
     if (!appointment?._id) {
@@ -125,6 +142,7 @@ const useAppointments = () => {
     userActiveAppointment,
     setUserActiveAppointment,
     createAppointment,
+    createBulkAppointments,
     updateAppointment,
     deleteAppointment,
   };

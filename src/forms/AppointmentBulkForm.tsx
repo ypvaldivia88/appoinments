@@ -13,7 +13,7 @@ interface AppointmentFormProps {
 
 const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
   const { appointment, setAppointment } = AppointmentsStore();
-  const { createAppointment } = useAppointments();
+  const { createBulkAppointments } = useAppointments();
   const [isEditing, setIsEditing] = useState(false);
   const [daysOfWeek, setDaysOfWeek] = useState<string[]>([]);
   const [times, setTimes] = useState<string[]>(["08:30"]);
@@ -47,9 +47,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
         }
       }
 
-      for (const appt of appointmentsToCreate) {
-        await createAppointment(appt);
-      }
+      await createBulkAppointments(appointmentsToCreate);
     }
     onClose();
   };

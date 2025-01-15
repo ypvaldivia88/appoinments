@@ -44,7 +44,7 @@ export default function Book() {
       alert("Seleccione una Hora para su cita");
       return;
     }
-    await updateAppointment(payload._id.toString(), payload);
+    await updateAppointment();
     setLoading(false);
   };
 

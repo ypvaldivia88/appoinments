@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect } from "react";
 import { IUser } from "@/models/User";
-import GenericForm from "@/components/GenericForm";
+import GenericForm from "@/forms/GenericForm";
 import FormField from "@/components/FormField";
 import useUsers from "@/hooks/useUsers";
 

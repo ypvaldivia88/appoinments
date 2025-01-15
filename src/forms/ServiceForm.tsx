@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { IService } from "@/models/Service";
-import GenericForm from "@/components/GenericForm";
+import GenericForm from "@/forms/GenericForm";
 import FormField from "@/components/FormField";
 import useServices from "@/hooks/useServices";
 
@@ -35,7 +35,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
       <FormField
         type="text"
         label="Name"
-        value={service?.name || ""}
+        value={service?.name}
         onChange={(e) =>
           setService({ ...service, name: e.target.value } as IService)
         }
@@ -43,7 +43,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
       <FormField
         type="text"
         label="Description"
-        value={service?.description || ""}
+        value={service?.description}
         onChange={(e) =>
           setService({
             ...service,
@@ -54,7 +54,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
       <FormField
         type="number"
         label="Price"
-        value={service?.price || 0}
+        value={service?.price}
         onChange={(e) =>
           setService({
             ...service,
@@ -65,7 +65,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
       <FormField
         type="number"
         label="Duration"
-        value={service?.duration || 0}
+        value={service?.duration}
         onChange={(e) =>
           setService({
             ...service,

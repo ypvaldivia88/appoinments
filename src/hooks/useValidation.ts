@@ -1,4 +1,5 @@
 import { IAppointment } from "@/models/Appointment";
+import { IService } from "@/models/Service";
 
 export default function useValidation() {
   const validateUser = (
@@ -53,5 +54,28 @@ export default function useValidation() {
     return errors;
   };
 
-  return { validateUser, validateAppointment };
+  const validateService = (formValues: Partial<IService>) => {
+    const errors: string[] = [];
+    const { name, description, price } = formValues;
+
+    if (!name) {
+      errors.push("El nombre del servicio es requerido");
+    }
+
+    if (!description) {
+      errors.push("La descripción del servicio es requerida");
+    }
+
+    if (!price) {
+      errors.push("El precio del servicio es requerido");
+    }
+
+    if (price && price < 0) {
+      errors.push("El precio del servicio no puede ser negativo");
+    }
+
+    return errors;
+  };
+
+  return { validateUser, validateAppointment, validateService };
 }

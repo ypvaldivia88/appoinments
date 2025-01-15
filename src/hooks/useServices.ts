@@ -2,15 +2,7 @@ import { useEffect } from "react";
 import { ServiceStore } from "@/stores/ServiceStore";
 
 const useServices = () => {
-  const {
-    services,
-    service,
-    setServices,
-    setService,
-    addService,
-    updateService,
-    removeService,
-  } = ServiceStore();
+  const { services, service, setServices, setService } = ServiceStore();
 
   useEffect(() => {
     fetchServices();
@@ -35,8 +27,7 @@ const useServices = () => {
         },
         body: JSON.stringify(service),
       });
-      const data = await response.json();
-      addService(data);
+      await response.json();
       setService(null);
       await fetchServices();
     } catch (error) {
@@ -44,31 +35,28 @@ const useServices = () => {
     }
   };
 
-  const updateServiceById = async () => {
+  const updateService = async () => {
     try {
       if (!service?._id) return;
       const id = service._id.toString();
-      const response = await fetch(`/api/services/${id}`, {
+      await fetch(`/api/services/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(service),
       });
-      const data = await response.json();
-      updateService(id, data);
       await fetchServices();
     } catch (error) {
       console.error("Error updating service:", error);
     }
   };
 
-  const deleteServiceById = async (id: string) => {
+  const deleteService = async (id: string) => {
     try {
       await fetch(`/api/services/${id}`, {
         method: "DELETE",
       });
-      removeService(id);
       await fetchServices();
     } catch (error) {
       console.error("Error deleting service:", error);
@@ -80,8 +68,8 @@ const useServices = () => {
     service,
     setService,
     createService,
-    updateService: updateServiceById,
-    deleteService: deleteServiceById,
+    updateService,
+    deleteService,
   };
 };
 

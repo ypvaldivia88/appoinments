@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IAppointment } from "@/models/Appointment";
-import GenericForm from "@/components/GenericForm";
+import GenericForm from "@/forms/GenericForm";
 import FormField from "@/components/FormField";
 import useAppointments from "@/hooks/useAppointments";
 import AppointmentsStore from "@/stores/AppointmentsStore";

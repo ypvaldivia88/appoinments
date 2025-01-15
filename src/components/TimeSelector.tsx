@@ -1,6 +1,6 @@
 import React from "react";
 import { FaTrash, FaPlus } from "react-icons/fa";
-import FormField from "@/components/FormField";
+import FormField from "@/forms/FormField";
 
 interface TimeSelectorProps {
   times: string[];

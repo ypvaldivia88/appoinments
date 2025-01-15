@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IAppointment } from "@/models/Appointment";
 import GenericForm from "@/forms/GenericForm";
-import FormField from "@/components/FormField";
+import FormField from "@/forms/FormField";
 import useAppointments from "@/hooks/useAppointments";
 import AppointmentsStore from "@/stores/AppointmentsStore";
 import DaysOfWeekSelector from "@/components/DaysOfWeekSelector";

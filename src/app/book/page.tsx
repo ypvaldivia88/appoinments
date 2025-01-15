@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Calendar from "@/components/Calendar";
 import useSession from "@/hooks/useSession";
-import FormField from "@/components/FormField";
+import FormField from "@/forms/FormField";
 import ServiceSelector from "@/components/ServiceSelector";
 import { IService } from "@/models/Service";
 import { IAppointment } from "@/models/Appointment";

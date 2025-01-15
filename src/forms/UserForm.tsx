@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { IUser } from "@/models/User";
 import GenericForm from "@/forms/GenericForm";
-import FormField from "@/components/FormField";
+import FormField from "@/forms/FormField";
 import useUsers from "@/hooks/useUsers";
 
 interface UserFormProps {

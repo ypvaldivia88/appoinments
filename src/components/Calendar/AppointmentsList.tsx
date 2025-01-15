@@ -13,7 +13,7 @@ export default function AppointmentsList({
   const { appointment, setAppointment } = AppointmentsStore();
   
   return (
-    <div className="h-auto w-full">
+    <div className="h-auto w-full flex-col justify-center items-center">
       <h1 className="font-semibold text-center">
         Citas disponibles para {selectedDate?.toLocaleDateString()}
       </h1>
@@ -44,7 +44,9 @@ export default function AppointmentsList({
           ))}
         </ul>
       ) : (
-        <p className="text-gray-400">No hay Citas para este día.</p>
+        <p className="text-orange-400 text-center my-4">
+          No hay Citas para este día.
+        </p>
       )}
     </div>
   );

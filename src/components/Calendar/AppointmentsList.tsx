@@ -2,6 +2,7 @@ import React from "react";
 import { IAppointment } from "@/models/Appointment";
 import cn from "@/util/cn";
 import AppointmentsStore from "@/stores/AppointmentsStore";
+import useSession from "@/hooks/useSession";
 
 export default function AppointmentsList({
   selectedDate,
@@ -11,7 +12,8 @@ export default function AppointmentsList({
   currentDayAppointments: IAppointment[];
 }) {
   const { appointment, setAppointment } = AppointmentsStore();
-  
+  const { isAdmin } = useSession();
+
   return (
     <div className="h-auto w-full flex-col justify-center items-center">
       <h1 className="font-semibold text-center">
@@ -24,7 +26,11 @@ export default function AppointmentsList({
               key={index}
               className={cn(
                 "text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer",
-                app?.userId !== undefined ? "bg-yellow-600 text-white" : ""
+                app.userId && isAdmin
+                  ? "bg-yellow-600 text-white"
+                  : app.userId && !isAdmin
+                  ? "hidden"
+                  : ""
               )}
               onClick={() => setAppointment(app)}
             >

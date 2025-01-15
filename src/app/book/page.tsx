@@ -14,6 +14,8 @@ export default function Book() {
   const { session } = useSession();
   const { validateAppointment } = useValidation();
   const {
+    appointment,
+    setAppointment,
     updateAppointment,
     deleteAppointment,
     userActiveAppointment,
@@ -21,9 +23,6 @@ export default function Book() {
   } = useAppointments();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
-  const [selectedAppointment, setSelectedAppointment] = useState<
-    IAppointment | undefined
-  >(undefined);
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
@@ -31,7 +30,7 @@ export default function Book() {
     e.preventDefault();
     setLoading(true);
     const payload: IAppointment = {
-      ...selectedAppointment,
+      ...appointment,
       services: selectedServices.map((s) => s._id.toString()),
       userId: session?._id.toString(),
     } as IAppointment;
@@ -85,8 +84,8 @@ export default function Book() {
           selectedDate={selectedDate}
           setSelectedDate={(date) => setSelectedDate(date)}
         />
-        {selectedAppointment === undefined ? (
-          <h1 className="text-md font-bold text-white my-8">
+        {!appointment ? (
+          <h1 className="text-md font-bold text-white my-8 text-center">
             Seleccione una <span className="text-green-400">Fecha Hábil</span> y
             una Hora para su cita
           </h1>
@@ -101,15 +100,12 @@ export default function Book() {
                 <FormField
                   type="text"
                   label="Nota"
-                  value={selectedAppointment.note || ""}
+                  value={appointment.note}
                   onChange={(e) =>
-                    setSelectedAppointment(
-                      (prev) =>
-                        ({
-                          ...prev,
-                          note: e.target.value,
-                        } as IAppointment)
-                    )
+                    setAppointment({
+                      ...appointment,
+                      note: e.target.value,
+                    } as unknown as IAppointment)
                   }
                 />
                 <button

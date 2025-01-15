@@ -65,7 +65,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
         onChange={(e) =>
           setUser({
             ...user,
-            isAdmin: e.target.checked,
+            isAdmin: (e.target as HTMLInputElement).checked,
           } as unknown as IUser)
         }
       />

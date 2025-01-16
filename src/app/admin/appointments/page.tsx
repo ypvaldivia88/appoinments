@@ -11,9 +11,6 @@ const AppointmentsPage: React.FC = () => {
 
   const [showModal, setShowModal] = React.useState(false);
   const [showBulkModal, setShowBulkModal] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
-    undefined
-  );
 
   useEffect(() => {
     if (appointment) {
@@ -46,10 +43,7 @@ const AppointmentsPage: React.FC = () => {
         </button>
       </div>
       <div className="p-6 md:p-8 rounded-lg shadow-lg w-full max-w-80 md:max-w-screen-2xl overflow-x-auto bg-gradient-secondary">
-        <Calendar
-          selectedDate={selectedDate}
-          setSelectedDate={(date: Date) => setSelectedDate(date)}
-        />
+        <Calendar />
       </div>
       {showModal && (
         <AppointmentForm

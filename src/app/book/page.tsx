@@ -24,7 +24,6 @@ export default function Book() {
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,10 +79,7 @@ export default function Book() {
         onSubmit={handleSubmit}
         className="p-4 md:p-6 lg:p-8 rounded-lg shadow-lg w-full md:max-w-xl bg-gradient-secondary flex flex-col gap-2"
       >
-        <Calendar
-          selectedDate={selectedDate}
-          setSelectedDate={(date) => setSelectedDate(date)}
-        />
+        <Calendar />
         {!appointment ? (
           <h1 className="text-md font-bold text-white my-8 text-center">
             Seleccione una <span className="text-green-400">Fecha Hábil</span> y

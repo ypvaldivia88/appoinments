@@ -3,6 +3,7 @@ import { IAppointment } from "@/models/Appointment";
 import AppointmentsStore from "@/stores/AppointmentsStore";
 import useSession from "@/hooks/useSession";
 import { ServiceStore } from "@/stores/ServiceStore";
+import { IUser } from "@/models/User";
 
 const useAppointments = () => {
   const {
@@ -50,9 +51,13 @@ const useAppointments = () => {
       setReservedAppointments(reservedAppointments);
 
       if (session) {
-        const userAppointment =
-          data.find((app) => app.userId === session._id.toString()) ||
-          undefined;
+        const userAppointment = data.find(
+          (app) =>
+            app.userId === session._id.toString() ||
+            // check if app.userId is Object type
+            (typeof app.userId === "object" &&
+              (app.userId as IUser)._id === session._id)
+        );
 
         if (userAppointment) {
           userAppointment.services = services
@@ -82,7 +87,7 @@ const useAppointments = () => {
       console.error("Error creating appointment:", error);
     }
   };
-  
+
   const createBulkAppointments = async (apps: IAppointment[]) => {
     try {
       for (const app of apps) {
@@ -119,6 +124,25 @@ const useAppointments = () => {
     }
   };
 
+  const reserveAppointment = async (app: IAppointment) => {
+    if (!app?._id) {
+      console.error("Appointment ID is missing");
+      return;
+    }
+    try {
+      await fetch(`/api/appointments/${app?._id?.toString()}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(app),
+      });
+      await fetchAppointments();
+    } catch (error) {
+      console.error("Error updating appointment:", error);
+    }
+  };
+
   const deleteAppointment = async (id: string) => {
     try {
       await fetch(`/api/appointments/${id}`, {
@@ -144,6 +168,7 @@ const useAppointments = () => {
     createAppointment,
     createBulkAppointments,
     updateAppointment,
+    reserveAppointment,
     deleteAppointment,
   };
 };

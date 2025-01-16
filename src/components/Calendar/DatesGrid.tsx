@@ -4,6 +4,7 @@ import { generateDate } from "@/util/calendar";
 import cn from "@/util/cn";
 import { IAppointment } from "@/models/Appointment";
 import AppointmentsStore from "@/stores/AppointmentsStore";
+import useSession from "@/hooks/useSession";
 
 export default function DatesGrid({
   today,
@@ -15,6 +16,8 @@ export default function DatesGrid({
   handleDateChange: (date: Date) => void;
 }) {
   const { appointments } = AppointmentsStore();
+  const { isAdmin } = useSession();
+
   const [appointmentMap, setAppointmentMap] = React.useState<
     Map<string, IAppointment[]>
   >(new Map());
@@ -65,7 +68,7 @@ export default function DatesGrid({
                 )}
                 onClick={() => handleDateChange(date.toDate())}
               >
-                {userIdCount > 0 && (
+                {userIdCount > 0 && isAdmin && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-sm font-bold rounded-full h-5 w-5 flex items-center justify-center">
                     {userIdCount}
                   </span>

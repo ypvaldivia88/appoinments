@@ -16,7 +16,7 @@ export default function Book() {
   const {
     appointment,
     setAppointment,
-    updateAppointment,
+    reserveAppointment,
     deleteAppointment,
     userActiveAppointment,
     setUserActiveAppointment,
@@ -42,7 +42,9 @@ export default function Book() {
       alert("Seleccione una Hora para su cita");
       return;
     }
-    await updateAppointment();
+    await reserveAppointment(payload);
+    setUserActiveAppointment(payload);
+    setAppointment(undefined);
     setLoading(false);
   };
 
@@ -96,11 +98,11 @@ export default function Book() {
                 <FormField
                   type="text"
                   label="Nota"
-                  value={appointment.note}
+                  value={appointment.note || ""}
                   onChange={(e) =>
                     setAppointment({
                       ...appointment,
-                      note: e.target.value,
+                      note: e.target.value as string,
                     } as unknown as IAppointment)
                   }
                 />

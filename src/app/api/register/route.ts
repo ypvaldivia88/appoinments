@@ -4,7 +4,7 @@ import dbConnect from "@/lib/dbConnect";
 
 export async function POST(req: NextRequest) {
   await dbConnect();
-  const { name, phone, password, isAdmin } = await req.json();
+  const { name, phone, password } = await req.json();
 
   // verify if user exists
   const exists = await User.findOne({ phone });
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     name,
     phone,
     password,
-    isAdmin,
+    isAdmin: false,
   });
 
   await user.save();

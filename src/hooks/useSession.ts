@@ -1,30 +1,73 @@
-import { useState, useEffect } from "react";
+"use client";
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import SessionStore from "@/stores/SessionStore";
 
 export default function useSession() {
   const router = useRouter();
   const path = usePathname();
-  const session = SessionStore((state) => state.session);
-  const clearSession = SessionStore((state) => state.clearSession);
-  const [sessionChecked, setSessionChecked] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isAuthed, setIsAuthed] = useState(false);
+
+  const {
+    session,
+    setSession,
+    clearSession,
+    sessionChecked,
+    setSessionChecked,
+    isAdmin,
+    setIsAdmin,
+    isAuthed,
+    setIsAuthed,
+    loadSessionFromCookies,
+  } = SessionStore();
 
   useEffect(() => {
     if (!sessionChecked) {
+      loadSessionFromCookies();
       setSessionChecked(true);
-      return;
-    }
-
-    if (!session) {
-      setIsAdmin(false);
-      setIsAuthed(false);
-    } else {
-      setIsAdmin(session?.isAdmin || false);
-      setIsAuthed(!!session);
     }
   }, [session, sessionChecked, router, path]);
+
+  const handleLogin = async (phone: string, password: string) => {
+    const endpoint = "/api/login";
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone, password }),
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      SessionStore.setState({ session: userData });
+      setIsAdmin(userData.isAdmin);
+      setIsAuthed(true);
+      router.push(isAdmin ? "/admin/appointments" : "/book");
+    }
+  };
+
+  const handleRegister = async (
+    name: string,
+    phone: string,
+    password: string
+  ) => {
+    const endpoint = "/api/register";
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, phone, password }),
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      SessionStore.setState({ session: userData });
+      setIsAdmin(userData.isAdmin);
+      setIsAuthed(true);
+      router.push(isAdmin ? "/admin/appointments" : "/book");
+    }
+  };
 
   const handleLogout = async () => {
     const endpoint = "/api/logout";
@@ -45,5 +88,18 @@ export default function useSession() {
     }
   };
 
-  return { session, isAdmin, isAuthed, sessionChecked, handleLogout };
+  return {
+    session,
+    setSession,
+    clearSession,
+    sessionChecked,
+    setSessionChecked,
+    isAdmin,
+    setIsAdmin,
+    isAuthed,
+    setIsAuthed,
+    handleLogin,
+    handleLogout,
+    handleRegister,
+  };
 }

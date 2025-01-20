@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import useValidation from "@/hooks/useValidation";
-import SessionStore from "@/stores/SessionStore";
+import useSession from "@/hooks/useSession";
 
 interface FormValues {
   name: string;
@@ -13,9 +11,8 @@ interface FormValues {
 }
 
 export default function Login({}) {
-  const router = useRouter();
-  const { push } = router;
   const { validateUser } = useValidation();
+  const { handleLogin, handleRegister } = useSession();
 
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
@@ -24,7 +21,6 @@ export default function Login({}) {
   const [repeatedPassword, setRepeatedPassword] =
     useState<FormValues["password"]>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const setSession = SessionStore((state) => state.setSession);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,31 +38,15 @@ export default function Login({}) {
       setErrorMessage(errors.join("\n"));
       return;
     }
-    const endpoint = isRegister ? "/api/register" : "/api/login";
-    const body = isRegister ? { name, phone, password } : { phone, password };
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
+    if (isRegister) handleRegister(name, phone, password);
+    else handleLogin(phone, password);
 
-    if (response.ok) {
-      Cookies.set("userId", data._id.toString());
-      Cookies.set("isAdmin", data.isAdmin);
-      setSession(data);
-      setTimeout(() => {
-        push(data.isAdmin ? "/admin/appointments" : "/book");
-      }, 1000);
-    } else {
-      setErrorMessage(data.error || data.message);
-    }
     setLoading(false);
   };
 
-  return (
+  return loading ? (
+    "Cargando..."
+  ) : (
     <div className="flex flex-col items-center justify-start min-h-screen p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         {isRegister ? "Registrarse" : "Iniciar Sesión"}

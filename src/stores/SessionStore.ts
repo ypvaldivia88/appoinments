@@ -4,11 +4,15 @@ import Cookies from "js-cookie";
 
 interface GlobalState {
   session: IUser | null;
-  sessionChecked: boolean;
   setSession: (session: IUser) => void;
+  sessionChecked: boolean;
   setSessionChecked: (sessionChecked: boolean) => void;
   clearSession: () => void;
   loadSessionFromCookies: () => void;
+  isAdmin: boolean;
+  setIsAdmin: (isAdmin: boolean) => void;
+  isAuthed: boolean;
+  setIsAuthed: (isAuthed: boolean) => void;
 }
 
 const SessionStore = create<GlobalState>((set): GlobalState => {
@@ -20,7 +24,8 @@ const SessionStore = create<GlobalState>((set): GlobalState => {
     },
     clearSession: () => {
       Cookies.remove("userId");
-      set({ session: null });
+      Cookies.remove("isAdmin");
+      set({ session: null, isAdmin: false, isAuthed: false });
     },
     sessionChecked: false,
     setSessionChecked: (sessionChecked: boolean) => {
@@ -37,11 +42,23 @@ const SessionStore = create<GlobalState>((set): GlobalState => {
         });
         if (response.ok) {
           const userData: IUser = await response.json();
-          set({ session: userData });
+          set({
+            session: userData,
+            isAdmin: userData.isAdmin,
+            isAuthed: true,
+          });
         }
       } catch (error) {
         console.error("Error loading session from API", error);
       }
+    },
+    isAdmin: false,
+    setIsAdmin: (isAdmin: boolean) => {
+      set({ isAdmin });
+    },
+    isAuthed: false,
+    setIsAuthed: (isAuthed: boolean) => {
+      set({ isAuthed });
     },
   };
 

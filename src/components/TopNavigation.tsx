@@ -53,7 +53,7 @@ export default function TopNavigation() {
                 Administrar
               </button>
               {isAdminMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-slate-800 shadow-lg rounded-md py-2 z-50">
+                <div className="absolute mt-2 w-48 bg-slate-800 shadow-lg rounded-md py-2 z-50">
                   <Link
                     href="/admin/appointments"
                     onClick={handleMenuOptionClick}

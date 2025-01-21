@@ -7,6 +7,8 @@ import { IUser } from "@/models/User";
 import { IService } from "@/models/Service";
 import useServices from "@/hooks/useServices";
 import useUsers from "@/hooks/useUsers";
+import ServiceSelector from "@/components/ServiceSelector";
+import dayjs from "dayjs";
 
 interface AppointmentFormProps {
   onClose: () => void;
@@ -21,14 +23,35 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
     deleteAppointment,
   } = useAppointments();
 
-  const { services } = useServices();
   const { users } = useUsers();
+  const { services } = useServices();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedServices, setSelectedServices] = useState<IService[]>([]);
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);
+    if (appointment?.services?.length) {
+      setSelectedServices(
+        services.filter((service) =>
+          appointment.services?.includes(service._id.toString())
+        )
+      );
+    }
   }, [appointment]);
+
+  useEffect(() => {
+    if (appointment) {
+      if (setSelectedServices.length) {
+        setAppointment({
+          ...appointment,
+          services: selectedServices.map((service) => service._id.toString()),
+        } as IAppointment);
+      } else {
+        appointment.services = [];
+      }
+    }
+  }, [setSelectedServices]);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -62,7 +85,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       <FormField
         type="date"
         label="Fecha"
-        value={appointment?.date}
+        value={dayjs(appointment?.date).format("YYYY-MM-DD")}
         onChange={(e) =>
           setAppointment({
             ...appointment,
@@ -84,7 +107,11 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       <FormField
         type="select"
         label="Cliente"
-        value={appointment?.userId as string}
+        value={
+          typeof appointment?.userId === "object"
+            ? (appointment.userId as IUser)._id.toString()
+            : appointment?.userId?.toString()
+        }
         onChange={(e) =>
           setAppointment({
             ...appointment,
@@ -96,23 +123,9 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
           label: user.name,
         }))}
       />
-      <FormField
-        type="select-multiple"
-        label="Servicios"
-        value={appointment?.services as string[]}
-        onChange={(e) =>
-          setAppointment({
-            ...appointment,
-            services: Array.from(
-              (e.target as HTMLSelectElement).selectedOptions,
-              (option) => option.value
-            ),
-          } as IAppointment)
-        }
-        options={services.map((service: IService) => ({
-          key: service._id.toString(),
-          label: service.name,
-        }))}
+      <ServiceSelector
+        selectedServices={selectedServices}
+        setSelectedServices={setSelectedServices}
       />
     </GenericForm>
   );

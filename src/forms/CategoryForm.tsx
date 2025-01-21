@@ -24,6 +24,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ onClose }) => {
     } else {
       await createCategory();
     }
+    setCategory(null);
     onClose();
   };
 
@@ -35,16 +36,16 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ onClose }) => {
     >
       <FormField
         type="text"
-        label="Name"
-        value={category?.name}
+        label="Nombre"
+        value={category?.name || ""}
         onChange={(e) =>
           setCategory({ ...category, name: e.target.value } as ICategory)
         }
       />
       <FormField
         type="text"
-        label="Description"
-        value={category?.description}
+        label="Descripción"
+        value={category?.description || ""}
         onChange={(e) =>
           setCategory({
             ...category,

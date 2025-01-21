@@ -69,6 +69,13 @@ export default function TopNavigation() {
                     Servicios
                   </Link>
                   <Link
+                    href="/admin/categories"
+                    onClick={handleMenuOptionClick}
+                    className="block px-4 py-2 text-gray-200 hover:bg-gray-700"
+                  >
+                    Categorías
+                  </Link>
+                  <Link
                     href="/admin/users"
                     onClick={handleMenuOptionClick}
                     className="block px-4 py-2 text-gray-200 hover:bg-gray-700"

@@ -40,7 +40,7 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
               note,
               user,
               services,
-              date: new Date(d.toISOString().split("T")[0]),
+              date: d,
               time,
             } as IAppointment);
           });

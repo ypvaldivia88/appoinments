@@ -54,7 +54,6 @@ const useAppointments = () => {
         const userAppointment = data.find(
           (app) =>
             app.user === session._id.toString() ||
-            // check if app.userId is Object type
             (typeof app.user === "object" &&
               (app.user as IUser)._id === session._id)
         );

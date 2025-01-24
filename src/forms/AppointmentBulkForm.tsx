@@ -35,10 +35,10 @@ const AppointmentBulkForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
         if (daysOfWeek.includes(d.getDay().toString())) {
           times.forEach((time) => {
-            const { note, user: userId, services } = appointment;
+            const { note, user, services } = appointment;
             appointmentsToCreate.push({
               note,
-              user: userId,
+              user,
               services,
               date: new Date(d.toISOString().split("T")[0]),
               time,

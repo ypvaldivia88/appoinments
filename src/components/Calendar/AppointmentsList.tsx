@@ -26,9 +26,9 @@ export default function AppointmentsList({
               key={index}
               className={cn(
                 "text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer",
-                app.userId && isAdmin
+                app.user && isAdmin
                   ? "bg-yellow-600 text-white"
-                  : app.userId && !isAdmin
+                  : app.user && !isAdmin
                   ? "hidden"
                   : ""
               )}
@@ -41,7 +41,7 @@ export default function AppointmentsList({
                   value={app._id}
                   checked={appointment?._id === app._id}
                   className="mr-2 cursor-pointer"
-                  readOnly={app.userId ? true : false}
+                  readOnly={app.user ? true : false}
                   onChange={() => setAppointment(app)}
                 />
                 {app.time}

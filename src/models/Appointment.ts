@@ -5,7 +5,7 @@ export interface IAppointment extends Document {
   date: Date;
   time: string;
   note?: string;
-  userId?: string;
+  user?: string;
   services?: string[];
 }
 
@@ -13,7 +13,7 @@ const AppointmentSchema: Schema<IAppointment> = new Schema({
   date: { type: Date, required: true },
   time: { type: String, required: true },
   note: { type: String, required: false },
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: false,

@@ -31,7 +31,7 @@ export default function Book() {
     const payload: IAppointment = {
       ...appointment,
       services: selectedServices.map((s) => s._id.toString()),
-      userId: session?._id.toString(),
+      user: session?._id.toString(),
     } as IAppointment;
     const errors = validateAppointment(payload);
     if (errors.length) {

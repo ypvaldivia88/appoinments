@@ -49,7 +49,7 @@ export default function DatesGrid({
           const appointmentsForDate = appointmentMap.get(formattedDate) || [];
           const hasAppointments = appointmentsForDate.length > 0;
           const userIdCount = appointmentsForDate.filter(
-            (app) => (app.services?.length ?? 0) > 0 || app.userId
+            (app) => (app.services?.length ?? 0) > 0 || app.user
           ).length;
 
           return (

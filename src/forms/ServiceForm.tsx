@@ -3,6 +3,8 @@ import { IService } from "@/models/Service";
 import GenericForm from "@/forms/GenericForm";
 import FormField from "@/forms/FormField";
 import useServices from "@/hooks/useServices";
+import { ICategory } from "@/models/Category";
+import useCategories from "@/hooks/useCategories";
 
 interface ServiceFormProps {
   onClose: () => void;
@@ -10,6 +12,7 @@ interface ServiceFormProps {
 
 const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
   const { service, createService, setService, updateService } = useServices();
+  const { categories } = useCategories();
   const [isEditing, setIsEditing] = React.useState(false);
 
   useEffect(() => {
@@ -72,6 +75,25 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ onClose }) => {
             duration: parseInt(e.target.value),
           } as IService)
         }
+      />
+      <FormField
+        type="select"
+        label="Categoría"
+        value={
+          typeof service?.category === "object"
+            ? (service.category as ICategory)._id.toString()
+            : service?.category
+        }
+        onChange={(e) =>
+          setService({
+            ...service,
+            category: e.target.value,
+          } as IService)
+        }
+        options={categories.map((category: ICategory) => ({
+          value: category._id.toString(),
+          label: category.name,
+        }))}
       />
     </GenericForm>
   );

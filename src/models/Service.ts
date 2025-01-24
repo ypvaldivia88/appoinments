@@ -5,7 +5,8 @@ export interface IService extends Document {
   name: string;
   description: string;
   price: number;
-  duration: number; // duration in minutes
+  duration: number;
+  category?: string;
 }
 
 const ServiceSchema: Schema = new Schema({
@@ -13,6 +14,11 @@ const ServiceSchema: Schema = new Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   duration: { type: Number, required: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: false,
+  },
 });
 
 const Service =

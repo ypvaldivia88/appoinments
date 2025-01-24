@@ -1,14 +1,14 @@
 import React from "react";
 
 interface Option {
-  key: string;
+  value: string;
   label: string;
 }
 
 interface FormFieldProps {
   label?: string;
   type?: string;
-  value?: string | boolean | number | Date | string[];
+  value?: string | boolean | number | Date | string[] | object;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -78,7 +78,7 @@ export default function FormField({
       >
         <option value="">Seleccione...</option>
         {options.map((option) => (
-          <option key={option.key} value={option.key}>
+          <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
@@ -100,7 +100,7 @@ export default function FormField({
         disabled={disabled}
       >
         {options.map((option) => (
-          <option key={option.key} value={option.key}>
+          <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}

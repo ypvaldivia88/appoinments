@@ -108,18 +108,18 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
         type="select"
         label="Cliente"
         value={
-          typeof appointment?.userId === "object"
-            ? (appointment.userId as IUser)._id.toString()
-            : appointment?.userId?.toString()
+          typeof appointment?.user === "object"
+            ? (appointment.user as IUser)._id.toString()
+            : appointment?.user?.toString()
         }
         onChange={(e) =>
           setAppointment({
             ...appointment,
-            userId: e.target.value,
+            user: e.target.value,
           } as IAppointment)
         }
         options={users.map((user: IUser) => ({
-          key: user._id.toString(),
+          value: user._id.toString(),
           label: user.name,
         }))}
       />

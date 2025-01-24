@@ -45,18 +45,18 @@ const useAppointments = () => {
       if (!data.length) {
         return;
       }
-      const availableAppointments = data.filter((app) => !app.userId);
+      const availableAppointments = data.filter((app) => !app.user);
       setAvailableAppointments(availableAppointments);
-      const reservedAppointments = data.filter((app) => app.userId);
+      const reservedAppointments = data.filter((app) => app.user);
       setReservedAppointments(reservedAppointments);
 
       if (session) {
         const userAppointment = data.find(
           (app) =>
-            app.userId === session._id.toString() ||
+            app.user === session._id.toString() ||
             // check if app.userId is Object type
-            (typeof app.userId === "object" &&
-              (app.userId as IUser)._id === session._id)
+            (typeof app.user === "object" &&
+              (app.user as IUser)._id === session._id)
         );
 
         if (userAppointment) {

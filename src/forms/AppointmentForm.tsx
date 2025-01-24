@@ -31,7 +31,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
 
   useEffect(() => {
     setIsEditing(appointment?._id !== undefined);
-    if (appointment?.services?.length) {
+    if (appointment?.services && appointment.services.length > 0) {
       setSelectedServices(
         services.filter((service) =>
           appointment.services?.includes(service._id.toString())
@@ -39,19 +39,6 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ onClose }) => {
       );
     }
   }, [appointment]);
-
-  useEffect(() => {
-    if (appointment) {
-      if (setSelectedServices.length) {
-        setAppointment({
-          ...appointment,
-          services: selectedServices.map((service) => service._id.toString()),
-        } as IAppointment);
-      } else {
-        appointment.services = [];
-      }
-    }
-  }, [setSelectedServices]);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();

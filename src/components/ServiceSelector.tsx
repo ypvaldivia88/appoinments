@@ -35,7 +35,9 @@ const ServiceSelector: React.FC<ServiceSelectorProps> = ({
             <input
               id={service._id.toString()}
               type="checkbox"
-              checked={selectedServices.includes(service)}
+              checked={
+                selectedServices.findIndex((s) => s._id === service._id) !== -1
+              }
               onChange={() => handleSelectService(service)}
               className="mr-2 cursor-pointer"
             />

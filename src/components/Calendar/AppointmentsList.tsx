@@ -12,7 +12,7 @@ export default function AppointmentsList({
   currentDayAppointments: IAppointment[];
 }) {
   const { appointment, setAppointment } = AppointmentsStore();
-  const { isAdmin } = useSession();
+  const { isAdmin } = useSession();  
 
   return (
     <div className="h-auto w-full flex-col justify-center items-center">

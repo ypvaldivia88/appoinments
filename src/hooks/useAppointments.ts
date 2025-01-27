@@ -19,13 +19,14 @@ const useAppointments = () => {
     setUserActiveAppointment,
   } = AppointmentsStore();
   const { services } = ServiceStore();
-  const { session } = useSession();
+  const { session, setLoading } = useSession();
 
   useEffect(() => {
     fetchAppointments();
   }, []);
 
   const fetchAppointments = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/appointments");
       const data = await response.json();
@@ -37,6 +38,8 @@ const useAppointments = () => {
       processAvailableAppointments(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

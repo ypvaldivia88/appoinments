@@ -3,6 +3,8 @@ import { IUser } from "@/models/User";
 import Cookies from "js-cookie";
 
 interface GlobalState {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
   session: IUser | null;
   setSession: (session: IUser) => void;
   sessionChecked: boolean;
@@ -13,6 +15,10 @@ interface GlobalState {
 
 const SessionStore = create<GlobalState>((set): GlobalState => {
   const initialState: GlobalState = {
+    loading: true,
+    setLoading: (loading: boolean) => {
+      set({ loading });
+    },
     session: null,
     setSession: (session: IUser) => {
       Cookies.set("userId", session._id.toString());
@@ -45,6 +51,8 @@ const SessionStore = create<GlobalState>((set): GlobalState => {
         }
       } catch (error) {
         console.error("Error loading session from API", error);
+      } finally {
+        set({ sessionChecked: true, loading: false });
       }
     },
   };

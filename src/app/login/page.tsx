@@ -14,7 +14,7 @@ interface FormValues {
 export default function Login({}) {
   const router = useRouter();
   const { validateUser } = useValidation();
-  const { handleLogin, handleRegister, session } = useSession();
+  const { handleLogin, handleRegister, session, loading } = useSession();
 
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
@@ -23,10 +23,8 @@ export default function Login({}) {
   const [repeatedPassword, setRepeatedPassword] =
     useState<FormValues["password"]>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
     e.preventDefault();
     setErrorMessage(null); // Clear previous error message
     const errors = validateUser(
@@ -43,7 +41,6 @@ export default function Login({}) {
     if (isRegister) await handleRegister(name, phone, password);
     else await handleLogin(phone, password);
 
-    setLoading(false);
     router.push(session?.isAdmin ? "/admin/appointments" : "/book");
   };
 

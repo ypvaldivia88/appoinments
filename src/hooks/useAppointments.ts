@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { IAppointment } from "@/models/Appointment";
 import AppointmentsStore from "@/stores/AppointmentsStore";
 import useSession from "@/hooks/useSession";
-import { ServiceStore } from "@/stores/ServiceStore";
 import { IUser } from "@/models/User";
+import useServices from "./useServices";
 
 const useAppointments = () => {
   const {
@@ -18,15 +18,14 @@ const useAppointments = () => {
     userActiveAppointment,
     setUserActiveAppointment,
   } = AppointmentsStore();
-  const { services } = ServiceStore();
-  const { session, setLoading } = useSession();
+  const { services } = useServices();
+  const { session } = useSession();
 
   useEffect(() => {
     fetchAppointments();
   }, []);
 
   const fetchAppointments = async () => {
-    setLoading(true);
     try {
       const response = await fetch("/api/appointments");
       const data = await response.json();
@@ -38,8 +37,6 @@ const useAppointments = () => {
       processAvailableAppointments(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
-    } finally {
-      setLoading(false);
     }
   };
 

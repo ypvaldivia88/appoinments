@@ -15,7 +15,7 @@ interface GlobalState {
 
 const SessionStore = create<GlobalState>((set): GlobalState => {
   const initialState: GlobalState = {
-    loading: true,
+    loading: false,
     setLoading: (loading: boolean) => {
       set({ loading });
     },

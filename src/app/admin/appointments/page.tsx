@@ -1,19 +1,21 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppointmentForm from "@/forms/AppointmentForm";
 import { FaPlus } from "react-icons/fa";
-import AppointmentsStore from "@/stores/AppointmentsStore";
 import AppointmentBulkForm from "@/forms/AppointmentBulkForm";
 import Calendar from "@/components/Calendar";
+import useAppointments from "@/hooks/useAppointments";
+import useSession from "@/hooks/useSession";
 
 const AppointmentsPage: React.FC = () => {
-  const { setAppointment, appointment } = AppointmentsStore();
+  const { setAppointment, appointment } = useAppointments();
+  const { loading } = useSession();
 
-  const [showModal, setShowModal] = React.useState(false);
-  const [showBulkModal, setShowBulkModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showBulkModal, setShowBulkModal] = useState(false);
 
   useEffect(() => {
-    if (appointment) {
+    if (appointment && !showBulkModal) {
       setShowModal(true);
     }
   }, [appointment]);
@@ -28,7 +30,9 @@ const AppointmentsPage: React.FC = () => {
     setShowModal(false);
   };
 
-  return (
+  return loading ? (
+    "Cargando..."
+  ) : (
     <div className="flex flex-col items-center justify-start min-h-screen p-4 md:p-8">
       <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">
         Gestión de Citas

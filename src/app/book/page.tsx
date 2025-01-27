@@ -11,7 +11,7 @@ import useValidation from "@/hooks/useValidation";
 import AppointmentDetails from "@/components/AppointmentDetails";
 
 export default function Book() {
-  const { session } = useSession();
+  const { session, loading } = useSession();
   const { validateAppointment } = useValidation();
   const {
     appointment,
@@ -23,11 +23,9 @@ export default function Book() {
   } = useAppointments();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     const payload: IAppointment = {
       ...appointment,
       services: selectedServices.map((s) => s._id.toString()),
@@ -45,11 +43,9 @@ export default function Book() {
     await reserveAppointment(payload);
     setUserActiveAppointment(payload);
     setAppointment(undefined);
-    setLoading(false);
   };
 
   const handleCancelAppointment = async () => {
-    setLoading(true);
     if (userActiveAppointment?._id) {
       if (
         confirm(
@@ -60,7 +56,6 @@ export default function Book() {
         setUserActiveAppointment(undefined);
       }
     }
-    setLoading(false);
   };
 
   if (loading) {

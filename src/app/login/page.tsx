@@ -2,6 +2,7 @@
 import { useState } from "react";
 import useValidation from "@/hooks/useValidation";
 import useSession from "@/hooks/useSession";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   name: string;
@@ -11,8 +12,9 @@ interface FormValues {
 }
 
 export default function Login({}) {
+  const router = useRouter();
   const { validateUser } = useValidation();
-  const { handleLogin, handleRegister } = useSession();
+  const { handleLogin, handleRegister, session } = useSession();
 
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
@@ -38,10 +40,11 @@ export default function Login({}) {
       setErrorMessage(errors.join("\n"));
       return;
     }
-    if (isRegister) handleRegister(name, phone, password);
-    else handleLogin(phone, password);
+    if (isRegister) await handleRegister(name, phone, password);
+    else await handleLogin(phone, password);
 
     setLoading(false);
+    router.push(session?.isAdmin ? "/admin/appointments" : "/book");
   };
 
   return loading ? (

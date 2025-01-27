@@ -1,19 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import SessionStore from "@/stores/SessionStore";
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
-  const loadSessionFromCookies = SessionStore(
-    (state) => state.loadSessionFromCookies
-  );
-
-  useEffect(() => {
-    setIsClient(true);
-    loadSessionFromCookies();
-  }, [loadSessionFromCookies]);
-
   return (
     <>
       <header className="text-center mb-8 md:mb-12">
@@ -25,11 +13,9 @@ export default function Home() {
         </p>
       </header>
       <main className="flex flex-col items-center gap-6 md:gap-8">
-        {isClient && (
-          <div className="flex justify-center items-center  p-5">
-            <Image src="/logo.png" alt="Manicure" width={150} height={150} />
-          </div>
-        )}
+        <div className="flex justify-center items-center  p-5">
+          <Image src="/logo.png" alt="Manicure" width={150} height={150} />
+        </div>
         <div className="text-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4 font-dancing-script">
             ¡Reserva tu cita hoy!

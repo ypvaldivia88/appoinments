@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import useSession from "@/hooks/useSession";
 
 export default function TopNavigation() {
-  const { isAdmin, isAuthed, handleLogout } = useSession();
+  const { session, handleLogout } = useSession();
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function TopNavigation() {
           </Link>
         </div>
         <div className="flex space-x-4">
-          {isAdmin ? (
+          {session?.isAdmin ? (
             <div className="relative admin-menu">
               <button
                 onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
@@ -93,7 +93,7 @@ export default function TopNavigation() {
               Reserva
             </Link>
           )}
-          {isAuthed && (
+          {session && (
             <button
               onClick={handleLogout}
               className="text-lg text-blue-200 hover:text-purple-400 transition-colors"

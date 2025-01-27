@@ -12,7 +12,7 @@ export default function AppointmentsList({
   currentDayAppointments: IAppointment[];
 }) {
   const { appointment, setAppointment } = AppointmentsStore();
-  const { isAdmin } = useSession();  
+  const { session } = useSession();
 
   return (
     <div className="h-auto w-full flex-col justify-center items-center">
@@ -26,9 +26,9 @@ export default function AppointmentsList({
               key={index}
               className={cn(
                 "text-gray-700 text-sm bg-slate-300 px-4 py-2 max-w-fit rounded-md cursor-pointer",
-                app.user && isAdmin
+                app.user && session?.isAdmin
                   ? "bg-yellow-600 text-white"
-                  : app.user && !isAdmin
+                  : app.user && !session?.isAdmin
                   ? "hidden"
                   : ""
               )}

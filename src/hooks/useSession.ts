@@ -13,10 +13,6 @@ export default function useSession() {
     clearSession,
     sessionChecked,
     setSessionChecked,
-    isAdmin,
-    setIsAdmin,
-    isAuthed,
-    setIsAuthed,
     loadSessionFromCookies,
   } = SessionStore();
 
@@ -39,10 +35,7 @@ export default function useSession() {
 
     if (response.ok) {
       const userData = await response.json();
-      SessionStore.setState({ session: userData });
-      setIsAdmin(userData.isAdmin);
-      setIsAuthed(true);
-      router.push(isAdmin ? "/admin/appointments" : "/book");
+      setSession(userData);
     }
   };
 
@@ -62,10 +55,7 @@ export default function useSession() {
 
     if (response.ok) {
       const userData = await response.json();
-      SessionStore.setState({ session: userData });
-      setIsAdmin(userData.isAdmin);
-      setIsAuthed(true);
-      router.push(isAdmin ? "/admin/appointments" : "/book");
+      setSession(userData);
     }
   };
 
@@ -80,8 +70,6 @@ export default function useSession() {
 
     if (response.ok) {
       clearSession();
-      setIsAdmin(false);
-      setIsAuthed(false);
       setTimeout(() => {
         router.push("/login");
       }, 1000); // wait for 1 second before redirecting
@@ -94,10 +82,6 @@ export default function useSession() {
     clearSession,
     sessionChecked,
     setSessionChecked,
-    isAdmin,
-    setIsAdmin,
-    isAuthed,
-    setIsAuthed,
     handleLogin,
     handleLogout,
     handleRegister,

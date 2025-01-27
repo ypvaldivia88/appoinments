@@ -16,7 +16,7 @@ export default function DatesGrid({
   handleDateChange: (date: Date) => void;
 }) {
   const { appointments } = AppointmentsStore();
-  const { isAdmin } = useSession();
+  const { session } = useSession();
 
   const [appointmentMap, setAppointmentMap] = React.useState<
     Map<string, IAppointment[]>
@@ -68,7 +68,7 @@ export default function DatesGrid({
                 )}
                 onClick={() => handleDateChange(date.toDate())}
               >
-                {userIdCount > 0 && isAdmin && (
+                {userIdCount > 0 && session?.isAdmin && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-sm font-bold rounded-full h-5 w-5 flex items-center justify-center">
                     {userIdCount}
                   </span>

@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.13",
-    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.0",
     "next": "15.0.3",
     "react": "18.2.0",
@@ -23,7 +24,6 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
-    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/nookies": "^1.1.0",
     "@types/react": "^18",

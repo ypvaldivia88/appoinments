@@ -2,6 +2,7 @@
 import User from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
+import { requireUserOrAdmin } from "@/lib/apiAuth";
 
 export async function GET(
   request: NextRequest,
@@ -10,6 +11,11 @@ export async function GET(
   try {
     await dbConnect();
     const { id } = await params;
+
+    // Check if user can access this resource (own data or admin)
+    const authError = requireUserOrAdmin(request, id);
+    if (authError) return authError;
+
     const data = await User.findById(id);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
@@ -29,6 +35,11 @@ export async function PUT(
     await dbConnect();
     const body = await request.json();
     const { id } = await params;
+
+    // Check if user can modify this resource (own data or admin)
+    const authError = requireUserOrAdmin(request, id);
+    if (authError) return authError;
+
     // remove password from body if it's empty
     if (!body.password) {
       delete body.password;
@@ -52,6 +63,11 @@ export async function DELETE(
   try {
     await dbConnect();
     const { id } = await params;
+
+    // Check if user can delete this resource (own data or admin)
+    const authError = requireUserOrAdmin(request, id);
+    if (authError) return authError;
+
     await User.findByIdAndDelete(id);
     return new Response(null, { status: 204 });
   } catch (error) {

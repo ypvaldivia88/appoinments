@@ -4,31 +4,20 @@ import dbConnect from "@/lib/dbConnect";
 import { requireAuth } from "@/lib/apiAuth";
 import { getUserId } from "@/lib/auth";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest) {
   // Check authentication
   const authError = requireAuth(request);
   if (authError) return authError;
 
   try {
     await dbConnect();
-    const { id } = await params;
     const currentUserId = getUserId(request);
 
     if (!currentUserId) {
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
 
-    // Users can only access their own session, unless they're admin
-    if (id !== currentUserId) {
-      // Check if current user is admin (this would require admin check)
-      // For now, restrict to own session only
-      return NextResponse.json({ error: "Access denied" }, { status: 403 });
-    }
-
-    const user = await User.findById(id);
+    const user = await User.findById(currentUserId);
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

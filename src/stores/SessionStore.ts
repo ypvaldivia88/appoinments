@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { IUser } from "@/models/User";
-import Cookies from "js-cookie";
 
 interface GlobalState {
   loading: boolean;
@@ -10,10 +9,10 @@ interface GlobalState {
   sessionChecked: boolean;
   setSessionChecked: (sessionChecked: boolean) => void;
   clearSession: () => void;
-  loadSessionFromCookies: () => void;
+  loadSessionFromServer: () => void;
 }
 
-const SessionStore = create<GlobalState>((set): GlobalState => {
+const SessionStore = create<GlobalState>((set, get): GlobalState => {
   const initialState: GlobalState = {
     loading: false,
     setLoading: (loading: boolean) => {
@@ -21,44 +20,55 @@ const SessionStore = create<GlobalState>((set): GlobalState => {
     },
     session: null,
     setSession: (session: IUser) => {
-      Cookies.set("userId", session._id.toString());
-      Cookies.set("isAdmin", session.isAdmin.toString());
+      // No longer setting client-side cookies - JWT is httpOnly
       set({ session });
     },
     clearSession: () => {
-      Cookies.remove("userId");
-      Cookies.remove("isAdmin");
+      // Clear session data but don't remove cookies (handled by logout API)
       set({ session: null });
     },
     sessionChecked: false,
     setSessionChecked: (sessionChecked: boolean) => {
       set({ sessionChecked });
     },
-    loadSessionFromCookies: async () => {
+    loadSessionFromServer: async () => {
+      const currentSession = get().session;
+      
+      // If we already have session data and haven't checked yet, use it
+      if (currentSession && !get().sessionChecked) {
+        set({ sessionChecked: true });
+        return;
+      }
+
       try {
-        const userId = Cookies.get("userId");
-        if (!userId) {
-          return;
-        }
-        const response = await fetch(`/api/session/${userId}`, {
+        set({ loading: true });
+        
+        // Try to get session from server using httpOnly cookie
+        const response = await fetch("/api/session/me", {
           method: "GET",
+          credentials: "include", // Include httpOnly cookies
         });
+
         if (response.ok) {
           const userData: IUser = await response.json();
           set({
             session: userData,
           });
+        } else if (response.status === 401) {
+          // No valid session, clear any existing session data
+          set({ session: null });
         }
       } catch (error) {
-        console.error("Error loading session from API", error);
+        console.error("Error loading session from server", error);
+        set({ session: null });
       } finally {
         set({ sessionChecked: true, loading: false });
       }
     },
   };
 
-  // Attempt to load session from cookies initially
-  initialState.loadSessionFromCookies();
+  // Attempt to load session from server initially
+  initialState.loadSessionFromServer();
 
   return initialState;
 });

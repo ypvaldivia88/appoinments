@@ -38,10 +38,19 @@ export default function Login({}) {
       setErrorMessage(errors.join("\n"));
       return;
     }
-    if (isRegister) await handleRegister(name, phone, password);
-    else await handleLogin(phone, password);
 
-    router.push(session?.isAdmin ? "/admin/appointments" : "/book");
+    let result;
+    if (isRegister) {
+      result = await handleRegister(name, phone, password);
+    } else {
+      result = await handleLogin(phone, password);
+    }
+
+    if (result.success) {
+      router.push(session?.isAdmin ? "/admin/appointments" : "/book");
+    } else {
+      setErrorMessage(result.error || "An error occurred");
+    }
   };
 
   return loading ? (

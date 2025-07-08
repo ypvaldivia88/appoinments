@@ -13,6 +13,7 @@ export default function useSession() {
     clearSession,
     sessionChecked,
     setSessionChecked,
+    loadSessionFromServer,
   } = SessionStore();
 
   const handleLogin = async (phone: string, password: string) => {
@@ -25,14 +26,20 @@ export default function useSession() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ phone, password }),
+        credentials: "include", // Include httpOnly cookies
       });
 
       if (response.ok) {
         const userData = await response.json();
         setSession(userData);
+        return { success: true };
+      } else {
+        const errorData = await response.json();
+        return { success: false, error: errorData.message || "Login failed" };
       }
     } catch (error) {
-      console.error("Error fetching appointments:", error);
+      console.error("Error during login:", error);
+      return { success: false, error: "Network error" };
     } finally {
       setLoading(false);
     }
@@ -52,33 +59,47 @@ export default function useSession() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, phone, password }),
+        credentials: "include", // Include httpOnly cookies
       });
 
       if (response.ok) {
         const userData = await response.json();
         setSession(userData);
+        return { success: true };
+      } else {
+        const errorData = await response.json();
+        return { success: false, error: errorData.error || "Registration failed" };
       }
     } catch (error) {
-      console.error("Error fetching appointments:", error);
+      console.error("Error during registration:", error);
+      return { success: false, error: "Network error" };
     } finally {
       setLoading(false);
     }
   };
 
   const handleLogout = async () => {
-    const endpoint = "/api/logout";
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const endpoint = "/api/logout";
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include httpOnly cookies
+      });
 
-    if (response.ok) {
+      if (response.ok) {
+        clearSession();
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000); // wait for 1 second before redirecting
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // Still clear session on client side even if server request fails
       clearSession();
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000); // wait for 1 second before redirecting
+      router.push("/login");
     }
   };
 
@@ -93,5 +114,6 @@ export default function useSession() {
     handleLogin,
     handleLogout,
     handleRegister,
+    loadSessionFromServer,
   };
 }

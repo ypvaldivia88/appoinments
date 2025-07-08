@@ -2,11 +2,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import Appointment from "@/models/Appointment";
 import dbConnect from "@/lib/dbConnect";
+import { requireAuth } from "@/lib/apiAuth";
+import { getUserId, isAdmin } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // Check authentication
+  const authError = requireAuth(req);
+  if (authError) return authError;
+
   try {
     await dbConnect();
-    const data = await Appointment.find().populate("user");
+    const currentUserId = getUserId(req);
+    const userIsAdmin = isAdmin(req);
+
+    let data;
+    if (userIsAdmin) {
+      // Admins can see all appointments
+      data = await Appointment.find().populate("user");
+    } else {
+      // Regular users can only see their own appointments
+      data = await Appointment.find({ user: currentUserId }).populate("user");
+    }
+
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in GET function:", error);
@@ -18,11 +35,24 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  // Check authentication
+  const authError = requireAuth(req);
+  if (authError) return authError;
+
   try {
     const conn = await dbConnect();
     console.log("Connection:", conn);
 
-    const appointment = new Appointment(await req.json());
+    const appointmentData = await req.json();
+    const currentUserId = getUserId(req);
+    const userIsAdmin = isAdmin(req);
+
+    // If not admin, force the appointment to be associated with the current user
+    if (!userIsAdmin) {
+      appointmentData.user = currentUserId;
+    }
+
+    const appointment = new Appointment(appointmentData);
     const data = await appointment.save();
     return NextResponse.json(data, { status: 201 });
   } catch (error) {

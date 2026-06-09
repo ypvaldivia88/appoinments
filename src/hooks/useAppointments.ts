@@ -2,8 +2,11 @@ import { useEffect } from "react";
 import { IAppointment } from "@/models/Appointment";
 import AppointmentsStore from "@/stores/AppointmentsStore";
 import useSession from "@/hooks/useSession";
-import { IUser } from "@/models/User";
 import useServices from "./useServices";
+import {
+  isSameAppointmentUser,
+  userHasAppointmentOnDate as checkUserHasAppointmentOnDate,
+} from "@/util/appointment";
 
 const useAppointments = () => {
   const {
@@ -51,11 +54,9 @@ const useAppointments = () => {
       setReservedAppointments(reservedAppointments);
 
       if (session) {
-        const userAppointment = data.find(
-          (app) =>
-            app.user === session._id.toString() ||
-            (typeof app.user === "object" &&
-              (app.user as IUser)._id === session._id)
+        const userId = session._id.toString();
+        const userAppointment = data.find((app) =>
+          isSameAppointmentUser(app.user, userId)
         );
 
         if (userAppointment) {
@@ -65,6 +66,8 @@ const useAppointments = () => {
             )
             .map((service) => service.name);
           setUserActiveAppointment(userAppointment);
+        } else {
+          setUserActiveAppointment(undefined);
         }
       }
     } catch (error) {
@@ -125,21 +128,40 @@ const useAppointments = () => {
 
   const reserveAppointment = async (app: IAppointment) => {
     if (!app?._id) {
-      console.error("Appointment ID is missing");
-      return;
+      return { success: false, error: "Seleccione una hora para su cita" };
     }
     try {
-      await fetch(`/api/appointments/${app?._id?.toString()}`, {
+      const response = await fetch(`/api/appointments/${app._id.toString()}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(app),
       });
+
+      if (!response.ok) {
+        const data = await response.json();
+        return {
+          success: false,
+          error: data.error || "No se pudo reservar la cita",
+        };
+      }
+
       await fetchAppointments();
+      return { success: true };
     } catch (error) {
       console.error("Error updating appointment:", error);
+      return { success: false, error: "Error de red al reservar la cita" };
     }
+  };
+
+  const hasUserAppointmentOnDate = (date: Date | string) => {
+    if (!session) return false;
+    return checkUserHasAppointmentOnDate(
+      appointments,
+      session._id.toString(),
+      date
+    );
   };
 
   const deleteAppointment = async (id: string) => {
@@ -169,6 +191,7 @@ const useAppointments = () => {
     updateAppointment,
     reserveAppointment,
     deleteAppointment,
+    hasUserAppointmentOnDate,
   };
 };
 

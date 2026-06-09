@@ -20,6 +20,7 @@ export default function Book() {
     deleteAppointment,
     userActiveAppointment,
     setUserActiveAppointment,
+    hasUserAppointmentOnDate,
   } = useAppointments();
 
   const [selectedServices, setSelectedServices] = useState<IService[]>([]);
@@ -40,7 +41,15 @@ export default function Book() {
       alert("Seleccione una Hora para su cita");
       return;
     }
-    await reserveAppointment(payload);
+    if (payload.date && hasUserAppointmentOnDate(payload.date)) {
+      alert("Ya tienes una cita reservada para este día");
+      return;
+    }
+    const result = await reserveAppointment(payload);
+    if (!result.success) {
+      alert(result.error);
+      return;
+    }
     setUserActiveAppointment(payload);
     setAppointment(undefined);
   };

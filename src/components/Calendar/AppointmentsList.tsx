@@ -3,6 +3,7 @@ import { IAppointment } from "@/models/Appointment";
 import cn from "@/util/cn";
 import AppointmentsStore from "@/stores/AppointmentsStore";
 import useSession from "@/hooks/useSession";
+import useAppointments from "@/hooks/useAppointments";
 
 export default function AppointmentsList({
   selectedDate,
@@ -13,13 +14,21 @@ export default function AppointmentsList({
 }) {
   const { appointment, setAppointment } = AppointmentsStore();
   const { session } = useSession();
+  const { hasUserAppointmentOnDate } = useAppointments();
+
+  const userAlreadyBookedThisDay =
+    selectedDate && session && hasUserAppointmentOnDate(selectedDate);
 
   return (
     <div className="h-auto w-full flex-col justify-center items-center">
       <h1 className="font-semibold text-center">
         Citas disponibles para {selectedDate?.toLocaleDateString()}
       </h1>
-      {currentDayAppointments?.length > 0 ? (
+      {userAlreadyBookedThisDay ? (
+        <p className="text-orange-400 text-center my-4">
+          Ya tienes una cita reservada para este día.
+        </p>
+      ) : currentDayAppointments?.length > 0 ? (
         <ul className="my-2 flex gap-4 flex-wrap justify-center items-center">
           {currentDayAppointments.map((app, index) => (
             <li

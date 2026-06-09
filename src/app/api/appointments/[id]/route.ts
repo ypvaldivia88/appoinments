@@ -1,8 +1,13 @@
 import Appointment from "@/models/Appointment";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth, requireAppointmentOwnerOrAdmin } from "@/lib/apiAuth";
+import {
+  requireAuth,
+  requireAppointmentOwnerOrAdmin,
+  requireAppointmentUpdateAccess,
+} from "@/lib/apiAuth";
 import { getUserId, isAdmin } from "@/lib/auth";
+import { userHasAppointmentOnDate } from "@/lib/appointmentValidation";
 
 export async function GET(
   request: NextRequest,
@@ -53,14 +58,36 @@ export async function PUT(
       return NextResponse.json({ error: "Appointment not found" }, { status: 404 });
     }
 
-    const accessError = requireAppointmentOwnerOrAdmin(
+    const accessError = requireAppointmentUpdateAccess(
       request,
       appointment.user?.toString()
     );
     if (accessError) return accessError;
 
-    if (!isAdmin(request)) {
-      body.user = getUserId(request);
+    const currentUserId = getUserId(request);
+    const userIsAdmin = isAdmin(request);
+
+    if (!userIsAdmin) {
+      body.user = currentUserId;
+    }
+
+    const targetUserId = (body.user ?? appointment.user)?.toString();
+    const targetDate = body.date ?? appointment.date;
+    const isNewReservation = !appointment.user && targetUserId;
+
+    if (targetUserId && targetDate && (isNewReservation || body.user)) {
+      const alreadyBooked = await userHasAppointmentOnDate(
+        targetUserId,
+        targetDate,
+        id
+      );
+
+      if (alreadyBooked) {
+        return NextResponse.json(
+          { error: "Ya tienes una cita reservada para este día" },
+          { status: 409 }
+        );
+      }
     }
 
     const data = await Appointment.findByIdAndUpdate(id, body, { new: true });

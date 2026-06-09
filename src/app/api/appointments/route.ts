@@ -4,6 +4,7 @@ import Appointment from "@/models/Appointment";
 import dbConnect from "@/lib/dbConnect";
 import { requireAuth } from "@/lib/apiAuth";
 import { getUserId, isAdmin } from "@/lib/auth";
+import { userHasAppointmentOnDate } from "@/lib/appointmentValidation";
 
 export async function GET(req: NextRequest) {
   // Check authentication
@@ -49,6 +50,21 @@ export async function POST(req: NextRequest) {
     // If not admin, force the appointment to be associated with the current user
     if (!userIsAdmin) {
       appointmentData.user = currentUserId;
+    }
+
+    const assignedUserId = appointmentData.user?.toString();
+    if (assignedUserId && appointmentData.date) {
+      const alreadyBooked = await userHasAppointmentOnDate(
+        assignedUserId,
+        appointmentData.date
+      );
+
+      if (alreadyBooked) {
+        return NextResponse.json(
+          { error: "Ya tienes una cita reservada para este día" },
+          { status: 409 }
+        );
+      }
     }
 
     const appointment = new Appointment(appointmentData);

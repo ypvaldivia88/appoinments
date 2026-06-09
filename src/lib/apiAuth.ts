@@ -131,3 +131,32 @@ export function requireAppointmentOwnerOrAdmin(
 
   return NextResponse.json({ error: "Access denied" }, { status: 403 });
 }
+
+/**
+ * Allows admins, owners, or claiming of unassigned appointment slots
+ */
+export function requireAppointmentUpdateAccess(
+  req: NextRequest,
+  appointmentUserId: string | undefined | null
+): NextResponse | null {
+  const auth = getAuthFromRequest(req);
+
+  if (!auth) {
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 }
+    );
+  }
+
+  if (auth.isAdmin) {
+    return null;
+  }
+
+  const ownerId = appointmentUserId?.toString();
+
+  if (!ownerId || auth.userId === ownerId) {
+    return null;
+  }
+
+  return NextResponse.json({ error: "Access denied" }, { status: 403 });
+}

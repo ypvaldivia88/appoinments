@@ -1,15 +1,18 @@
-// dbConnect.ts
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI!;
-
-if (!MONGODB_URI) {
-  throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
-  );
-}
-
 let cachedConnection: typeof mongoose | null = null;
+
+function getMongoUri(): string {
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    throw new Error(
+      "Please define the MONGODB_URI environment variable inside .env.local"
+    );
+  }
+
+  return uri;
+}
 
 async function dbConnect() {
   if (cachedConnection) {
@@ -19,10 +22,8 @@ async function dbConnect() {
   const options = {
     bufferCommands: false,
   };
-  cachedConnection = await mongoose.connect(MONGODB_URI, options);
+  cachedConnection = await mongoose.connect(getMongoUri(), options);
 
-  console.log("Connected to database");
-  
   return cachedConnection;
 }
 

@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { NextRequest } from "next/server";
+import { getJwtSecret } from "@/lib/jwtSecret";
 
-const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-key";
-const JWT_EXPIRY = "7d"; // 7 days
+const JWT_EXPIRY = "7d";
 
 export interface AuthPayload {
   userId: string;
@@ -18,7 +18,7 @@ export interface DecodedToken extends AuthPayload {
  * Generate a JWT token for user authentication
  */
 export function generateToken(payload: AuthPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: JWT_EXPIRY });
 }
 
 /**
@@ -26,7 +26,7 @@ export function generateToken(payload: AuthPayload): string {
  */
 export function verifyToken(token: string): DecodedToken | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as DecodedToken;
+    return jwt.verify(token, getJwtSecret()) as DecodedToken;
   } catch (error) {
     console.error("Token verification failed:", error);
     return null;
@@ -38,7 +38,7 @@ export function verifyToken(token: string): DecodedToken | null {
  */
 export function getAuthFromRequest(req: NextRequest): DecodedToken | null {
   const token = req.cookies.get("auth-token")?.value;
-  
+
   if (!token) {
     return null;
   }

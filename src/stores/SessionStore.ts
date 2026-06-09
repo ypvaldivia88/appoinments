@@ -67,9 +67,6 @@ const SessionStore = create<GlobalState>((set, get): GlobalState => {
     },
   };
 
-  // Attempt to load session from server initially
-  initialState.loadSessionFromServer();
-
   return initialState;
 });
 

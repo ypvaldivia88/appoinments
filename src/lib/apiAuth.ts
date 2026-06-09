@@ -106,3 +106,28 @@ export function checkRateLimit(identifier: string): boolean {
 export function clearRateLimit(identifier: string): void {
   loginAttempts.delete(identifier);
 }
+
+/**
+ * Appointment ownership middleware - checks if user can access an appointment
+ */
+export function requireAppointmentOwnerOrAdmin(
+  req: NextRequest,
+  appointmentUserId: string | undefined | null
+): NextResponse | null {
+  const auth = getAuthFromRequest(req);
+
+  if (!auth) {
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 }
+    );
+  }
+
+  const ownerId = appointmentUserId?.toString();
+
+  if (auth.isAdmin || (ownerId && auth.userId === ownerId)) {
+    return null;
+  }
+
+  return NextResponse.json({ error: "Access denied" }, { status: 403 });
+}

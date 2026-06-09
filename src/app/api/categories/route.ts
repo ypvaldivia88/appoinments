@@ -1,7 +1,7 @@
-// route.ts
 import Category from "@/models/Category";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/apiAuth";
 
 export async function GET() {
   try {
@@ -18,6 +18,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const authError = requireAdmin(request);
+  if (authError) return authError;
+
   try {
     await dbConnect();
     const body = await request.json();

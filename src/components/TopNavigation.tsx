@@ -5,8 +5,12 @@ import { useEffect, useState } from "react";
 import useSession from "@/hooks/useSession";
 
 export default function TopNavigation() {
-  const { session, handleLogout } = useSession();
+  const { session, handleLogout, loadSessionFromServer } = useSession();
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+
+  useEffect(() => {
+    loadSessionFromServer();
+  }, [loadSessionFromServer]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

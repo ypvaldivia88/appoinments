@@ -32,7 +32,7 @@ export default function useSession() {
       if (response.ok) {
         const userData = await response.json();
         setSession(userData);
-        return { success: true };
+        return { success: true, user: userData };
       } else {
         const errorData = await response.json();
         return { success: false, error: errorData.message || "Login failed" };
@@ -65,7 +65,7 @@ export default function useSession() {
       if (response.ok) {
         const userData = await response.json();
         setSession(userData);
-        return { success: true };
+        return { success: true, user: userData };
       } else {
         const errorData = await response.json();
         return { success: false, error: errorData.error || "Registration failed" };

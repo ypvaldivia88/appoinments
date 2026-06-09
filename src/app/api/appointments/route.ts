@@ -40,8 +40,7 @@ export async function POST(req: NextRequest) {
   if (authError) return authError;
 
   try {
-    const conn = await dbConnect();
-    console.log("Connection:", conn);
+    await dbConnect();
 
     const appointmentData = await req.json();
     const currentUserId = getUserId(req);

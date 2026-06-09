@@ -14,7 +14,7 @@ interface FormValues {
 export default function Login({}) {
   const router = useRouter();
   const { validateUser } = useValidation();
-  const { handleLogin, handleRegister, session, loading } = useSession();
+  const { handleLogin, handleRegister, loading } = useSession();
 
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [name, setName] = useState<FormValues["name"]>("");
@@ -28,13 +28,13 @@ export default function Login({}) {
     e.preventDefault();
     setErrorMessage(null); // Clear previous error message
     const errors = validateUser(
-      name,
+      isRegister ? name : "Usuario",
       phone,
       password,
       false,
       isRegister ? repeatedPassword : undefined
     );
-    if (isRegister && errors.length > 0) {
+    if (errors.length > 0) {
       setErrorMessage(errors.join("\n"));
       return;
     }
@@ -47,7 +47,7 @@ export default function Login({}) {
     }
 
     if (result.success) {
-      router.push(session?.isAdmin ? "/admin/appointments" : "/book");
+      router.push(result.user?.isAdmin ? "/admin/appointments" : "/book");
     } else {
       setErrorMessage(result.error || "An error occurred");
     }

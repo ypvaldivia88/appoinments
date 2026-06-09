@@ -2,13 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
 import { requireAuth } from "@/lib/apiAuth";
-import { getUserId } from "@/lib/auth";
+import { getUserId, isAdmin } from "@/lib/auth";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Check authentication
   const authError = requireAuth(request);
   if (authError) return authError;
 
@@ -21,10 +20,7 @@ export async function GET(
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
 
-    // Users can only access their own session, unless they're admin
-    if (id !== currentUserId) {
-      // Check if current user is admin (this would require admin check)
-      // For now, restrict to own session only
+    if (id !== currentUserId && !isAdmin(request)) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 

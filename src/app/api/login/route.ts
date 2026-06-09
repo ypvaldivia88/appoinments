@@ -20,18 +20,9 @@ export async function POST(req: NextRequest) {
 
     const user = await User.findOne({ phone }).select("+password");
 
-    if (!user) {
+    if (!user || !(await user.comparePassword(password))) {
       return NextResponse.json(
-        { message: `User with phone: ${phone} not found` },
-        { status: 401 }
-      );
-    }
-
-    const isMatch = await user.comparePassword(password);
-
-    if (!isMatch) {
-      return NextResponse.json(
-        { message: "Invalid password" },
+        { message: "Teléfono o contraseña incorrectos" },
         { status: 401 }
       );
     }
